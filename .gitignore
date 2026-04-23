@@ -1,0 +1,43 @@
+# OS / editor
+.DS_Store
+*.log
+*.swp
+.idea/
+.vscode/
+.claude/
+
+# Secrets — NEVER commit
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+venv/
+.venv/
+backend/venv/
+backend/.venv/
+# Runtime DMA master state (per-taxonomy Excel + JSON written on the fly).
+# Lives inside the backend package for dev convenience but must not be
+# committed.
+backend/dma_master/
+backend/app/dma/services/_taxonomy_overrides/
+
+# Node / frontend
+node_modules/
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+
+# Generic build output
+dist/
+coverage/

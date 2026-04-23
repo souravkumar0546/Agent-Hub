@@ -1,0 +1,165 @@
+:root {
+  color-scheme: dark;
+
+  --bg: #0b0e0c;
+  --bg-elev: #111513;
+  --bg-card: #151a17;
+  --bg-card-hover: #181e1a;
+  --border: #222926;
+  --border-strong: #2e3632;
+
+  --ink: #ecefe9;
+  --ink-dim: #9aa39d;
+  /* Previously #5b645e which gave ~3.3:1 on --bg-card — below WCAG AA 4.5:1.
+     Bumped lighter to hit ~6:1 so uppercase tiny labels ("TILES", "NAV-LABEL")
+     are legible (H44 in the readiness review). */
+  --ink-muted: #8d968f;
+
+  --accent: #c8f263;
+  --accent-soft: #8aa04a;
+  --accent-deep: #5c6e2d;
+  /* Text colour that reads on top of --accent. Dark ink on the neon green
+     is classic for dark mode; light mode overrides this to white. */
+  --on-accent: #0b0e0c;
+  /* Hover variant of --accent for primary buttons. */
+  --accent-hover: #d6fb7a;
+  /* Same colour as --accent, decomposed into R,G,B so components can build
+     semi-transparent tints (`rgba(var(--accent-rgb), 0.1)`) that still
+     follow the active theme. */
+  --accent-rgb: 200, 242, 99;
+  /* Same idea for informational blue and error red — used by DMA panels. */
+  --bio-rgb: 107, 179, 242;
+  --err-rgb: 242, 123, 123;
+  --warn-rgb: 242, 167, 107;
+  --success-rgb: 138, 160, 74;
+
+  --warn: #f2a76b;
+  --bio: #6bb3f2;
+  --pink: #f2b8d4;
+  --err: #f27b7b;
+  --success: #8aa04a;
+
+  /* Warm secondary accent (mirrors light mode's gold). On dark we reuse
+     the existing warn tone so gold-tinted deltas don't clash with the
+     neon-green accent. */
+  --accent-warm: #f2a76b;
+  --accent-warm-rgb: 242, 167, 107;
+
+  --radius: 4px;
+  --radius-lg: 8px;
+
+  --serif: 'Fraunces', serif;
+  --sans: 'Inter Tight', -apple-system, BlinkMacSystemFont, sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+/* Light theme.
+   Activated when <html data-theme="light"> — ThemeProvider sets this in
+   response to the Settings toggle. We override the token values only; every
+   component keeps its variable references so the swap is instantaneous.
+
+   The accent is shifted to a deeper green: the neon `#c8f263` that reads
+   as "premium" on a dark canvas turns into retina-burn on white. */
+/* Light theme — Uniqus Accelerators-inspired palette.
+   Navy primary + ice-blue surfaces + gold warm accent + semantic
+   success/danger/warning. Dark-mode stays on the neon-green system;
+   we only override light. Dashboards render their KPI values in the
+   serif font at large sizes against this palette — see .tile rules in
+   app.css. */
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  --bg: #F7F9FD;            /* ice canvas */
+  --bg-elev: #FFFFFF;
+  --bg-card: #FFFFFF;
+  --bg-card-hover: #F4F8FF; /* ice-50 on hover */
+  --border: #E4E9F3;
+  --border-strong: #D4DCEC;
+
+  --ink: #0F1A3D;           /* navy-900 */
+  --ink-dim: #37406B;
+  --ink-muted: #6B7391;     /* ~4.9:1 on white — passes AA */
+
+  --accent: #1E2761;        /* navy-800 — primary action + chart line */
+  --accent-soft: #3B4894;   /* navy-600 — muted accent */
+  --accent-deep: #0F1A3D;   /* navy-900 */
+  --on-accent: #ffffff;
+  --accent-hover: #2A3478;  /* navy-700 */
+  --accent-rgb: 30, 39, 97;
+
+  /* Warm secondary accent for KPI values / positive highlights. Used
+     sparingly — the page stays navy-led; gold is a delta colour. */
+  --accent-warm: #F5A623;
+  --accent-warm-rgb: 245, 166, 35;
+
+  /* Semantic colours — Uniqus maps danger/success/warning explicitly;
+     we keep the same four tokens and ensure the rgb aliases match so
+     rgba(var(--*-rgb),X) tints stay coherent. */
+  --success: #2A9D8F;
+  --danger: #E63946;
+  --warn: #F4A261;
+  --bio: #3D85C6;
+  --pink: #B35788;
+  --err: #E63946;
+
+  --bio-rgb: 61, 133, 198;
+  --err-rgb: 230, 57, 70;
+  --warn-rgb: 244, 162, 97;
+  --success-rgb: 42, 157, 143;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+input,
+textarea,
+select {
+  font-family: inherit;
+}
+
+em {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 6px;
+}
