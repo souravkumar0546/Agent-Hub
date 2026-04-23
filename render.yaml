@@ -35,15 +35,19 @@ services:
 
     buildCommand: pip install -r requirements.txt
 
-    # Alembic migrates before the service accepts traffic on every
-    # deploy. Idempotent; new migrations only advance the head forward.
-    preDeployCommand: alembic upgrade head
-
-    # No --reload in prod. Two workers is the practical floor for the
-    # demo — RCA runs are synchronous and hold a worker for 60-120 s
-    # per turn (see audit C10). Bump `--workers` or move RCA runs to a
-    # background queue before any real load.
-    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT --workers 2 --timeout-keep-alive 10
+    # Free tier doesn't allow `preDeployCommand`, so the migration runs
+    # inline right before uvicorn starts. `alembic upgrade head` is
+    # idempotent — no-op when the schema is already at head, so the
+    # cold-start cost is ~50 ms in steady state. The FastAPI lifespan
+    # (main.py:45) will still refuse to boot if the alembic_version
+    # table is missing, so this ordering is load-bearing.
+    #
+    # --workers 1: the free tier caps at 512 MB RAM. Two workers each
+    # carrying a SQLAlchemy pool + the RCA engine's context will OOM
+    # under load. When you upgrade to `plan: starter` (2 GB RAM) bump
+    # this to --workers 2. Queue-backed RCA runs are the real fix
+    # (audit item C10) before any production traffic.
+    startCommand: alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port $PORT --workers 1 --timeout-keep-alive 10
 
     healthCheckPath: /api/health
 
