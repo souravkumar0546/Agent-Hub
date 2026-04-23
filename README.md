@@ -1,4 +1,4 @@
-# Syngene AI Hub
+# Uniqus AI Hub
 
 Unified agent hub for Syngene — eleven purpose-built AI agents (spanning HR, Commercial, R&D, Procurement, Compliance) behind a shared dark-themed workspace with role-based access control.
 
@@ -15,7 +15,7 @@ Built by integrating two internal tools — **DMAhub** (data transformation prim
 ## Folder layout
 
 ```
-syngene-ai-hub/
+uniqus-ai-hub/
 ├── backend/                FastAPI — auth, RBAC, orgs, departments, agent APIs
 │   └── app/
 │       ├── agents/         catalog of 11 agent definitions

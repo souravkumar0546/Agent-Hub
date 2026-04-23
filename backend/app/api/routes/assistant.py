@@ -47,7 +47,7 @@ def _load_knowledge_base() -> str:
     """
     if not _GUIDE_DIR.is_dir():
         return (
-            "Syngene AI Hub is an enterprise agent hub with RCA Investigation, "
+            "Uniqus AI Hub is an enterprise agent hub with RCA Investigation, "
             "Data Classifier, Master Builder, Data Enrichment, Group Duplicates, "
             "and Lookup agents. Roles are SUPER_ADMIN, ORG_ADMIN, MEMBER."
         )
@@ -67,7 +67,7 @@ def _load_knowledge_base() -> str:
 
 _KNOWLEDGE_BASE = _load_knowledge_base()
 
-_SYSTEM_PROMPT = f"""You are the Syngene AI Hub platform assistant — an in-app chatbot that helps users figure out how to use the product.
+_SYSTEM_PROMPT = f"""You are the Uniqus AI Hub platform assistant — an in-app chatbot that helps users figure out how to use the product.
 
 Answer ONLY based on the knowledge below. If a question is outside this scope (e.g. medical advice, personal help, anything not about this platform), politely say it's outside the assistant's scope and point the user at the User Guide or a human admin.
 

@@ -1,8 +1,8 @@
-# render.yaml — Render Blueprint for Syngene AI Hub
+# render.yaml — Render Blueprint for Uniqus AI Hub
 # Provisions three resources in one shot:
-#   1. Managed Postgres  (syngene-hub-db)
-#   2. FastAPI backend   (syngene-hub-api)
-#   3. Vite static site  (syngene-hub)         <- entry-point for users
+#   1. Managed Postgres  (uniqus-hub-db)
+#   2. FastAPI backend   (uniqus-hub-api)
+#   3. Vite static site  (uniqus-hub)         <- entry-point for users
 #
 # First-deploy usage:
 #   1. Push this repo to GitHub (see DEPLOY.md).
@@ -26,7 +26,7 @@ services:
   # Backend: FastAPI on uvicorn
   # ───────────────────────────────────────────────────────────────────
   - type: web
-    name: syngene-hub-api
+    name: uniqus-hub-api
     runtime: python
     # `free` tier: 512 MB RAM, cold-starts after 15 min idle. Fine for a
     # demo / pilot. Bump to `starter` before any real traffic.
@@ -101,13 +101,13 @@ services:
       # edge cases where Render forwards the original Origin header.
       # If you rename the frontend service, update this value.
       - key: CORS_ORIGINS
-        value: https://syngene-hub.onrender.com
+        value: https://uniqus-hub.onrender.com
 
   # ───────────────────────────────────────────────────────────────────
   # Frontend: Vite static build behind Render's CDN
   # ───────────────────────────────────────────────────────────────────
   - type: web
-    name: syngene-hub
+    name: uniqus-hub
     runtime: static
     rootDir: frontend
 
@@ -127,7 +127,7 @@ services:
       # update this destination too.
       - type: rewrite
         source: /api/*
-        destination: https://syngene-hub-api.onrender.com/api/:splat
+        destination: https://uniqus-hub-api.onrender.com/api/:splat
 
       # SPA fallback: any non-asset path renders index.html so React
       # Router can resolve the route client-side (e.g. /invite/:token,

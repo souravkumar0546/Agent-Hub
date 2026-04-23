@@ -1,4 +1,4 @@
-# Deploying Syngene AI Hub to Render
+# Deploying Uniqus AI Hub to Render
 
 Everything — FastAPI backend, Vite static frontend — comes up from a single
 `render.yaml` Blueprint. Postgres is **external** (Neon free tier) so the
@@ -24,7 +24,7 @@ Neon or move to Render's managed Postgres (also $7/mo) — both paths are one
 If you don't already have a repo:
 
 ```bash
-cd /path/to/syngene-ai-hub
+cd /path/to/uniqus-ai-hub
 git init -b main
 git add .
 git commit -m "initial commit"
@@ -42,7 +42,7 @@ the first push; if any of those show up as staged, delete them and re-stage.
 ## Step 2a — spin up Postgres on Neon
 
 1. Go to https://neon.tech, sign in (GitHub works), **Create project**.
-2. Project name: `syngene-hub`. Region: pick one close to where your
+2. Project name: `uniqus-hub`. Region: pick one close to where your
    Render services will live (Render's free tier is typically Oregon or
    Frankfurt). Neon regions: US East, US West, or Europe Frankfurt.
    If unsure, **US East**.
@@ -65,8 +65,8 @@ Neon pooler is the supported pattern.
 1. Dashboard → **New** → **Blueprint**.
 2. Connect the GitHub repo.
 3. Render reads `render.yaml` from the repo root and shows a preview:
-   - **Web service** `syngene-hub-api` (backend, free plan)
-   - **Static site** `syngene-hub` (frontend, free)
+   - **Web service** `uniqus-hub-api` (backend, free plan)
+   - **Static site** `uniqus-hub` (frontend, free)
 4. Click **Apply**. No card required — every service is free.
 
 Backend's first build takes ~3 minutes (pip install, alembic migrate
@@ -76,7 +76,7 @@ against Neon, first worker boot). Frontend static build takes ~90 seconds.
 
 ## Step 3 — fill the secret env vars
 
-Go to the backend service (`syngene-hub-api`) → **Environment** tab → paste
+Go to the backend service (`uniqus-hub-api`) → **Environment** tab → paste
 values for every variable marked `sync: false` in `render.yaml`:
 
 | Variable | What to paste |
@@ -100,8 +100,8 @@ Save; Render redeploys automatically.
 
 ## Step 4 — verify
 
-- Backend health: `https://syngene-hub-api.onrender.com/api/health` → `{"status":"ok"}`
-- Frontend: `https://syngene-hub.onrender.com` → login screen.
+- Backend health: `https://uniqus-hub-api.onrender.com/api/health` → `{"status":"ok"}`
+- Frontend: `https://uniqus-hub.onrender.com` → login screen.
 - Sign in with the `BOOTSTRAP_SUPER_ADMIN_EMAIL` + `BOOTSTRAP_SUPER_ADMIN_PASSWORD` you pasted.
 
 If the frontend loads but login fails with a network error, check the backend
@@ -126,11 +126,11 @@ failed or the Azure env vars are missing.
    migrate the store to S3.
 
 3. **Rename pitfall.** `render.yaml` hard-codes the backend URL
-   (`syngene-hub-api.onrender.com`) inside the frontend's `/api/*` rewrite
+   (`uniqus-hub-api.onrender.com`) inside the frontend's `/api/*` rewrite
    destination. If you rename the backend service, update the `destination:`
    line in `render.yaml` and re-apply the Blueprint.
 
-4. **No CDN in front of the backend.** `syngene-hub-api` serves all API calls
+4. **No CDN in front of the backend.** `uniqus-hub-api` serves all API calls
    directly. Fine at demo traffic. At scale, put Cloudflare in front.
 
 5. **No refresh tokens, no session revocation.** JWT lifetime is 24 h
@@ -168,7 +168,7 @@ After adding a custom domain, update the backend's `CORS_ORIGINS` env var
 to include both the Render domain AND the custom domain, comma-separated:
 
 ```
-https://syngene-hub.onrender.com,https://app.yourco.com
+https://uniqus-hub.onrender.com,https://app.yourco.com
 ```
 
 ---
