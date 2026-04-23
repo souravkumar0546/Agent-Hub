@@ -5,18 +5,18 @@ import { createContext, useCallback, useContext, useEffect, useState } from 'rea
  * `tokens.css` defines both palettes keyed off the attribute, so the swap is
  * pure CSS. The user's choice persists in localStorage across reloads.
  *
- * Default = 'dark'. We intentionally don't auto-follow `prefers-color-scheme`
- * — the dark palette is the product's "brand" look, and we only want to
- * switch when the user asks for it in Settings.
+ * Default = 'light'. We intentionally don't auto-follow `prefers-color-scheme`
+ * — light is the Uniqus brand look, and we only switch when the user asks
+ * for dark in Settings.
  */
 
 const STORAGE_KEY = 'sah.theme';
 const ThemeContext = createContext(null);
 
 function readStoredTheme() {
-  if (typeof localStorage === 'undefined') return 'dark';
+  if (typeof localStorage === 'undefined') return 'light';
   const v = localStorage.getItem(STORAGE_KEY);
-  return v === 'light' || v === 'dark' ? v : 'dark';
+  return v === 'light' || v === 'dark' ? v : 'light';
 }
 
 function applyTheme(theme) {

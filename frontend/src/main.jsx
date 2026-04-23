@@ -10,14 +10,15 @@ import './theme/tokens.css';
 import './theme/app.css';
 
 // Apply the stored theme synchronously (before React mounts) so there's no
-// dark-mode flash for users who've picked light. Matches the logic inside
-// ThemeProvider so the two sources can't disagree.
+// flash of the wrong palette. Default is light — users who explicitly chose
+// dark in Settings have that recorded in localStorage and get dark; everyone
+// else lands on light. Mirrors ThemeProvider so the two sources can't disagree.
 (function applyStoredTheme() {
   try {
     const t = localStorage.getItem('sah.theme');
-    document.documentElement.setAttribute('data-theme', t === 'light' ? 'light' : 'dark');
+    document.documentElement.setAttribute('data-theme', t === 'dark' ? 'dark' : 'light');
   } catch (_) {
-    document.documentElement.setAttribute('data-theme', 'dark');
+    document.documentElement.setAttribute('data-theme', 'light');
   }
 })();
 
