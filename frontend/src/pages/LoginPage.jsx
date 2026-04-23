@@ -132,13 +132,14 @@ export default function LoginPage() {
     <div className="login-split">
       {/* ─── Left: navy hero ────────────────────────────────────────── */}
       <aside className="login-brand">
-        {/* Tenant logo (once branding is resolved) or a placeholder dot */}
+        {/* Tenant logo once branding is resolved; otherwise our own (Uniqus)
+            logo so the plate is never empty. /uniqus-logo.png is served
+            out of frontend/public — Vite copies it to the build root. */}
         <div className="login-brand-logomark" aria-hidden="true">
-          {branding?.logo_url ? (
-            <img src={branding.logo_url} alt={`${branding.name || 'Organisation'} logo`} />
-          ) : (
-            <div className="login-brand-logomark-dot" />
-          )}
+          <img
+            src={branding?.logo_url || '/uniqus-logo.png'}
+            alt={`${branding?.name || 'Uniqus'} logo`}
+          />
         </div>
 
         <div className="login-brand-copy">
