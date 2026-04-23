@@ -14,13 +14,12 @@
 #
 # Subsequent deploys are automatic on `git push` to the linked branch.
 
-databases:
-  - name: syngene-hub-db
-    plan: starter
-    databaseName: syngene_hub
-    user: syngene_hub
-    # Starter plan includes daily backups with 7-day retention. Bump to
-    # `standard` for point-in-time recovery when you have real customers.
+# NOTE: no `databases:` section here by design. We use an EXTERNAL Postgres
+# (Neon free tier — see DEPLOY.md step 2b) so this Blueprint can apply on
+# Render's free tier without a card on file. Swap to Render's managed
+# Postgres when you're ready to put a card down (add a `databases:` block
+# with plan `starter`, and change the `DATABASE_URL` envVar below to
+# `fromDatabase`).
 
 services:
   # ───────────────────────────────────────────────────────────────────
@@ -29,7 +28,9 @@ services:
   - type: web
     name: syngene-hub-api
     runtime: python
-    plan: starter
+    # `free` tier: 512 MB RAM, cold-starts after 15 min idle. Fine for a
+    # demo / pilot. Bump to `starter` before any real traffic.
+    plan: free
     rootDir: backend
 
     buildCommand: pip install -r requirements.txt
@@ -47,11 +48,13 @@ services:
     healthCheckPath: /api/health
 
     envVars:
-      # ── Injected from the linked database ─────────────────────────
+      # ── External Postgres (Neon) connection string ───────────────
+      # Paste the pooled `postgresql://…` URL from Neon's Connection
+      # Details panel. Use the pooled form (ends in `-pooler.`) — the
+      # free Neon tier shares connections, so the pooler is required.
+      # `sync: false` keeps the secret out of the repo.
       - key: DATABASE_URL
-        fromDatabase:
-          name: syngene-hub-db
-          property: connectionString
+        sync: false
 
       # ── Secrets Render generates once (strong random) ────────────
       - key: JWT_SECRET

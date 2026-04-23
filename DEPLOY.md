@@ -1,15 +1,21 @@
 # Deploying Syngene AI Hub to Render
 
-Everything — managed Postgres, FastAPI backend, Vite static frontend — comes
-up from a single `render.yaml` Blueprint. No Dockerfiles, no separate services
-to stitch together.
+Everything — FastAPI backend, Vite static frontend — comes up from a single
+`render.yaml` Blueprint. Postgres is **external** (Neon free tier) so the
+whole stack runs without a credit card on file.
 
-**Cost, starter tier:** ~$14/month (Postgres $7 + backend web service $7).
-The static frontend is free on Render. Free-tier backend exists but cold-starts
-after 15 min of idle; the $7 starter stays always-on.
+**Cost as configured:** $0/month.
+- Backend: Render free web service (cold-starts after 15 min idle, ~30-60s
+  first request to warm up)
+- Frontend: Render static site (free forever, always-on)
+- Postgres: Neon free tier (0.5 GB storage, always-on, no cold starts)
 
-**Time to first URL:** ~10 minutes once you have a GitHub repo pointing at this
-code.
+**When to upgrade:** the moment you have paying users or need consistent
+latency. Swap backend to Render `starter` ($7/mo, always-on) and either stay on
+Neon or move to Render's managed Postgres (also $7/mo) — both paths are one
+`render.yaml` edit, see the comment at the top of the file.
+
+**Time to first URL:** ~15 minutes once you have a GitHub repo.
 
 ---
 
@@ -33,29 +39,49 @@ the first push; if any of those show up as staged, delete them and re-stage.
 
 ---
 
-## Step 2 — connect Render
+## Step 2a — spin up Postgres on Neon
+
+1. Go to https://neon.tech, sign in (GitHub works), **Create project**.
+2. Project name: `syngene-hub`. Region: pick one close to where your
+   Render services will live (Render's free tier is typically Oregon or
+   Frankfurt). Neon regions: US East, US West, or Europe Frankfurt.
+   If unsure, **US East**.
+3. Postgres version: 16 (matches what we develop against).
+4. Once the project is created, Neon opens a **Connection Details** panel.
+   Toggle **Pooled connection** and copy the full `postgresql://...`
+   string. Example shape:
+   ```
+   postgresql://user:pw@ep-xxx-pooler.us-east-2.aws.neon.tech/neondb?sslmode=require
+   ```
+   Must include `-pooler.` in the host and `?sslmode=require` on the end.
+5. Keep this string in your clipboard — you'll paste it in step 3.
+
+Why pooled: Neon's free tier has a low direct-connection limit; the
+pooler brokers connections. FastAPI's connection pool on top of the
+Neon pooler is the supported pattern.
+
+## Step 2b — connect Render
 
 1. Dashboard → **New** → **Blueprint**.
 2. Connect the GitHub repo.
 3. Render reads `render.yaml` from the repo root and shows a preview:
-   - **Postgres** `syngene-hub-db`
-   - **Web service** `syngene-hub-api` (backend)
-   - **Static site** `syngene-hub` (frontend)
-4. Click **Apply**.
+   - **Web service** `syngene-hub-api` (backend, free plan)
+   - **Static site** `syngene-hub` (frontend, free)
+4. Click **Apply**. No card required — every service is free.
 
-Provisioning the database takes ~2 minutes. The backend's first build takes
-~3 minutes (pip install, alembic migrate, first worker boot). Frontend
-static build takes ~90 seconds.
+Backend's first build takes ~3 minutes (pip install, alembic migrate
+against Neon, first worker boot). Frontend static build takes ~90 seconds.
 
 ---
 
 ## Step 3 — fill the secret env vars
 
 Go to the backend service (`syngene-hub-api`) → **Environment** tab → paste
-values for every row marked `(set by user)`:
+values for every variable marked `sync: false` in `render.yaml`:
 
 | Variable | What to paste |
 |---|---|
+| `DATABASE_URL` | The pooled Neon connection string from step 2a (ends with `?sslmode=require`, host contains `-pooler.`) |
 | `BOOTSTRAP_SUPER_ADMIN_EMAIL` | your admin email, e.g. `admin@yourco.com` |
 | `BOOTSTRAP_SUPER_ADMIN_PASSWORD` | a strong password (≥ 12 chars). You'll log in with this on first boot. |
 | `BOOTSTRAP_SUPER_ADMIN_NAME` | display name for the super admin, e.g. `Platform Admin` |
@@ -69,9 +95,6 @@ Save; Render redeploys automatically.
 `JWT_SECRET` and `INTEGRATIONS_SECRET_KEY` don't appear here because
 `render.yaml` has Render generate strong random values on first deploy
 (`generateValue: true`). Don't override them.
-
-`DATABASE_URL` is also invisible in the list because it's wired from the
-Postgres service automatically.
 
 ---
 
