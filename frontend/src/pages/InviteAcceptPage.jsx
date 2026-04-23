@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
-import { setOrgId, setToken } from '../lib/api.js';
+import { publicApi, setOrgId, setToken } from '../lib/api.js';
 import { useAuth } from '../lib/auth.jsx';
 
 /** Public page (no auth) that invitees land on from the link in their email. */
@@ -18,14 +18,10 @@ export default function InviteAcceptPage() {
   const [accepted, setAccepted] = useState(false);
 
   // Load invite details. This is a public endpoint (no auth header needed).
+  // Use publicApi so VITE_API_BASE is honored in production builds.
   useEffect(() => {
     setLoading(true);
-    fetch(`/api/invites/${encodeURIComponent(token)}`)
-      .then(async (r) => {
-        const data = await r.json();
-        if (!r.ok) throw new Error(data.detail || `HTTP ${r.status}`);
-        return data;
-      })
+    publicApi(`/invites/${encodeURIComponent(token)}`)
       .then(setInvite)
       .catch((e) => setErr(e.message))
       .finally(() => setLoading(false));
@@ -44,13 +40,10 @@ export default function InviteAcceptPage() {
     setBusy(true);
     setErr('');
     try {
-      const res = await fetch(`/api/invites/${encodeURIComponent(token)}/accept`, {
+      const data = await publicApi(`/invites/${encodeURIComponent(token)}/accept`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ password }),
+        body: { password },
       });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.detail || `HTTP ${res.status}`);
 
       // Log the new user straight in.
       setToken(data.access_token);

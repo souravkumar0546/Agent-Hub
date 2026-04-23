@@ -4,7 +4,12 @@ import { getOrgId, getToken } from "../lib/api.js";
 // DMAhub routes are mounted at /api/dma/* on the hub backend, behind the
 // standard bearer-token + X-Org-Id auth. The interceptor below reuses the
 // same localStorage keys the rest of the app already writes.
-const API = axios.create({ baseURL: "/api/dma" });
+//
+// In production we prefix with VITE_API_BASE (the backend origin) so fetches
+// bypass the static-site rewrite and go direct to the API. In dev it's empty
+// and Vite's /api proxy handles it.
+const API_BASE = import.meta.env.VITE_API_BASE || "";
+const API = axios.create({ baseURL: `${API_BASE}/api/dma` });
 
 API.interceptors.request.use((config) => {
   const token = getToken();
