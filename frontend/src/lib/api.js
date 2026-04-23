@@ -3,6 +3,13 @@ import { humanizeError } from './errors.js';
 const TOKEN_KEY = 'sah.token';
 const ORG_KEY = 'sah.orgId';
 
+// API base URL. In dev this is empty and Vite's proxy handles `/api/*`.
+// In production, set VITE_API_BASE to the backend origin (e.g.
+// "https://uniqus-hub-api.onrender.com") so the browser calls the backend
+// directly instead of relying on a static-site rewrite. Backend CORS is
+// already configured to allow the frontend origin.
+const API_BASE = import.meta.env.VITE_API_BASE || '';
+
 export function getToken() {
   return localStorage.getItem(TOKEN_KEY);
 }
@@ -55,7 +62,7 @@ async function raiseForStatus(res, data) {
 export async function api(path, { method = 'GET', body, headers = {} } = {}) {
   const h = authHeaders({ 'Content-Type': 'application/json', ...headers });
 
-  const res = await fetch(`/api${path}`, {
+  const res = await fetch(`${API_BASE}/api${path}`, {
     method,
     headers: h,
     body: body ? JSON.stringify(body) : undefined,
@@ -78,7 +85,7 @@ export async function api(path, { method = 'GET', body, headers = {} } = {}) {
  * anything that requires auth should use `api()`.
  */
 export async function publicApi(path, { method = 'GET', body, headers = {} } = {}) {
-  const res = await fetch(`/api${path}`, {
+  const res = await fetch(`${API_BASE}/api${path}`, {
     method,
     headers: { 'Content-Type': 'application/json', ...headers },
     body: body ? JSON.stringify(body) : undefined,
@@ -93,7 +100,7 @@ export async function publicApi(path, { method = 'GET', body, headers = {} } = {
 /** Multipart POST — caller passes a FormData. */
 export async function apiForm(path, formData) {
   const h = authHeaders();
-  const res = await fetch(`/api${path}`, { method: 'POST', headers: h, body: formData });
+  const res = await fetch(`${API_BASE}/api${path}`, { method: 'POST', headers: h, body: formData });
   const ct = res.headers.get('content-type') || '';
 
   // Read the body as text first so we can handle parse errors gracefully.
@@ -120,13 +127,13 @@ export async function apiForm(path, formData) {
 export function downloadHref(path) {
   // Vite proxies /api/* to the backend — include auth via a one-shot fetch that
   // opens the resulting blob in a new tab.
-  return `/api${path}`;
+  return `${API_BASE}/api${path}`;
 }
 
 /** Fetch a binary file with auth headers, open it as a download in the browser. */
 export async function downloadFile(path, fallbackName = 'download') {
   const h = authHeaders();
-  const res = await fetch(`/api${path}`, { headers: h });
+  const res = await fetch(`${API_BASE}/api${path}`, { headers: h });
   if (!res.ok) {
     const txt = await res.text();
     throw new Error(txt || `HTTP ${res.status}`);
