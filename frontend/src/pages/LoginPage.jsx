@@ -92,13 +92,26 @@ export default function LoginPage() {
     setErr('');
     setBusy(true);
     try {
-      // Public endpoint — returns { name, logo_url } or { null, null }.
-      // We don't fail the step if the org can't be resolved; the user
-      // might still have valid creds we haven't linked to branding yet.
+      // Public endpoint — returns { name, logo_url, user_display_name }
+      // when the email belongs to an active membership, or all-null otherwise
+      // (unknown email, disabled user, inactive org).
       const b = await publicApi(
         `/public/orgs/for-email?email=${encodeURIComponent(email.trim().toLowerCase())}`,
       );
-      setBranding(b || null);
+      // There's no public sign-up: an account only exists once an admin has
+      // invited the user. If the lookup returns no org, stop the user here
+      // with a guidance message instead of letting them hit the password
+      // step and bounce off a generic 401. Note: this exposes a mild
+      // enumeration oracle (email → has-account-somewhere). Acceptable
+      // tradeoff for the UX win; if enumeration protection becomes a harder
+      // requirement, revert to always advancing and let /auth/login 401.
+      if (!b || !b.name) {
+        setErr(
+          "We couldn't find an account for that email. Please ask your organisation's admin to get in touch with us so we can set up access.",
+        );
+        return;
+      }
+      setBranding(b);
       setStep('password');
     } catch (e2) {
       // Network / server error — surface it but let the user retry.
