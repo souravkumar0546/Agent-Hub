@@ -29,6 +29,11 @@ export default function AgentHubPage() {
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState('');
   const [activeDept, setActiveDept] = useState('');
+  // null = loading / unknown. Members see their own count; admins see org-wide
+  // once they're viewing a specific org (admins are redirected off this page
+  // in most cases anyway). Refreshed on mount only — refetching on every nav
+  // is overkill for a counter that barely moves.
+  const [runsToday, setRunsToday] = useState(null);
 
   useEffect(() => {
     setLoading(true);
@@ -37,6 +42,14 @@ export default function AgentHubPage() {
       .catch((e) => setErr(e.message))
       .finally(() => setLoading(false));
   }, [scope]);
+
+  useEffect(() => {
+    // Personal dashboard gives us today's run count scoped to this user + org.
+    // Fail silently — the stat card degrades to '—' if the call errors.
+    api('/me/dashboard')
+      .then((d) => setRunsToday(d?.totals?.runs_today ?? 0))
+      .catch(() => setRunsToday(null));
+  }, []);
 
   const deptOptions = useMemo(() => {
     // Collect unique departments across all visible agents. We require a slug
@@ -84,7 +97,7 @@ export default function AgentHubPage() {
           </div>
           <div className="stat">
             <div className="stat-label">Runs today</div>
-            <div className="stat-value">—</div>
+            <div className="stat-value">{runsToday == null ? '—' : runsToday}</div>
           </div>
         </div>
       </section>

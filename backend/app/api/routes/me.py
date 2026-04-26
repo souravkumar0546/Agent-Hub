@@ -137,6 +137,7 @@ def my_dashboard(
 ):
     """Metrics scoped to the current user in the current org."""
     now = datetime.now(timezone.utc)
+    today_start = now.replace(hour=0, minute=0, second=0, microsecond=0)
     week_ago = now - timedelta(days=7)
     month_ago = now - timedelta(days=30)
 
@@ -145,6 +146,7 @@ def my_dashboard(
         AgentRun.user_id == ctx.user.id,
     )
     total_runs = my_runs_q.count()
+    runs_today = my_runs_q.filter(AgentRun.created_at >= today_start).count()
     runs_this_week = my_runs_q.filter(AgentRun.created_at >= week_ago).count()
     runs_this_month = my_runs_q.filter(AgentRun.created_at >= month_ago).count()
 
@@ -186,6 +188,7 @@ def my_dashboard(
         "totals": {
             "picked_agents": len(picked),
             "total_runs": total_runs,
+            "runs_today": runs_today,
             "runs_this_week": runs_this_week,
             "runs_this_month": runs_this_month,
         },
