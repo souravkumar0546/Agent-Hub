@@ -88,7 +88,7 @@ async def lifespan(app: FastAPI):
     yield
 
 
-app = FastAPI(title="Uniqus Hub API", version="0.1.0", lifespan=lifespan)
+app = FastAPI(title="Uniqus Labs API", version="0.1.0", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,

@@ -47,7 +47,7 @@ def _load_knowledge_base() -> str:
     """
     if not _GUIDE_DIR.is_dir():
         return (
-            "Uniqus Hub is the agent intelligence layer for the enterprise — "
+            "Uniqus Labs is the agent intelligence layer for the enterprise — "
             "Devio (RCA Investigation), Curator (Data Classifier), Forge "
             "(Master Builder), Echo (Data Enrichment), Twin (Group Duplicates), "
             "and Sonar (Lookup). Roles are SUPER_ADMIN, ORG_ADMIN, MEMBER."
@@ -68,7 +68,7 @@ def _load_knowledge_base() -> str:
 
 _KNOWLEDGE_BASE = _load_knowledge_base()
 
-_BASE_SYSTEM_PROMPT = f"""You are the Uniqus Hub platform assistant — an in-app chatbot that helps users figure out how to use the product.
+_BASE_SYSTEM_PROMPT = f"""You are the Uniqus Labs platform assistant — an in-app chatbot that helps users figure out how to use the product.
 
 Answer ONLY based on the knowledge below. If a question is outside this scope (e.g. medical advice, personal help, anything not about this platform), politely say it's outside the assistant's scope and point the user at the User Guide or a human admin.
 

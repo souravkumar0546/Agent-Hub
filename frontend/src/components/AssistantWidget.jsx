@@ -8,7 +8,7 @@ import UniqusMark from './UniqusMark.jsx';
 const WELCOME = {
   role: 'assistant',
   content:
-    "Hi! Ask me anything about Uniqus Hub. I can help with agents, roles, integrations, and how to get things done.",
+    "Hi! Ask me anything about Uniqus Labs. I can help with agents, roles, integrations, and how to get things done.",
 };
 
 /** First-message suggestion chips, scoped to what the user can actually do.
@@ -185,8 +185,8 @@ export default function AssistantWidget() {
           type="button"
           className="assistant-fab"
           onClick={() => setOpen(true)}
-          aria-label="Open Ask Uniqus Hub"
-          title="Ask Uniqus Hub"
+          aria-label="Open Ask Uniqus Labs"
+          title="Ask Uniqus Labs"
         >
           <span className="assistant-fab-mark" aria-hidden="true">
             <UniqusMark size={26} />
@@ -204,7 +204,7 @@ export default function AssistantWidget() {
             <UniqusMark size={20} />
           </div>
           <div className="assistant-header-text">
-            <div className="assistant-title">Ask Uniqus Hub</div>
+            <div className="assistant-title">Ask Uniqus Labs</div>
             <div className="assistant-sub">
               <span className="assistant-status-dot" aria-hidden="true" />
               Help bot · reads from the user guide
@@ -305,7 +305,7 @@ export default function AssistantWidget() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={onKeyDown}
-              placeholder="Ask anything about Uniqus Hub…"
+              placeholder="Ask anything about Uniqus Labs…"
               rows={1}
               disabled={busy}
             />

@@ -13,7 +13,7 @@ export default function Footer() {
     <footer className="site-footer">
       <div className="site-footer-row">
         <div className="site-footer-brand">
-          <span className="site-footer-mark">Uniqus Hub</span>
+          <span className="site-footer-mark">Uniqus Labs</span>
           <span className="site-footer-divider" aria-hidden="true">·</span>
           <span className="site-footer-tag">AI agents for enterprise teams.</span>
         </div>

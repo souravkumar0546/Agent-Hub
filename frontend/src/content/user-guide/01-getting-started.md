@@ -2,9 +2,9 @@
 
 ## Logging in
 
-Open Uniqus Hub at your tenant URL, enter your corporate email, and sign in with the password your organisation admin gave you. Sessions last 24 hours.
+Open Uniqus Labs at your tenant URL, enter your corporate email, and sign in with the password your organisation admin gave you. Sessions last 24 hours.
 
-If login fails, double-check that you're using the correct tenant URL — Uniqus Hub is multi-tenant, and an email that works on one tenant will not work on another. If you don't have an account yet, ask your org admin to invite you (you can't self-register).
+If login fails, double-check that you're using the correct tenant URL — Uniqus Labs is multi-tenant, and an email that works on one tenant will not work on another. If you don't have an account yet, ask your org admin to invite you (you can't self-register).
 
 ## What you see after login
 

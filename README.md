@@ -1,4 +1,4 @@
-# Uniqus Hub
+# Uniqus Labs
 
 A workspace where enterprise teams run AI agents on their data. Sixteen agents cover HR, Commercial, R&D, Procurement, Compliance, and Data Management. Role-based access, multi-tenant.
 

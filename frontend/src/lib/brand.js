@@ -1,20 +1,20 @@
 import { useEffect } from 'react';
 import { useAuth } from './auth.jsx';
 
-const PRODUCT_NAME = 'Uniqus Hub';
+const PRODUCT_NAME = 'Uniqus Labs';
 const PRODUCT_TAGLINE = 'AGENT HUB';
 const FALLBACK_NAME = PRODUCT_NAME;
 
 /**
  * Returns brand strings for the currently active org. The PRODUCT name is a
- * constant ("Uniqus Hub") — this is a Uniqus product served to customers, not
+ * constant ("Uniqus Labs") — this is a Uniqus product served to customers, not
  * a white-label. The TENANT identity (org name + logo) is what changes per
  * customer and shows up in the sidebar logo plate, breadcrumb root, etc.
  *
  * - `orgName`     → "Uniqus Consultech" / null if logged out
  * - `displayName` → tenant name when known, else product name
  * - `brandLine`   → "Uniqus Consultech Platform" / "Platform" — breadcrumb root
- * - `productName` → always "Uniqus Hub" — used for <title>, footer, etc.
+ * - `productName` → always "Uniqus Labs" — used for <title>, footer, etc.
  *
  * Super-admins on the Platform page (no current org) get the product name as
  * the display name so the UI doesn't lie about which tenant is in play.

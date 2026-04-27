@@ -15,8 +15,9 @@
   overflow: hidden;
   padding: 40px 48px;
   color: #ffffff;
-  /* Same indigo→magenta gradient as the Uniqus logomark. */
-  background: linear-gradient(135deg, var(--accent-grad-from) 0%, var(--accent-grad-to) 100%);
+  /* Deep violet — same color as the in-app sidebar so login → app feels
+     like one continuous surface. */
+  background: #2e1065;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -32,21 +33,21 @@
   background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 70%);
   pointer-events: none;
 }
-/* Landscape logo plate — matches the sidebar's .sidebar-brand-logo shape
-   but scaled up for the login hero. Width is a fixed 180 px so a
-   wordmark ("uniqus") breathes horizontally without being stretched;
-   height 60 px gives any square mark enough headroom too. */
+/* Logo plate on the login hero — bigger than the previous 180×60 so the
+   Uniqus wordmark (gradient U + white letters from /uniqus-wordmark.svg)
+   reads at the same scale as the ai-universe.uniqus.com reference. No
+   filter — the SVG already has the right colours for a dark hero. */
 .login-brand-logomark {
   position: relative;
-  width: 180px;
-  height: 60px;
-  background: rgba(255, 255, 255, 0.96);
-  border-radius: 12px;
+  width: 100px;
+  height: 36px;
+  background: transparent;
+  border-radius: 0;
   display: grid;
   place-items: center;
-  overflow: hidden;
-  padding: 6px 14px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+  overflow: visible;
+  padding: 0;
+  box-shadow: none;
 }
 .login-brand-logomark img {
   max-width: 100%;
@@ -339,12 +340,26 @@
 }
 
 .sidebar {
-  background: var(--bg-elev);
-  border-right: 1px solid var(--border);
+  /* Deep violet — matches the login left bar so login → app feels like
+     one continuous surface. Locally override the ink and surface tokens
+     so every existing nav rule (active border, hover wash, section
+     labels, user chip, logout button) cascades correctly on the dark
+     surface — no per-rule overrides needed. */
+  background: #2e1065;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
   display: flex;
   flex-direction: column;
   padding: 20px 0;
   overflow-y: auto;
+
+  --ink: #ffffff;
+  --ink-dim: rgba(255, 255, 255, 0.82);
+  --ink-muted: rgba(255, 255, 255, 0.60);
+  --bg-card: rgba(255, 255, 255, 0.10);
+  --bg-card-hover: rgba(255, 255, 255, 0.16);
+  --border: rgba(255, 255, 255, 0.14);
+  --border-strong: rgba(255, 255, 255, 0.22);
+  --accent: #ffffff;
 }
 
 /* Sidebar brand block — landscape logo card with the "AGENT HUB" tagline
@@ -362,31 +377,29 @@
 }
 .sidebar-brand-mark {
   width: 100%;
-  max-width: 160px;
-  /* Matches .sidebar-brand-logo height so there's no layout shift when
-     the tenant logo loads vs the fallback gradient block renders. */
-  height: 68px;
-  border-radius: 10px;
+  max-width: 100px;
+  /* Matches .sidebar-brand-logo height — keep them identical so there's
+     no layout shift when the tenant logo loads vs the fallback block. */
+  height: 36px;
+  border-radius: 8px;
   background: linear-gradient(135deg, var(--accent-deep) 0%, var(--accent) 100%);
   border: 1px solid var(--border);
 }
 .sidebar-brand-logo {
   width: 100%;
-  max-width: 160px;
-  /* Plate is 160x68 (was 52) with extra vertical padding so the 354x127
-     uniqus wordmark PNG renders with its full descender height inside
-     the rounded container. overflow:hidden + object-fit:contain were
-     previously clipping a pixel off the baseline. */
-  height: 68px;
-  border-radius: 10px;
-  background: #ffffff;
-  border: 1px solid var(--border);
-  overflow: hidden;
+  /* Same 100×36 footprint as the login left-bar logo so the brand
+     reads at consistent size everywhere. */
+  max-width: 100px;
+  height: 36px;
+  border-radius: 0;
+  background: transparent;
+  border: 0;
+  overflow: visible;
   display: grid;
   place-items: center;
-  padding: 10px 14px;
+  padding: 0;
   flex-shrink: 0;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  box-shadow: none;
 }
 .sidebar-brand-logo img {
   max-width: 100%;
@@ -2643,7 +2656,7 @@ textarea.ef.ef--paper {
   border-left-color: var(--accent);
 }
 
-/* ── Ask Uniqus Hub assistant widget ──────────────────────────────────
+/* ── Ask Uniqus Labs assistant widget ──────────────────────────────────
    Collapsed: pill FAB with white plate holding the Uniqus U-mark and an
    "Ask Uniqus" label. Open: rounded panel with gradient header strip,
    minimize / maximize / clear toolbar, plain assistant messages (no
@@ -3079,7 +3092,11 @@ textarea.ef.ef--paper {
   font-family: var(--sans);
   -webkit-font-smoothing: antialiased;
 }
-.lp a { color: inherit; text-decoration: none; }
+/* `:not(.lp-btn)` is critical — without it, this rule's specificity (0,1,1)
+   beats `.lp-btn-primary` (0,1,0) and the white button text falls back to
+   the page's dark `color: inherit`. Excluding buttons lets each .lp-btn-*
+   variant control its own colour. */
+.lp a:not(.lp-btn) { color: inherit; text-decoration: none; }
 
 /* Top nav — fixed at the top of the page, white surface, slim. */
 .lp-nav {
@@ -3197,7 +3214,8 @@ textarea.ef.ef--paper {
 /* ── Hero — full-bleed, gradient wash on the right, white left ────── */
 .lp-hero {
   position: relative;
-  padding: 80px 40px 100px;
+  /* Bottom padding tightened to 38px (was 50, originally 100). */
+  padding: 80px 40px 38px;
   overflow: hidden;
   background: #ffffff;
 }
@@ -3286,7 +3304,8 @@ textarea.ef.ef--paper {
 
 /* ── Sections (general) ─────────────────────────────────────────── */
 .lp-section {
-  padding: 100px 40px;
+  /* Vertical padding tightened to 38px (was 50, originally 100). */
+  padding: 38px 40px;
   background: #ffffff;
 }
 .lp-section-alt { background: #F7F9FD; }
@@ -3335,6 +3354,12 @@ textarea.ef.ef--paper {
   border-radius: 16px;
   padding: 32px 28px;
   transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
+  /* Flex-column so the tagline can grow and push the badge to the bottom.
+     Every card's badge ends up on the same baseline regardless of how
+     long the description above it is. */
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 .lp-agent-card:hover {
   transform: translateY(-2px);
@@ -3372,8 +3397,15 @@ textarea.ef.ef--paper {
   line-height: 1.55;
   color: #4A4A52;
   margin-bottom: 22px;
+  /* Take up all leftover vertical space inside the card so the badge
+     below it is anchored to the bottom — keeps the badge baseline
+     consistent across cards with different tagline lengths. */
+  flex: 1;
 }
 .lp-agent-badge {
+  /* `align-self: flex-start` keeps the pill's width hugging its text
+     instead of stretching to the card's full width. */
+  align-self: flex-start;
   display: inline-block;
   font-size: 11.5px;
   font-weight: 600;

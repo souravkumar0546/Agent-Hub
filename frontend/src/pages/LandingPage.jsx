@@ -82,15 +82,15 @@ const STATS = [
 export default function LandingPage() {
   const { isAuthenticated } = useAuth();
   const ctaTo = isAuthenticated ? '/' : '/login';
-  const ctaLabel = isAuthenticated ? 'Open Uniqus Hub' : 'Sign in';
+  const ctaLabel = isAuthenticated ? 'Open Uniqus Labs' : 'Sign in';
 
   return (
     <div className="lp">
       {/* ── Top nav ─────────────────────────────────────────────────── */}
       <header className="lp-nav">
-        <a href="#top" className="lp-nav-brand" aria-label="Uniqus Hub home">
+        <a href="#top" className="lp-nav-brand" aria-label="Uniqus Labs home">
           <span className="lp-nav-mark"><UniqusMark size={24} /></span>
-          <span className="lp-nav-name">Uniqus<span className="lp-nav-name-light"> Hub</span></span>
+          <span className="lp-nav-name">Uniqus<span className="lp-nav-name-light"> Labs</span></span>
         </a>
         <nav className="lp-nav-links" aria-label="Primary">
           <a href="#agents">Agents</a>
@@ -109,16 +109,16 @@ export default function LandingPage() {
       <section id="top" className="lp-hero">
         <div className="lp-hero-bg" aria-hidden="true" />
         <div className="lp-hero-inner">
-          <div className="lp-hero-eyebrow">UNIQUS HUB</div>
+          <div className="lp-hero-eyebrow">UNIQUS LABS</div>
           <h1 className="lp-hero-title">
             AI agents that<br />
             <em>do the work.</em>
           </h1>
           <p className="lp-hero-sub">
-            Run investigations, classify your data, build clean master records,
-            find duplicates. Six agents are live today, ten more are on the way.
-            Each one works from your files and shows you exactly where every
-            answer came from.
+            Drive end-to-end data intelligence using smart AI agents. Each
+            operates directly on your data, delivering fully traceable,
+            source-backed insights to ensure transparency, auditability,
+            and confidence in every outcome.
           </p>
           <div className="lp-hero-cta">
             <Link to={ctaTo} className="lp-btn lp-btn-primary lp-btn-lg">
@@ -226,7 +226,7 @@ export default function LandingPage() {
           <div className="lp-footer-brand">
             <span className="lp-footer-mark"><UniqusMark size={20} /></span>
             <div>
-              <div className="lp-footer-name">Uniqus Hub</div>
+              <div className="lp-footer-name">Uniqus Labs</div>
               <div className="lp-footer-tag">AI agents for enterprise teams.</div>
             </div>
           </div>
