@@ -15,7 +15,7 @@ export default function Footer() {
         <div className="site-footer-brand">
           <span className="site-footer-mark">Uniqus Hub</span>
           <span className="site-footer-divider" aria-hidden="true">·</span>
-          <span className="site-footer-tag">Agent intelligence for the enterprise.</span>
+          <span className="site-footer-tag">AI agents for enterprise teams.</span>
         </div>
         <div className="site-footer-meta">
           © {year} Uniqus Consultech

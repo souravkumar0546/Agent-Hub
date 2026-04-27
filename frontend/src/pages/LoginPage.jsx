@@ -185,7 +185,7 @@ export default function LoginPage() {
               ? `Continue to your ${branding.name} workspace.`
               : step === 'password'
                 ? 'Enter your password to continue.'
-                : 'Agent intelligence for the enterprise. Sign in with your corporate email to reach your tenant.'}
+                : 'AI agents for enterprise teams. Sign in with your work email.'}
           </p>
         </div>
 
@@ -278,7 +278,7 @@ export default function LoginPage() {
           )}
 
           <div className="login-form-footer">
-            <span>© Uniqus Hub · A Uniqus Consultech product</span>
+            <span>© Uniqus Hub · A Uniqus Consultech product.</span>
           </div>
         </div>
       </main>

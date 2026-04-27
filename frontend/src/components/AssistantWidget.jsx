@@ -8,7 +8,7 @@ import UniqusMark from './UniqusMark.jsx';
 const WELCOME = {
   role: 'assistant',
   content:
-    "Hi — I'm Uniqus Hub's in-product guide. Ask about agents, roles, integrations, or how to get something done.",
+    "Hi! Ask me anything about Uniqus Hub. I can help with agents, roles, integrations, and how to get things done.",
 };
 
 /** First-message suggestion chips, scoped to what the user can actually do.
@@ -207,7 +207,7 @@ export default function AssistantWidget() {
             <div className="assistant-title">Ask Uniqus Hub</div>
             <div className="assistant-sub">
               <span className="assistant-status-dot" aria-hidden="true" />
-              In-product guide · sourced from the user manual
+              Help bot · reads from the user guide
             </div>
           </div>
           <div className="assistant-header-actions">

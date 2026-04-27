@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useAuth } from './auth.jsx';
 
 const PRODUCT_NAME = 'Uniqus Hub';
-const PRODUCT_TAGLINE = 'ENTERPRISE AGENTS';
+const PRODUCT_TAGLINE = 'AGENT HUB';
 const FALLBACK_NAME = PRODUCT_NAME;
 
 /**

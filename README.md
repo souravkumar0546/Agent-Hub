@@ -1,6 +1,6 @@
 # Uniqus Hub
 
-Agent intelligence for the enterprise — sixteen purpose-built AI agents (spanning HR, Commercial, R&D, Procurement, Compliance, Data Management) behind a shared multi-tenant workspace with role-based access control.
+A workspace where enterprise teams run AI agents on their data. Sixteen agents cover HR, Commercial, R&D, Procurement, Compliance, and Data Management. Role-based access, multi-tenant.
 
 Built by integrating two internal tools — **DMAhub** (data transformation primitives) and **Devio** (investigation / deviation engine) — under a single product.
 

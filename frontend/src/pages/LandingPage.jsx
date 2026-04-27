@@ -14,38 +14,38 @@ const FEATURED_AGENTS = [
   {
     name: 'Devio',
     long: 'RCA / Investigation',
-    tagline: 'Compliance-grade RCA reports in under 60 minutes — every fact cited to its SOP, exportable to DOCX.',
-    badge: '~60 min · cited',
+    tagline: 'Drafts a full RCA report in about an hour. Every line is linked back to the SOP it came from. Export to Word when you’re done.',
+    badge: '~1 hr per report',
   },
   {
     name: 'Curator',
     long: 'Data Classifier',
-    tagline: 'Classify thousands of new records against your taxonomy in minutes — every decision reviewable.',
-    badge: 'minutes per 1k rows',
+    tagline: 'Sort thousands of new records into your taxonomy. You can review and override every classification before it ships.',
+    badge: '1,000s of rows / hr',
   },
   {
     name: 'Forge',
     long: 'Master Builder',
-    tagline: 'Clean master datasets from messy classifications — line-by-line review, full audit log.',
-    badge: 'reviewable · audit-trailed',
+    tagline: 'Turns messy classifications into a clean master dataset. Every change is logged. Reviewers can fix anything inline.',
+    badge: 'reviewable inline',
   },
   {
     name: 'Echo',
     long: 'Data Enrichment',
-    tagline: 'Enrich every record with attributes from external sources — provenance kept, never silently overwritten.',
-    badge: 'sourced · attributed',
+    tagline: 'Adds the attributes you’re missing from outside sources. The original value is kept, so you can see what came from where.',
+    badge: 'sources kept',
   },
   {
     name: 'Twin',
     long: 'Group Duplicates',
-    tagline: 'Find duplicates and near-duplicates across columns — AI-filtered for variants, reviewer-confirmed.',
-    badge: 'variants caught',
+    tagline: 'Finds duplicates and near-duplicates across columns. Catches the awkward variants regex misses.',
+    badge: 'catches variants',
   },
   {
     name: 'Sonar',
     long: 'Lookup Agent',
-    tagline: 'Per-column similarity scoring with a weighted verdict — defensible match decisions on every row.',
-    badge: 'weighted verdict',
+    tagline: 'Scores how close two records are, column by column. Gives you one weighted verdict per row.',
+    badge: 'one verdict per row',
   },
 ];
 
@@ -53,30 +53,30 @@ const STEPS = [
   {
     n: '01',
     title: 'Sign in with your work email',
-    body: 'Email-first flow resolves your tenant before you ever type a password — no account-picker confusion.',
+    body: 'Type your email. We figure out which company you belong to before you type a password.',
   },
   {
     n: '02',
-    title: 'Pick agents into your workspace',
-    body: 'Sixteen purpose-built agents in the library. Add only the ones you actually use.',
+    title: 'Add the agents you need',
+    body: 'There are 16 in the library. You probably only need three or four. Add those.',
   },
   {
     n: '03',
     title: 'Run an agent',
-    body: 'Every agent is multi-turn, source-cited, and reviewable. Edit any AI-filled field; the agent never overwrites your edits silently.',
+    body: 'Upload your file or describe what you need. The agent works through it. You can edit anything it gets wrong, and it won’t change your edits later.',
   },
   {
     n: '04',
-    title: 'Export or hand off',
-    body: 'Download as DOCX, copy to your team, or jump back into the conversation tomorrow — sessions persist.',
+    title: 'Export or share',
+    body: 'Download a Word doc, share the link with your team, or come back tomorrow. Your work is saved.',
   },
 ];
 
 const STATS = [
-  { value: '16', label: 'Purpose-built agents' },
-  { value: '5', label: 'Practice areas covered' },
-  { value: '100%', label: 'Outputs cited' },
-  { value: 'AA', label: 'Accessibility (WCAG)' },
+  { value: '6', label: 'Agents live today' },
+  { value: '16', label: 'Total in the catalog' },
+  { value: '5', label: 'Practice areas' },
+  { value: 'Cited', label: 'Every answer' },
 ];
 
 export default function LandingPage() {
@@ -109,15 +109,16 @@ export default function LandingPage() {
       <section id="top" className="lp-hero">
         <div className="lp-hero-bg" aria-hidden="true" />
         <div className="lp-hero-inner">
-          <div className="lp-hero-eyebrow">ENTERPRISE AGENTS</div>
+          <div className="lp-hero-eyebrow">UNIQUS HUB</div>
           <h1 className="lp-hero-title">
-            Agent intelligence,<br />
-            <em>ready to work.</em>
+            AI agents that<br />
+            <em>do the work.</em>
           </h1>
           <p className="lp-hero-sub">
-            Sixteen purpose-built AI agents — investigation, classification,
-            master data, vendor mapping, compliance — behind one workspace.
-            Role-aware, audit-trailed, every output cited to its source.
+            Run investigations, classify your data, build clean master records,
+            find duplicates. Six agents are live today, ten more are on the way.
+            Each one works from your files and shows you exactly where every
+            answer came from.
           </p>
           <div className="lp-hero-cta">
             <Link to={ctaTo} className="lp-btn lp-btn-primary lp-btn-lg">
@@ -129,7 +130,7 @@ export default function LandingPage() {
           </div>
           <div className="lp-hero-foot">
             <span className="lp-status-dot" aria-hidden="true" />
-            16 agents · 5 practice areas · audit-grade trails
+            Built by Uniqus Consultech
           </div>
         </div>
       </section>
@@ -137,14 +138,12 @@ export default function LandingPage() {
       {/* ── Featured agents ─────────────────────────────────────────── */}
       <section id="agents" className="lp-section">
         <div className="lp-section-head">
-          <div className="lp-eyebrow">FEATURED AGENTS</div>
-          <h2 className="lp-h2">
-            Six agents already running in production.
-          </h2>
+          <div className="lp-eyebrow">WHAT&rsquo;S LIVE TODAY</div>
+          <h2 className="lp-h2">Six agents you can use right now.</h2>
           <p className="lp-section-sub">
-            Each one trained on your taxonomy, your SOPs, your reference data.
-            Every answer is cited. Every edit is yours to override. Ten more
-            agents in the catalog — coming soon.
+            They work from your files. Every answer points back to its source.
+            You can edit anything the AI gets wrong, and the agent won&rsquo;t
+            quietly change your edits later.
           </p>
         </div>
         <div className="lp-agents-grid">
@@ -160,7 +159,7 @@ export default function LandingPage() {
         </div>
         <div className="lp-section-foot">
           <Link to={ctaTo} className="lp-btn lp-btn-link">
-            See the full 16-agent catalog inside the hub
+            See the full catalog inside
           </Link>
         </div>
       </section>
@@ -169,7 +168,7 @@ export default function LandingPage() {
       <section id="how" className="lp-section lp-section-alt">
         <div className="lp-section-head">
           <div className="lp-eyebrow">HOW IT WORKS</div>
-          <h2 className="lp-h2">From sign-in to board-ready in four steps.</h2>
+          <h2 className="lp-h2">Four steps to your first run.</h2>
         </div>
         <ol className="lp-steps">
           {STEPS.map((s) => (
@@ -188,12 +187,11 @@ export default function LandingPage() {
       <section id="proof" className="lp-section">
         <div className="lp-section-head">
           <div className="lp-eyebrow">WHY UNIQUS</div>
-          <h2 className="lp-h2">Built for finance, risk, and operations leaders.</h2>
+          <h2 className="lp-h2">For finance, risk, and operations teams.</h2>
           <p className="lp-section-sub">
-            Uniqus Hub is the agent intelligence layer of Uniqus Consultech —
-            the consulting firm trusted by 350+ clients across the US, India,
-            and the Middle East. Every workflow you'd hand to a Uniqus
-            specialist, you can hand to a Uniqus agent.
+            We&rsquo;re a part of Uniqus Consultech, a consulting firm working
+            with 350+ enterprises across the US, India, and the Middle East.
+            The agents handle the work that used to need a specialist.
           </p>
         </div>
         <div className="lp-stats">
@@ -208,9 +206,9 @@ export default function LandingPage() {
 
       {/* ── Final CTA ───────────────────────────────────────────────── */}
       <section className="lp-cta-strip">
-        <h2 className="lp-cta-title">Ready to put agents to work?</h2>
+        <h2 className="lp-cta-title">Ready to try it?</h2>
         <p className="lp-cta-sub">
-          Sign in with your corporate email — your tenant, your data, your audit log.
+          Sign in with your work email. Takes about 30 seconds.
         </p>
         <div className="lp-cta-actions">
           <Link to={ctaTo} className="lp-btn lp-btn-primary lp-btn-lg">
@@ -229,7 +227,7 @@ export default function LandingPage() {
             <span className="lp-footer-mark"><UniqusMark size={20} /></span>
             <div>
               <div className="lp-footer-name">Uniqus Hub</div>
-              <div className="lp-footer-tag">Agent intelligence for the enterprise.</div>
+              <div className="lp-footer-tag">AI agents for enterprise teams.</div>
             </div>
           </div>
           <nav className="lp-footer-links" aria-label="Footer">
