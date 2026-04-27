@@ -258,7 +258,7 @@ export default function PlatformAgentsPage() {
                 >
                   <AgentIcon name={entry.icon} size={32} />
                   <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ color: 'var(--ink)', fontWeight: 600, fontSize: 15, fontFamily: 'var(--serif)' }}>
+                    <div style={{ color: 'var(--ink)', fontWeight: 700, fontSize: 15, fontFamily: 'var(--sans)', letterSpacing: '-0.01em' }}>
                       {entry.display_name || entry.name}
                       {entry.display_name && entry.display_name !== entry.name && (
                         <span style={{
@@ -330,7 +330,7 @@ export default function PlatformAgentsPage() {
                   >
                     <AgentIcon name={entry.icon} size={32} />
                     <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ color: 'var(--ink)', fontWeight: 600, fontSize: 15, fontFamily: 'var(--serif)' }}>
+                      <div style={{ color: 'var(--ink)', fontWeight: 700, fontSize: 15, fontFamily: 'var(--sans)', letterSpacing: '-0.01em' }}>
                         {entry.display_name || entry.name}
                         {entry.display_name && entry.display_name !== entry.name && (
                           <span style={{

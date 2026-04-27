@@ -64,7 +64,7 @@ export default function AgentDetailPage() {
               (tagline, category, dept scope), so we keep that and shorten the
               disclaimer to "not available yet" — honest about the state. */}
           <div className="empty" style={{ marginTop: 32 }}>
-            <div style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontSize: 22, marginBottom: 8 }}>
+            <div style={{ fontFamily: 'var(--sans)', fontWeight: 800, fontSize: 22, letterSpacing: '-0.02em', marginBottom: 8 }}>
               Not available yet
             </div>
             <div style={{ fontSize: 13 }}>

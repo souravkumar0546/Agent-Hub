@@ -1,20 +1,23 @@
 import { useEffect } from 'react';
 import { useAuth } from './auth.jsx';
 
-const PRODUCT_TAGLINE = 'AGENT HUB';
-const FALLBACK_NAME = 'AI Hub';
+const PRODUCT_NAME = 'Uniqus Hub';
+const PRODUCT_TAGLINE = 'ENTERPRISE AGENTS';
+const FALLBACK_NAME = PRODUCT_NAME;
 
 /**
- * Returns { orgName, brandLine, productName } for the currently active org.
- * Works everywhere the AuthProvider is mounted.
+ * Returns brand strings for the currently active org. The PRODUCT name is a
+ * constant ("Uniqus Hub") — this is a Uniqus product served to customers, not
+ * a white-label. The TENANT identity (org name + logo) is what changes per
+ * customer and shows up in the sidebar logo plate, breadcrumb root, etc.
  *
- * - `orgName`     → "Uniqus" / "Syngene Ltd" / null if logged out
- * - `brandLine`   → "Uniqus Platform" — used for breadcrumb roots
- * - `productName` → "Uniqus AI Hub" — used for <title>, guide hero, etc.
- * - `brandMark`   → "uniqus" — lowercase italic mark in the sidebar
+ * - `orgName`     → "Uniqus Consultech" / null if logged out
+ * - `displayName` → tenant name when known, else product name
+ * - `brandLine`   → "Uniqus Consultech Platform" / "Platform" — breadcrumb root
+ * - `productName` → always "Uniqus Hub" — used for <title>, footer, etc.
  *
- * Super-admins on the Platform page (no current org) get a generic label so
- * the UI doesn't lie about which tenant is in play.
+ * Super-admins on the Platform page (no current org) get the product name as
+ * the display name so the UI doesn't lie about which tenant is in play.
  */
 export function useBrand() {
   const { user } = useAuth();
@@ -30,7 +33,7 @@ export function useBrand() {
     logoUrl: org?.logo_url || null,
     brandMark: compact.toLowerCase(),
     brandLine: orgName ? `${compact} Platform` : 'Platform',
-    productName: orgName ? `${compact} AI Hub` : 'AI Hub',
+    productName: PRODUCT_NAME,
     tagline: PRODUCT_TAGLINE,
   };
 }

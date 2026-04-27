@@ -89,10 +89,11 @@ export default class ErrorBoundary extends React.Component {
         >
           <h1
             style={{
-              fontFamily: 'var(--serif)',
-              fontStyle: 'italic',
+              fontFamily: 'var(--sans)',
+              fontStyle: 'normal',
               fontSize: 28,
-              fontWeight: 400,
+              fontWeight: 800,
+              letterSpacing: '-0.025em',
               marginBottom: 8,
               color: 'var(--ink)',
             }}

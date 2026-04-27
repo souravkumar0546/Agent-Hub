@@ -134,7 +134,7 @@ export default function AgentHubPage() {
         <div className="empty" style={{ textAlign: 'center' }}>
           {scope === 'picked' ? (
             <>
-              <div style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontSize: 22, marginBottom: 8, color: 'var(--ink)' }}>
+              <div style={{ fontFamily: 'var(--sans)', fontWeight: 800, fontSize: 22, letterSpacing: '-0.02em', marginBottom: 8, color: 'var(--ink)' }}>
                 Your workspace is empty
               </div>
               <div style={{ fontSize: 13, marginBottom: 14 }}>
@@ -144,7 +144,7 @@ export default function AgentHubPage() {
             </>
           ) : (
             <>
-              <div style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontSize: 22, marginBottom: 8, color: 'var(--ink)' }}>
+              <div style={{ fontFamily: 'var(--sans)', fontWeight: 800, fontSize: 22, letterSpacing: '-0.02em', marginBottom: 8, color: 'var(--ink)' }}>
                 No agents installed
               </div>
               <div style={{ fontSize: 13, marginBottom: 14 }}>

@@ -1,5 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
+import { useAuth } from './lib/auth.jsx';
 import AgentDetailPage from './pages/AgentDetailPage.jsx';
 import AgentHubPage from './pages/AgentHubPage.jsx';
 import AgentLibraryPage from './pages/AgentLibraryPage.jsx';
@@ -8,6 +9,7 @@ import InvestigationDashboard from './pages/InvestigationDashboard.jsx';
 import InvestigationPage from './pages/InvestigationPage.jsx';
 import InviteAcceptPage from './pages/InviteAcceptPage.jsx';
 import KnowledgeBasePage from './pages/KnowledgeBasePage.jsx';
+import LandingPage from './pages/LandingPage.jsx';
 import LoginPage from './pages/LoginPage.jsx';
 import MyRunsPage from './pages/MyRunsPage.jsx';
 import OrgDashboard from './pages/OrgDashboard.jsx';
@@ -20,20 +22,22 @@ import MembersPage from './pages/admin/MembersPage.jsx';
 import PlatformAgentsPage from './pages/platform/PlatformAgentsPage.jsx';
 import PlatformOrgsPage from './pages/platform/PlatformOrgsPage.jsx';
 
+/** Root route — public marketing landing for visitors, in-app hub for
+ *  authenticated users. Rendering both off `/` keeps every existing
+ *  `to="/"` link in the codebase working without further changes. */
+function HomeRoute() {
+  const { isAuthenticated, loading } = useAuth();
+  if (loading) return <div style={{ padding: 40, color: 'var(--ink-dim)' }}>Loading…</div>;
+  return isAuthenticated ? <AgentHubPage /> : <LandingPage />;
+}
+
 export default function App() {
   return (
     <Routes>
       <Route path="/login" element={<LoginPage />} />
       <Route path="/invite/:token" element={<InviteAcceptPage />} />
 
-      <Route
-        path="/"
-        element={
-          <ProtectedRoute>
-            <AgentHubPage />
-          </ProtectedRoute>
-        }
-      />
+      <Route path="/" element={<HomeRoute />} />
       {/* Investigation agent gets a dashboard-first layout with a chat sub-route. */}
       <Route
         path="/agents/rca_investigation"

@@ -165,7 +165,7 @@ export default function LoginPage() {
               //   2. Email-derived title case ("sourav.kumar" → "Sourav Kumar").
               //   3. Generic "Welcome back" when we have nothing reliable.
               if (step !== 'password') {
-                return <>AI Hub <em>Agent Workspace</em></>;
+                return <>Uniqus <em>Hub</em></>;
               }
               const fromServer = branding?.user_display_name?.trim();
               const fromEmail = greetingFromEmail(email);
@@ -185,7 +185,7 @@ export default function LoginPage() {
               ? `Continue to your ${branding.name} workspace.`
               : step === 'password'
                 ? 'Enter your password to continue.'
-                : 'Unified agent workspace — sign in with your corporate email to reach your tenant.'}
+                : 'Agent intelligence for the enterprise. Sign in with your corporate email to reach your tenant.'}
           </p>
         </div>
 
@@ -278,7 +278,7 @@ export default function LoginPage() {
           )}
 
           <div className="login-form-footer">
-            <span>© AI Hub · Agent Workspace</span>
+            <span>© Uniqus Hub · A Uniqus Consultech product</span>
           </div>
         </div>
       </main>

@@ -79,7 +79,7 @@ export default function InviteAcceptPage() {
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24 }}>
           <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'var(--accent)' }} />
           <div>
-            <div style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontSize: 22 }}>AI Hub</div>
+            <div style={{ fontFamily: 'var(--sans)', fontWeight: 800, fontSize: 22, letterSpacing: '-0.01em' }}>Uniqus Hub</div>
             <div style={{ fontSize: 10, letterSpacing: '0.18em', color: 'var(--ink-muted)' }}>ACCEPT INVITATION</div>
           </div>
         </div>

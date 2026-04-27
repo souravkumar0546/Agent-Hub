@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import AssistantWidget from './AssistantWidget.jsx';
+import Footer from './Footer.jsx';
 import Sidebar from './Sidebar.jsx';
 import TopBar from './TopBar.jsx';
 
@@ -42,7 +43,10 @@ export default function AppShell({ crumbs, children }) {
       )}
       <div className="main">
         <TopBar crumbs={crumbs} onToggleNav={toggleNav} navOpen={navOpen} />
-        <div className="scroll-region">{children}</div>
+        <div className="scroll-region">
+          {children}
+          <Footer />
+        </div>
       </div>
       {/* Floating platform assistant — rendered on every authenticated page,
           hidden automatically on the login page because that never renders

@@ -2,15 +2,15 @@
 
 ## Logging in
 
-Open the hub URL, enter your corporate email, and sign in with the password your organisation admin gave you. Sessions last 24 hours.
+Open Uniqus Hub at your tenant URL, enter your corporate email, and sign in with the password your organisation admin gave you. Sessions last 24 hours.
 
-If login fails, double-check that you're using the correct tenant URL — the hub is multi-tenant, and an email that works on one tenant will not work on another.
+If login fails, double-check that you're using the correct tenant URL — Uniqus Hub is multi-tenant, and an email that works on one tenant will not work on another. If you don't have an account yet, ask your org admin to invite you (you can't self-register).
 
 ## What you see after login
 
-- **Left sidebar** — primary navigation: Agent Hub, Knowledge Base, My Runs, User Guide. Admins also see Members, Departments, Audit Log. Super admins additionally see Organizations.
-- **Top bar** — your current organisation, your role (`SUPER_ADMIN` / `ORG_ADMIN` / `MEMBER`), and your name.
-- **Agent Hub** (the default landing) — a grid of agent cards. Ready-to-use agents are shown first; upcoming agents sit below.
+- **Left sidebar** — primary navigation: My Agents, Agent Library, User Guide, Settings. Admins also see Members, Departments, Audit Log. Super admins additionally see Organizations.
+- **Top bar** — your current organisation, your role, and your name.
+- **My Agents** (the default landing for members) — a grid of agent cards you've picked into your workspace. Click **+ Add from library** to install more.
 
 ## Navigating the hub
 

@@ -1,6 +1,6 @@
-# Uniqus AI Hub
+# Uniqus Hub
 
-Unified agent hub for Syngene — eleven purpose-built AI agents (spanning HR, Commercial, R&D, Procurement, Compliance) behind a shared dark-themed workspace with role-based access control.
+Agent intelligence for the enterprise — sixteen purpose-built AI agents (spanning HR, Commercial, R&D, Procurement, Compliance, Data Management) behind a shared multi-tenant workspace with role-based access control.
 
 Built by integrating two internal tools — **DMAhub** (data transformation primitives) and **Devio** (investigation / deviation engine) — under a single product.
 
