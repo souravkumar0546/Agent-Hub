@@ -6,8 +6,9 @@ import re
 from collections import defaultdict
 
 import pandas as pd
-import httpx
 from io import BytesIO
+
+from app.dma.services._azure_http import post_chat_completion
 
 from openpyxl import load_workbook
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
@@ -115,12 +116,6 @@ def _azure_ready() -> bool:
 
 async def _ai_variant_check_batch_async(pairs: list[tuple[int, str, str]], timeout_s: int = 120) -> dict[int, bool]:
     """Return mapping: idx -> True if DIFFERENT SIZE/QTY (NOT duplicate)."""
-    azure_ep = os.getenv("AZURE_OPENAI_ENDPOINT", "").rstrip("/")
-    azure_k = os.getenv("AZURE_OPENAI_API_KEY", "")
-    azure_m = os.getenv("AZURE_OPENAI_MODEL", "")
-    azure_v = os.getenv("AZURE_OPENAI_API_VERSION", "2024-02-15-preview")
-    url = f"{azure_ep}/openai/deployments/{azure_m}/chat/completions?api-version={azure_v}"
-
     prompt_parts = [
         "You are a procurement/master-data deduplication expert.\n"
         "For each pair of records, decide whether they are TRUE DUPLICATES (same exact material)\n"
@@ -137,21 +132,22 @@ async def _ai_variant_check_batch_async(pairs: list[tuple[int, str, str]], timeo
         prompt_parts.append(f'PAIR "{idx}"\nLEFT: {left_text}\nRIGHT: {right_text}\n\n')
     prompt = "".join(prompt_parts)
 
-    async with httpx.AsyncClient(timeout=timeout_s) as client:
-        resp = await client.post(
-            url,
-            headers={"Content-Type": "application/json", "api-key": azure_k},
-            json={
-                "messages": [
-                    {"role": "system", "content": "Respond only with valid JSON."},
-                    {"role": "user", "content": prompt},
-                ],
-                "max_tokens": 2000,
-                "temperature": 0.0,
-            },
-        )
-    resp.raise_for_status()
-    text = resp.json()["choices"][0]["message"]["content"]
+    # Retry-aware POST. The caller (`analyze_group_duplicates`) has no
+    # try/except around this — it relies on us either succeeding or
+    # raising. The retry budget here is what now turns "Azure threw
+    # one 500" from a hard analyze-failure into a momentary slowdown.
+    data = await post_chat_completion(
+        {
+            "messages": [
+                {"role": "system", "content": "Respond only with valid JSON."},
+                {"role": "user", "content": prompt},
+            ],
+            "max_tokens": 2000,
+            "temperature": 0.0,
+        },
+        timeout=timeout_s,
+    )
+    text = data["choices"][0]["message"]["content"]
     text = re.sub(r"```json\s*", "", text)
     text = re.sub(r"```", "", text)
     parsed = json.loads(text.strip())

@@ -9,8 +9,9 @@ from typing import Optional
 
 import numpy as np
 import pandas as pd
-import httpx
 from nltk.stem import SnowballStemmer
+
+from app.dma.services._azure_http import post_chat_completion
 from openpyxl import load_workbook
 from openpyxl.styles import PatternFill
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -151,24 +152,22 @@ def _azure_cfg():
 
 
 async def _azure_chat_json(user_prompt: str, system_prompt: str, max_tokens: int = 4096, temperature: float = 0.1, timeout: int = 120):
-    ep, key, model, ver = _azure_cfg()
-    url = f"{ep}/openai/deployments/{model}/chat/completions?api-version={ver}"
-    async with httpx.AsyncClient() as client:
-        resp = await client.post(
-            url,
-            headers={"Content-Type": "application/json", "api-key": key},
-            json={
-                "messages": [{"role": "system", "content": system_prompt}, {"role": "user", "content": user_prompt}],
-                "max_tokens": max_tokens,
-                "temperature": temperature,
-            },
-            timeout=timeout,
-        )
-        resp.raise_for_status()
-        text = resp.json()["choices"][0]["message"]["content"]
-        text = re.sub(r"```json\s*", "", text)
-        text = re.sub(r"```", "", text).strip()
-        return json.loads(text)
+    # Routes through the shared retry wrapper so a transient Azure 500
+    # / 429 / connection blip retries with backoff before bubbling up
+    # to the caller — without it, every flaky request used to cause a
+    # hard "AI call failed" surface error.
+    data = await post_chat_completion(
+        {
+            "messages": [{"role": "system", "content": system_prompt}, {"role": "user", "content": user_prompt}],
+            "max_tokens": max_tokens,
+            "temperature": temperature,
+        },
+        timeout=timeout,
+    )
+    text = data["choices"][0]["message"]["content"]
+    text = re.sub(r"```json\s*", "", text)
+    text = re.sub(r"```", "", text).strip()
+    return json.loads(text)
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -474,27 +473,23 @@ async def reclassify_groups_batch_with_ai(batch: list, desc_col: str, po_col: Op
 
     parsed = None
     try:
-        ep, key, model, ver = _azure_cfg()
-        url = f"{ep}/openai/deployments/{model}/chat/completions?api-version={ver}"
-        async with httpx.AsyncClient() as client:
-            resp = await client.post(
-                url,
-                headers={"Content-Type": "application/json", "api-key": key},
-                json={
-                    "messages": [
-                        {"role": "system", "content": "You are a pharma materials classification expert. Respond ONLY with valid JSON. First identify what the material IS, then classify it. Use group number as plain string key."},
-                        {"role": "user", "content": prompt},
-                    ],
-                    "max_tokens": 4096,
-                    "temperature": 0.1,
-                },
-                timeout=120,
-            )
-            if resp.status_code == 200:
-                raw_text = resp.json()["choices"][0]["message"]["content"]
-                cleaned_text = re.sub(r"```json\s*", "", raw_text)
-                cleaned_text = re.sub(r"```", "", cleaned_text).strip()
-                parsed = json.loads(cleaned_text)
+        # Retry-aware POST — transient 500s no longer drop us into the
+        # majority-vote fallback below; only persistent failures do.
+        data = await post_chat_completion(
+            {
+                "messages": [
+                    {"role": "system", "content": "You are a pharma materials classification expert. Respond ONLY with valid JSON. First identify what the material IS, then classify it. Use group number as plain string key."},
+                    {"role": "user", "content": prompt},
+                ],
+                "max_tokens": 4096,
+                "temperature": 0.1,
+            },
+            timeout=120,
+        )
+        raw_text = data["choices"][0]["message"]["content"]
+        cleaned_text = re.sub(r"```json\s*", "", raw_text)
+        cleaned_text = re.sub(r"```", "", cleaned_text).strip()
+        parsed = json.loads(cleaned_text)
     except Exception:
         pass
 
@@ -697,8 +692,6 @@ def find_matching_material(new_text, groups, cleaned_master, stemmed_master, des
 
 
 async def ai_confirm_match(new_desc, new_po, matched_rows, group_category):
-    ep, key, model, ver = _azure_cfg()
-    url = f"{ep}/openai/deployments/{model}/chat/completions?api-version={ver}"
     matched_list = "\n".join(
         f"  - {r['description']} (category: {r['category']}, similarity: {r['score']:.2f})"
         for r in matched_rows[:5]
@@ -717,32 +710,30 @@ async def ai_confirm_match(new_desc, new_po, matched_rows, group_category):
         "No other text."
     )
     try:
-        async with httpx.AsyncClient() as client:
-            resp = await client.post(
-                url,
-                headers={"Content-Type": "application/json", "api-key": key},
-                json={
-                    "messages": [
-                        {"role": "system", "content": "You are a pharma materials classification expert. Respond only with valid JSON."},
-                        {"role": "user", "content": prompt},
-                    ],
-                    "max_tokens": 256,
-                    "temperature": 0,
-                },
-                timeout=60,
-            )
-            resp.raise_for_status()
-            text = resp.json()["choices"][0]["message"]["content"]
-            text = re.sub(r"```json\s*", "", text)
-            text = re.sub(r"```", "", text)
-            return json.loads(text.strip())
+        # Retries on 429/5xx/connection inside the helper. The
+        # default-to-match fallback below is reserved for genuinely
+        # persistent failures (and content-policy 4xx, which the
+        # helper deliberately does not retry).
+        data = await post_chat_completion(
+            {
+                "messages": [
+                    {"role": "system", "content": "You are a pharma materials classification expert. Respond only with valid JSON."},
+                    {"role": "user", "content": prompt},
+                ],
+                "max_tokens": 256,
+                "temperature": 0,
+            },
+            timeout=60,
+        )
+        text = data["choices"][0]["message"]["content"]
+        text = re.sub(r"```json\s*", "", text)
+        text = re.sub(r"```", "", text)
+        return json.loads(text.strip())
     except Exception as e:
         return {"match": True, "reasoning": f"AI call failed ({e}), defaulting to match."}
 
 
 async def ai_classify_new(new_desc, new_po):
-    ep, key, model, ver = _azure_cfg()
-    url = f"{ep}/openai/deployments/{model}/chat/completions?api-version={ver}"
     rubric = _build_taxonomy_rubric()
     allowed = ", ".join(CONSUMABLE_L2_CATEGORIES)
     prompt = (
@@ -762,28 +753,26 @@ async def ai_classify_new(new_desc, new_po):
         "No other text."
     )
     try:
-        async with httpx.AsyncClient() as client:
-            resp = await client.post(
-                url,
-                headers={"Content-Type": "application/json", "api-key": key},
-                json={
-                    "messages": [
-                        {"role": "system", "content": "You are a pharma materials classification expert. Respond ONLY with valid JSON. Use the rubric to choose ONE L2 category."},
-                        {"role": "user", "content": prompt},
-                    ],
-                    "max_tokens": 512,
-                    "temperature": 0.1,
-                },
-                timeout=60,
-            )
-            resp.raise_for_status()
-            text = resp.json()["choices"][0]["message"]["content"]
-            text = re.sub(r"```json\s*", "", text)
-            text = re.sub(r"```", "", text)
-            parsed = json.loads(text.strip())
-            raw_cat = str(parsed.get("category", "")).strip()
-            resolved = _match_category_flexible(raw_cat) or "UNKNOWN"
-            return {"category": resolved, "confidence": parsed.get("confidence", 0), "reasoning": parsed.get("rationale", "")}
+        # Retries on 429/5xx/connection inside the helper. UNKNOWN
+        # fallback fires only for persistent failures.
+        data = await post_chat_completion(
+            {
+                "messages": [
+                    {"role": "system", "content": "You are a pharma materials classification expert. Respond ONLY with valid JSON. Use the rubric to choose ONE L2 category."},
+                    {"role": "user", "content": prompt},
+                ],
+                "max_tokens": 512,
+                "temperature": 0.1,
+            },
+            timeout=60,
+        )
+        text = data["choices"][0]["message"]["content"]
+        text = re.sub(r"```json\s*", "", text)
+        text = re.sub(r"```", "", text)
+        parsed = json.loads(text.strip())
+        raw_cat = str(parsed.get("category", "")).strip()
+        resolved = _match_category_flexible(raw_cat) or "UNKNOWN"
+        return {"category": resolved, "confidence": parsed.get("confidence", 0), "reasoning": parsed.get("rationale", "")}
     except Exception as e:
         return {"category": "UNKNOWN", "confidence": 0, "reasoning": f"AI failed: {e}"}
 

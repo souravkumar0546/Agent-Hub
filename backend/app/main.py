@@ -35,6 +35,7 @@ from app.dma.routes import (
     enrichment as dma_enrichment,
     lookup as dma_lookup,
     master_builder as dma_master_builder,
+    upload as dma_upload,
 )
 from sqlalchemy import inspect
 from sqlalchemy.orm import Session
@@ -131,6 +132,10 @@ app.include_router(public_routes.public_router, prefix=api_prefix)
 # DMAhub agents — mounted under /api/dma/* behind org-scoped auth.
 dma_prefix = f"{api_prefix}/dma"
 dma_auth = [Depends(require_org)]
+# Universal upload preview shared by every DMA agent page — must stay wired
+# alongside the per-agent routers, otherwise FileUpload.jsx 404s on the
+# very first action of every DMA flow.
+app.include_router(dma_upload.router, prefix=dma_prefix, dependencies=dma_auth)
 app.include_router(dma_classification.router, prefix=dma_prefix, dependencies=dma_auth)
 app.include_router(dma_classify.router, prefix=dma_prefix, dependencies=dma_auth)
 app.include_router(dma_dedup.router, prefix=dma_prefix, dependencies=dma_auth)
