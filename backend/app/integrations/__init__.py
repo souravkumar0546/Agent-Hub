@@ -18,19 +18,22 @@ from typing import Callable
 
 
 # ── Field type system used by the catalog schemas ────────────────────────────
-# Kept tiny on purpose — the frontend only needs these three types.
-# `text` and `url` render as single-line inputs; `password` masks the value.
-# Future: add `select`, `boolean`, `number` when needed.
+# Kept tiny on purpose — the frontend only needs a handful of types.
+# `text` and `url` render as single-line inputs; `password` masks the value;
+# `textarea` is multi-line; `select` renders as a dropdown using `options`.
+# Future: add `boolean`, `number` when needed.
 
 @dataclass(frozen=True)
 class FieldSpec:
     key: str
     label: str
-    type: str = "text"          # one of: text | password | url | textarea
+    type: str = "text"          # one of: text | password | url | textarea | select
     required: bool = True
     placeholder: str = ""
     help: str = ""
     group: str = "config"       # "config" or "credentials"
+    options: tuple[str, ...] = ()   # only meaningful for type="select"
+    default: str = ""               # default value (string-typed fields only)
 
 
 @dataclass(frozen=True)
@@ -53,6 +56,8 @@ class IntegrationDef:
                 "placeholder": f.placeholder,
                 "help": f.help,
                 "group": f.group,
+                "options": list(f.options),
+                "default": f.default,
             }
             for f in self.fields
         ]
@@ -118,6 +123,58 @@ CATALOG: list[IntegrationDef] = [
             FieldSpec(key="client", label="SAP Client", placeholder="100"),
             FieldSpec(key="username", label="Username", group="credentials"),
             FieldSpec(key="password", label="Password", type="password", group="credentials"),
+        ),
+    ),
+    IntegrationDef(
+        type="oracle_ebs_r12",
+        name="Oracle E-Business Suite R12",
+        description="Oracle EBS R12 — finance (GL/AP/AR), procurement, inventory, HRMS via REST.",
+        icon="box",
+        category="ERP",
+        implemented=True,
+        fields=(
+            FieldSpec(
+                key="base_url", label="Base URL", type="url",
+                placeholder="https://ebs.example.com:8001",
+                help="Root URL of the EBS instance (must be https://). The connector probes "
+                     "`{base_url}/webservices/rest/ping`.",
+            ),
+            FieldSpec(
+                key="responsibility", label="Responsibility",
+                placeholder="e.g. SYSTEM ADMINISTRATOR", required=False,
+                help="Oracle Responsibility name. Required for some integration patterns; "
+                     "leave blank if your endpoint doesn't need it.",
+            ),
+            FieldSpec(
+                key="username", label="Username",
+                placeholder="e.g. INTEGRATION_USER",
+                help="EBS application user that the API calls run as.",
+            ),
+            FieldSpec(
+                key="password", label="Password", type="password", group="credentials",
+                help="EBS user password — stored encrypted.",
+            ),
+            FieldSpec(
+                key="auth_mode", label="Authentication mode", type="select",
+                options=("basic", "oauth2"), default="basic",
+                help="Basic auth is standard for most R12 deployments. Switch to OAuth2 only "
+                     "if your instance has the OAM/OAuth bridge configured.",
+            ),
+            FieldSpec(
+                key="client_id", label="OAuth Client ID", required=False,
+                help="Only required when authentication mode is OAuth2.",
+            ),
+            FieldSpec(
+                key="client_secret", label="OAuth Client Secret",
+                type="password", required=False, group="credentials",
+                help="Only required when authentication mode is OAuth2 — stored encrypted.",
+            ),
+            FieldSpec(
+                key="module", label="EBS module", type="select",
+                options=("gl", "ap", "ar", "inv", "po", "hrms", "none"), default="none",
+                help="EBS module this connector targets. Used by downstream agents to pick "
+                     "the right endpoints; leave at `none` for a generic connection.",
+            ),
         ),
     ),
     IntegrationDef(

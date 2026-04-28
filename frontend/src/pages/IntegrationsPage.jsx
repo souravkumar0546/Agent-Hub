@@ -177,12 +177,20 @@ function ConnectModal({ mode, entry, integration, onClose, onSaved }) {
   const [name, setName] = useState(integration?.name || entry?.name || '');
   const [config, setConfig] = useState(() => {
     const init = {};
-    for (const f of configFields) init[f.key] = integration?.config?.[f.key] ?? '';
+    for (const f of configFields) {
+      const existing = integration?.config?.[f.key];
+      // Select fields fall back to their declared default so a fresh form
+      // doesn't post an empty string the backend will reject.
+      const fallback = f.type === 'select' ? (f.default || '') : '';
+      init[f.key] = existing ?? fallback;
+    }
     return init;
   });
   const [credentials, setCredentials] = useState(() => {
     const init = {};
-    for (const f of credFields) init[f.key] = '';
+    for (const f of credFields) {
+      init[f.key] = f.type === 'select' ? (f.default || '') : '';
+    }
     return init;
   });
   const [replaceCreds, setReplaceCreds] = useState(mode === 'create');
@@ -260,6 +268,14 @@ function ConnectModal({ mode, entry, integration, onClose, onSaved }) {
                     <textarea className="form-input" rows={3} placeholder={f.placeholder || ''}
                       value={config[f.key] || ''}
                       onChange={(e) => setConfig({ ...config, [f.key]: e.target.value })} />
+                  ) : f.type === 'select' ? (
+                    <select className="form-input"
+                      value={config[f.key] || ''}
+                      onChange={(e) => setConfig({ ...config, [f.key]: e.target.value })}>
+                      {(f.options || []).map((opt) => (
+                        <option key={opt} value={opt}>{opt}</option>
+                      ))}
+                    </select>
                   ) : (
                     <input type={f.type === 'password' ? 'password' : 'text'}
                       className="form-input" placeholder={f.placeholder || ''}
@@ -295,13 +311,23 @@ function ConnectModal({ mode, entry, integration, onClose, onSaved }) {
                   <label className="form-label">
                     {f.label}{f.required && mode === 'create' && <span className="form-req"> *</span>}
                   </label>
-                  <input
-                    type={f.type === 'password' ? 'password' : 'text'}
-                    className="form-input" placeholder={f.placeholder || ''}
-                    value={credentials[f.key] || ''}
-                    autoComplete="new-password"
-                    onChange={(e) => setCredentials({ ...credentials, [f.key]: e.target.value })}
-                  />
+                  {f.type === 'select' ? (
+                    <select className="form-input"
+                      value={credentials[f.key] || ''}
+                      onChange={(e) => setCredentials({ ...credentials, [f.key]: e.target.value })}>
+                      {(f.options || []).map((opt) => (
+                        <option key={opt} value={opt}>{opt}</option>
+                      ))}
+                    </select>
+                  ) : (
+                    <input
+                      type={f.type === 'password' ? 'password' : 'text'}
+                      className="form-input" placeholder={f.placeholder || ''}
+                      value={credentials[f.key] || ''}
+                      autoComplete="new-password"
+                      onChange={(e) => setCredentials({ ...credentials, [f.key]: e.target.value })}
+                    />
+                  )}
                   {f.help && <div className="form-help">{f.help}</div>}
                 </div>
               ))}
