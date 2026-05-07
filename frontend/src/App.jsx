@@ -1,6 +1,12 @@
 import { Route, Routes } from 'react-router-dom';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
 import { useAuth } from './lib/auth.jsx';
+import CacmDashboardPage from './cacm/pages/DashboardPage.jsx';
+import CacmExceptionsPage from './cacm/pages/ExceptionsPage.jsx';
+import CacmProcessDetailPage from './cacm/pages/ProcessDetailPage.jsx';
+import CacmProcessesPage from './cacm/pages/ProcessesPage.jsx';
+import CacmRunPage from './cacm/pages/RunPage.jsx';
+import CacmRunsHistoryPage from './cacm/pages/RunsHistoryPage.jsx';
 import AgentDetailPage from './pages/AgentDetailPage.jsx';
 import AgentHubPage from './pages/AgentHubPage.jsx';
 import AgentLibraryPage from './pages/AgentLibraryPage.jsx';
@@ -60,6 +66,58 @@ export default function App() {
         element={
           <ProtectedRoute>
             <InvestigationPage />
+          </ProtectedRoute>
+        }
+      />
+      {/* CACM (Continuous Audit & Continuous Monitoring) agent — has its
+          own multi-page flow (library → run → exceptions / dashboard). The
+          specific routes have to be declared *before* the catch-all
+          /agents/:type below or React Router will swallow them. */}
+      <Route
+        path="/agents/cacm"
+        element={
+          <ProtectedRoute>
+            <CacmProcessesPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/agents/cacm/processes/:processKey"
+        element={
+          <ProtectedRoute>
+            <CacmProcessDetailPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/agents/cacm/run/:runId"
+        element={
+          <ProtectedRoute>
+            <CacmRunPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/agents/cacm/runs/:runId/exceptions"
+        element={
+          <ProtectedRoute>
+            <CacmExceptionsPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/agents/cacm/runs/:runId/dashboard"
+        element={
+          <ProtectedRoute>
+            <CacmDashboardPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/agents/cacm/runs"
+        element={
+          <ProtectedRoute>
+            <CacmRunsHistoryPage />
           </ProtectedRoute>
         }
       />

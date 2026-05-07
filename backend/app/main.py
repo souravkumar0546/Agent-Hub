@@ -18,6 +18,7 @@ from app.api.routes import agents as agents_routes
 from app.api.routes import assistant as assistant_routes
 from app.api.routes import audit as audit_routes
 from app.api.routes import auth as auth_routes
+from app.api.routes import cacm as cacm_routes
 from app.api.routes import departments as dept_routes
 from app.api.routes import integrations as integrations_routes
 from app.api.routes import invites as invites_routes
@@ -142,3 +143,8 @@ app.include_router(dma_dedup.router, prefix=dma_prefix, dependencies=dma_auth)
 app.include_router(dma_enrichment.router, prefix=dma_prefix, dependencies=dma_auth)
 app.include_router(dma_lookup.router, prefix=dma_prefix, dependencies=dma_auth)
 app.include_router(dma_master_builder.router, prefix=dma_prefix, dependencies=dma_auth)
+
+# CACM agent — mounted under /api/cacm/* behind org-scoped auth. The router
+# already declares per-route `Depends(require_org)`, but the parent dep
+# stays here as belt-and-braces (matches DMA mounting style).
+app.include_router(cacm_routes.router, prefix=api_prefix, dependencies=[Depends(require_org)])

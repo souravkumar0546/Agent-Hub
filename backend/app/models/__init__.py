@@ -8,6 +8,7 @@ from app.models.audit import AuditLog
 from app.models.integration import Integration
 from app.models.invite import Invite
 from app.models.user_agent import UserAgent
+from app.models.cacm import CacmRun, CacmRunEvent, CacmException
 
 __all__ = [
     "User",
@@ -24,4 +25,7 @@ __all__ = [
     "Integration",
     "Invite",
     "UserAgent",
+    "CacmRun",
+    "CacmRunEvent",
+    "CacmException",
 ]

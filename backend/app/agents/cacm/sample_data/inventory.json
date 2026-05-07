@@ -1,0 +1,3542 @@
+{
+  "mseg": [
+    {
+      "doc_no": "7000001068",
+      "material_id": "MAT-1010",
+      "movement_type": "561",
+      "quantity": 25,
+      "posting_date": "2026-01-04",
+      "user_id": "u_warehouse_03"
+    },
+    {
+      "doc_no": "7000001330",
+      "material_id": "MAT-1011",
+      "movement_type": "261",
+      "quantity": 10,
+      "posting_date": "2026-04-13",
+      "user_id": "u_warehouse_04"
+    },
+    {
+      "doc_no": "7000001273",
+      "material_id": "MAT-1051",
+      "movement_type": "601",
+      "quantity": 500,
+      "posting_date": "2026-03-12",
+      "user_id": "u_warehouse_03"
+    },
+    {
+      "doc_no": "7000001225",
+      "material_id": "MAT-1046",
+      "movement_type": "101",
+      "quantity": 25,
+      "posting_date": "2026-02-20",
+      "user_id": "u_warehouse_08"
+    },
+    {
+      "doc_no": "7000001186",
+      "material_id": "MAT-1026",
+      "movement_type": "261",
+      "quantity": 50,
+      "posting_date": "2026-03-03",
+      "user_id": "u_warehouse_07"
+    },
+    {
+      "doc_no": "7000001079",
+      "material_id": "MAT-1011",
+      "movement_type": "702",
+      "quantity": 25,
+      "posting_date": "2026-03-10",
+      "user_id": "u_warehouse_03"
+    },
+    {
+      "doc_no": "7000001361",
+      "material_id": "MAT-1007",
+      "movement_type": "261",
+      "quantity": 25,
+      "posting_date": "2026-01-27",
+      "user_id": "u_warehouse_02"
+    },
+    {
+      "doc_no": "7000001097",
+      "material_id": "MAT-1012",
+      "movement_type": "701",
+      "quantity": 25,
+      "posting_date": "2026-03-27",
+      "user_id": "u_warehouse_04"
+    },
+    {
+      "doc_no": "7000001110",
+      "material_id": "MAT-1020",
+      "movement_type": "561",
+      "quantity": 100,
+      "posting_date": "2026-01-10",
+      "user_id": "u_warehouse_05"
+    },
+    {
+      "doc_no": "7000001145",
+      "material_id": "MAT-1059",
+      "movement_type": "351",
+      "quantity": 1000,
+      "posting_date": "2026-03-06",
+      "user_id": "u_warehouse_01"
+    },
+    {
+      "doc_no": "7000001049",
+      "material_id": "MAT-1008",
+      "movement_type": "561",
+      "quantity": 200,
+      "posting_date": "2026-02-16",
+      "user_id": "u_warehouse_03"
+    },
+    {
+      "doc_no": "7000001169",
+      "material_id": "MAT-1011",
+      "movement_type": "101",
+      "quantity": 100,
+      "posting_date": "2026-03-29",
+      "user_id": "u_warehouse_08"
+    },
+    {
+      "doc_no": "7000001395",
+      "material_id": "MAT-1007",
+      "movement_type": "101",
+      "quantity": 50,
+      "posting_date": "2026-01-27",
+      "user_id": "u_warehouse_07"
+    },
+    {
+      "doc_no": "7000001161",
+      "material_id": "MAT-1046",
+      "movement_type": "351",
+      "quantity": 50,
+      "posting_date": "2026-03-01",
+      "user_id": "u_warehouse_08"
+    },
+    {
+      "doc_no": "7000001188",
+      "material_id": "MAT-1014",
+      "movement_type": "351",
+      "quantity": 1000,
+      "posting_date": "2026-03-05",
+      "user_id": "u_warehouse_04"
+    },
+    {
+      "doc_no": "7000001056",
+      "material_id": "MAT-1009",
+      "movement_type": "561",
+      "quantity": 200,
+      "posting_date": "2026-03-05",
+      "user_id": "u_warehouse_06"
+    },
+    {
+      "doc_no": "7000001116",
+      "material_id": "MAT-1023",
+      "movement_type": "702",
+      "quantity": 500,
+      "posting_date": "2026-01-31",
+      "user_id": "u_warehouse_02"
+    },
+    {
+      "doc_no": "7000001191",
+      "material_id": "MAT-1012",
+      "movement_type": "411",
+      "quantity": 200,
+      "posting_date": "2026-01-12",
+      "user_id": "u_warehouse_06"
+    },
+    {
+      "doc_no": "7000001213",
+      "material_id": "MAT-1004",
+      "movement_type": "101",
+      "quantity": 25,
+      "posting_date": "2026-03-05",
+      "user_id": "u_warehouse_07"
+    },
+    {
+      "doc_no": "7000001276",
+      "material_id": "MAT-1027",
+      "movement_type": "101",
+      "quantity": 50,
+      "posting_date": "2026-04-06",
+      "user_id": "u_warehouse_06"
+    },
+    {
+      "doc_no": "7000001385",
+      "material_id": "MAT-1056",
+      "movement_type": "601",
+      "quantity": 500,
+      "posting_date": "2026-03-12",
+      "user_id": "u_warehouse_06"
+    },
+    {
+      "doc_no": "7000001147",
+      "material_id": "MAT-1006",
+      "movement_type": "101",
+      "quantity": 10,
+      "posting_date": "2026-01-18",
+      "user_id": "u_warehouse_06"
+    },
+    {
+      "doc_no": "7000001118",
+      "material_id": "MAT-1025",
+      "movement_type": "561",
+      "quantity": 50,
+      "posting_date": "2026-03-22",
+      "user_id": "u_warehouse_05"
+    },
+    {
+      "doc_no": "7000001258",
+      "material_id": "MAT-1010",
+      "movement_type": "411",
+      "quantity": 200,
+      "posting_date": "2026-01-25",
+      "user_id": "u_warehouse_06"
+    },
+    {
+      "doc_no": "7000001045",
+      "material_id": "MAT-1008",
+      "movement_type": "309",
+      "quantity": 100,
+      "posting_date": "2026-03-01",
+      "user_id": "u_warehouse_08"
+    },
+    {
+      "doc_no": "7000001139",
+      "material_id": "MAT-1010",
+      "movement_type": "601",
+      "quantity": 200,
+      "posting_date": "2026-01-06",
+      "user_id": "u_warehouse_07"
+    },
+    {
+      "doc_no": "7000001071",
+      "material_id": "MAT-1010",
+      "movement_type": "561",
+      "quantity": 200,
+      "posting_date": "2026-03-12",
+      "user_id": "u_warehouse_03"
+    },
+    {
+      "doc_no": "7000001257",
+      "material_id": "MAT-1029",
+      "movement_type": "261",
+      "quantity": 25,
+      "posting_date": "2026-02-01",
+      "user_id": "u_warehouse_04"
+    },
+    {
+      "doc_no": "7000001193",
+      "material_id": "MAT-1057",
+      "movement_type": "101",
+      "quantity": 500,
+      "posting_date": "2026-02-22",
+      "user_id": "u_warehouse_07"
+    },
+    {
+      "doc_no": "7000001394",
+      "material_id": "MAT-1047",
+      "movement_type": "411",
+      "quantity": 100,
+      "posting_date": "2026-02-05",
+      "user_id": "u_warehouse_04"
+    },
+    {
+      "doc_no": "7000001159",
+      "material_id": "MAT-1004",
+      "movement_type": "601",
+      "quantity": 50,
+      "posting_date": "2026-03-28",
+      "user_id": "u_warehouse_02"
+    },
+    {
+      "doc_no": "7000001163",
+      "material_id": "MAT-1006",
+      "movement_type": "601",
+      "quantity": 10,
+      "posting_date": "2026-02-07",
+      "user_id": "u_warehouse_08"
+    },
+    {
+      "doc_no": "7000001285",
+      "material_id": "MAT-1060",
+      "movement_type": "101",
+      "quantity": 10,
+      "posting_date": "2026-02-19",
+      "user_id": "u_warehouse_08"
+    },
+    {
+      "doc_no": "7000001291",
+      "material_id": "MAT-1003",
+      "movement_type": "601",
+      "quantity": 200,
+      "posting_date": "2026-01-21",
+      "user_id": "u_warehouse_07"
+    },
+    {
+      "doc_no": "7000001337",
+      "material_id": "MAT-1011",
+      "movement_type": "101",
+      "quantity": 1000,
+      "posting_date": "2026-01-14",
+      "user_id": "u_warehouse_01"
+    },
+    {
+      "doc_no": "7000001255",
+      "material_id": "MAT-1050",
+      "movement_type": "411",
+      "quantity": 50,
+      "posting_date": "2026-02-05",
+      "user_id": "u_warehouse_05"
+    },
+    {
+      "doc_no": "7000001089",
+      "material_id": "MAT-1012",
+      "movement_type": "702",
+      "quantity": 25,
+      "posting_date": "2026-03-31",
+      "user_id": "u_warehouse_05"
+    },
+    {
+      "doc_no": "7000001194",
+      "material_id": "MAT-1027",
+      "movement_type": "351",
+      "quantity": 25,
+      "posting_date": "2026-02-18",
+      "user_id": "u_warehouse_05"
+    },
+    {
+      "doc_no": "7000001009",
+      "material_id": "MAT-1003",
+      "movement_type": "562",
+      "quantity": 50,
+      "posting_date": "2026-02-01",
+      "user_id": "u_warehouse_03"
+    },
+    {
+      "doc_no": "7000001295",
+      "material_id": "MAT-1036",
+      "movement_type": "411",
+      "quantity": 500,
+      "posting_date": "2026-02-23",
+      "user_id": "u_warehouse_05"
+    },
+    {
+      "doc_no": "7000001196",
+      "material_id": "MAT-1009",
+      "movement_type": "351",
+      "quantity": 200,
+      "posting_date": "2026-03-22",
+      "user_id": "u_warehouse_04"
+    },
+    {
+      "doc_no": "7000001166",
+      "material_id": "MAT-1010",
+      "movement_type": "351",
+      "quantity": 50,
+      "posting_date": "2026-02-16",
+      "user_id": "u_warehouse_03"
+    },
+    {
+      "doc_no": "7000001313",
+      "material_id": "MAT-1026",
+      "movement_type": "261",
+      "quantity": 500,
+      "posting_date": "2026-02-05",
+      "user_id": "u_warehouse_06"
+    },
+    {
+      "doc_no": "7000001137",
+      "material_id": "MAT-1018",
+      "movement_type": "351",
+      "quantity": 500,
+      "posting_date": "2026-01-26",
+      "user_id": "u_warehouse_04"
+    },
+    {
+      "doc_no": "7000001308",
+      "material_id": "MAT-1005",
+      "movement_type": "411",
+      "quantity": 200,
+      "posting_date": "2026-04-07",
+      "user_id": "u_warehouse_05"
+    },
+    {
+      "doc_no": "7000001226",
+      "material_id": "MAT-1058",
+      "movement_type": "411",
+      "quantity": 500,
+      "posting_date": "2026-01-15",
+      "user_id": "u_warehouse_02"
+    },
+    {
+      "doc_no": "7000001304",
+      "material_id": "MAT-1050",
+      "movement_type": "351",
+      "quantity": 10,
+      "posting_date": "2026-01-07",
+      "user_id": "u_warehouse_07"
+    },
+    {
+      "doc_no": "7000001052",
+      "material_id": "MAT-1008",
+      "movement_type": "702",
+      "quantity": 50,
+      "posting_date": "2026-01-22",
+      "user_id": "u_warehouse_06"
+    },
+    {
+      "doc_no": "7000001310",
+      "material_id": "MAT-1010",
+      "movement_type": "411",
+      "quantity": 200,
+      "posting_date": "2026-03-03",
+      "user_id": "u_warehouse_04"
+    },
+    {
+      "doc_no": "7000001223",
+      "material_id": "MAT-1039",
+      "movement_type": "261",
+      "quantity": 100,
+      "posting_date": "2026-01-07",
+      "user_id": "u_warehouse_04"
+    },
+    {
+      "doc_no": "7000001061",
+      "material_id": "MAT-1009",
+      "movement_type": "701",
+      "quantity": 25,
+      "posting_date": "2026-02-13",
+      "user_id": "u_warehouse_04"
+    },
+    {
+      "doc_no": "7000001065",
+      "material_id": "MAT-1010",
+      "movement_type": "701",
+      "quantity": 25,
+      "posting_date": "2026-02-25",
+      "user_id": "u_warehouse_06"
+    },
+    {
+      "doc_no": "7000001057",
+      "material_id": "MAT-1009",
+      "movement_type": "309",
+      "quantity": 10,
+      "posting_date": "2026-04-12",
+      "user_id": "u_warehouse_05"
+    },
+    {
+      "doc_no": "7000001303",
+      "material_id": "MAT-1003",
+      "movement_type": "261",
+      "quantity": 10,
+      "posting_date": "2026-04-04",
+      "user_id": "u_warehouse_06"
+    },
+    {
+      "doc_no": "7000001235",
+      "material_id": "MAT-1021",
+      "movement_type": "411",
+      "quantity": 500,
+      "posting_date": "2026-03-02",
+      "user_id": "u_warehouse_01"
+    },
+    {
+      "doc_no": "7000001037",
+      "material_id": "MAT-1007",
+      "movement_type": "701",
+      "quantity": 500,
+      "posting_date": "2026-02-21",
+      "user_id": "u_warehouse_01"
+    },
+    {
+      "doc_no": "7000001170",
+      "material_id": "MAT-1026",
+      "movement_type": "411",
+      "quantity": 500,
+      "posting_date": "2026-01-19",
+      "user_id": "u_warehouse_07"
+    },
+    {
+      "doc_no": "7000001288",
+      "material_id": "MAT-1006",
+      "movement_type": "351",
+      "quantity": 500,
+      "posting_date": "2026-04-16",
+      "user_id": "u_warehouse_03"
+    },
+    {
+      "doc_no": "7000001260",
+      "material_id": "MAT-1042",
+      "movement_type": "101",
+      "quantity": 500,
+      "posting_date": "2026-03-01",
+      "user_id": "u_warehouse_01"
+    },
+    {
+      "doc_no": "7000001230",
+      "material_id": "MAT-1029",
+      "movement_type": "261",
+      "quantity": 10,
+      "posting_date": "2026-01-01",
+      "user_id": "u_warehouse_02"
+    },
+    {
+      "doc_no": "7000001305",
+      "material_id": "MAT-1042",
+      "movement_type": "261",
+      "quantity": 10,
+      "posting_date": "2026-04-20",
+      "user_id": "u_warehouse_02"
+    },
+    {
+      "doc_no": "7000001315",
+      "material_id": "MAT-1008",
+      "movement_type": "351",
+      "quantity": 10,
+      "posting_date": "2026-03-23",
+      "user_id": "u_warehouse_06"
+    },
+    {
+      "doc_no": "7000001120",
+      "material_id": "MAT-1025",
+      "movement_type": "702",
+      "quantity": 500,
+      "posting_date": "2026-01-23",
+      "user_id": "u_warehouse_05"
+    },
+    {
+      "doc_no": "7000001099",
+      "material_id": "MAT-1013",
+      "movement_type": "562",
+      "quantity": 100,
+      "posting_date": "2026-01-26",
+      "user_id": "u_warehouse_06"
+    },
+    {
+      "doc_no": "7000001096",
+      "material_id": "MAT-1012",
+      "movement_type": "561",
+      "quantity": 500,
+      "posting_date": "2026-01-13",
+      "user_id": "u_warehouse_07"
+    },
+    {
+      "doc_no": "7000001033",
+      "material_id": "MAT-1007",
+      "movement_type": "701",
+      "quantity": 200,
+      "posting_date": "2026-02-17",
+      "user_id": "u_warehouse_06"
+    },
+    {
+      "doc_no": "7000001350",
+      "material_id": "MAT-1011",
+      "movement_type": "411",
+      "quantity": 25,
+      "posting_date": "2026-02-19",
+      "user_id": "u_warehouse_06"
+    },
+    {
+      "doc_no": "7000001017",
+      "material_id": "MAT-1004",
+      "movement_type": "702",
+      "quantity": 100,
+      "posting_date": "2026-01-09",
+      "user_id": "u_warehouse_02"
+    },
+    {
+      "doc_no": "7000001362",
+      "material_id": "MAT-1003",
+      "movement_type": "101",
+      "quantity": 1000,
+      "posting_date": "2026-04-14",
+      "user_id": "u_warehouse_02"
+    },
+    {
+      "doc_no": "7000001270",
+      "material_id": "MAT-1044",
+      "movement_type": "411",
+      "quantity": 25,
+      "posting_date": "2026-03-21",
+      "user_id": "u_warehouse_05"
+    },
+    {
+      "doc_no": "7000001152",
+      "material_id": "MAT-1048",
+      "movement_type": "601",
+      "quantity": 50,
+      "posting_date": "2026-04-14",
+      "user_id": "u_warehouse_02"
+    },
+    {
+      "doc_no": "7000001173",
+      "material_id": "MAT-1008",
+      "movement_type": "261",
+      "quantity": 500,
+      "posting_date": "2026-01-02",
+      "user_id": "u_warehouse_05"
+    },
+    {
+      "doc_no": "7000001004",
+      "material_id": "MAT-1001",
+      "movement_type": "309",
+      "quantity": 200,
+      "posting_date": "2026-03-15",
+      "user_id": "u_warehouse_04"
+    },
+    {
+      "doc_no": "7000001206",
+      "material_id": "MAT-1042",
+      "movement_type": "411",
+      "quantity": 25,
+      "posting_date": "2026-03-22",
+      "user_id": "u_warehouse_05"
+    },
+    {
+      "doc_no": "7000001012",
+      "material_id": "MAT-1003",
+      "movement_type": "562",
+      "quantity": 200,
+      "posting_date": "2026-01-10",
+      "user_id": "u_warehouse_02"
+    },
+    {
+      "doc_no": "7000001022",
+      "material_id": "MAT-1005",
+      "movement_type": "309",
+      "quantity": 100,
+      "posting_date": "2026-02-15",
+      "user_id": "u_warehouse_03"
+    },
+    {
+      "doc_no": "7000001058",
+      "material_id": "MAT-1009",
+      "movement_type": "701",
+      "quantity": 50,
+      "posting_date": "2026-01-25",
+      "user_id": "u_warehouse_06"
+    },
+    {
+      "doc_no": "7000001387",
+      "material_id": "MAT-1038",
+      "movement_type": "261",
+      "quantity": 25,
+      "posting_date": "2026-02-12",
+      "user_id": "u_warehouse_08"
+    },
+    {
+      "doc_no": "7000001027",
+      "material_id": "MAT-1006",
+      "movement_type": "561",
+      "quantity": 100,
+      "posting_date": "2026-04-21",
+      "user_id": "u_warehouse_05"
+    },
+    {
+      "doc_no": "7000001367",
+      "material_id": "MAT-1059",
+      "movement_type": "411",
+      "quantity": 1000,
+      "posting_date": "2026-03-19",
+      "user_id": "u_warehouse_08"
+    },
+    {
+      "doc_no": "7000001203",
+      "material_id": "MAT-1034",
+      "movement_type": "101",
+      "quantity": 1000,
+      "posting_date": "2026-04-03",
+      "user_id": "u_warehouse_08"
+    },
+    {
+      "doc_no": "7000001352",
+      "material_id": "MAT-1031",
+      "movement_type": "351",
+      "quantity": 500,
+      "posting_date": "2026-01-01",
+      "user_id": "u_warehouse_01"
+    },
+    {
+      "doc_no": "7000001259",
+      "material_id": "MAT-1005",
+      "movement_type": "601",
+      "quantity": 50,
+      "posting_date": "2026-02-01",
+      "user_id": "u_warehouse_04"
+    },
+    {
+      "doc_no": "7000001085",
+      "material_id": "MAT-1011",
+      "movement_type": "561",
+      "quantity": 50,
+      "posting_date": "2026-01-06",
+      "user_id": "u_warehouse_02"
+    },
+    {
+      "doc_no": "7000001048",
+      "material_id": "MAT-1008",
+      "movement_type": "701",
+      "quantity": 500,
+      "posting_date": "2026-01-21",
+      "user_id": "u_warehouse_01"
+    },
+    {
+      "doc_no": "7000001078",
+      "material_id": "MAT-1011",
+      "movement_type": "701",
+      "quantity": 500,
+      "posting_date": "2026-03-16",
+      "user_id": "u_warehouse_07"
+    },
+    {
+      "doc_no": "7000001146",
+      "material_id": "MAT-1053",
+      "movement_type": "351",
+      "quantity": 1000,
+      "posting_date": "2026-04-02",
+      "user_id": "u_warehouse_04"
+    },
+    {
+      "doc_no": "7000001122",
+      "material_id": "MAT-1026",
+      "movement_type": "309",
+      "quantity": 10,
+      "posting_date": "2026-04-04",
+      "user_id": "u_warehouse_04"
+    },
+    {
+      "doc_no": "7000001157",
+      "material_id": "MAT-1022",
+      "movement_type": "411",
+      "quantity": 500,
+      "posting_date": "2026-04-06",
+      "user_id": "u_warehouse_05"
+    },
+    {
+      "doc_no": "7000001261",
+      "material_id": "MAT-1007",
+      "movement_type": "101",
+      "quantity": 100,
+      "posting_date": "2026-04-15",
+      "user_id": "u_warehouse_04"
+    },
+    {
+      "doc_no": "7000001252",
+      "material_id": "MAT-1014",
+      "movement_type": "101",
+      "quantity": 100,
+      "posting_date": "2026-03-05",
+      "user_id": "u_warehouse_08"
+    },
+    {
+      "doc_no": "7000001060",
+      "material_id": "MAT-1009",
+      "movement_type": "309",
+      "quantity": 25,
+      "posting_date": "2026-01-14",
+      "user_id": "u_warehouse_04"
+    },
+    {
+      "doc_no": "7000001326",
+      "material_id": "MAT-1002",
+      "movement_type": "101",
+      "quantity": 10,
+      "posting_date": "2026-03-14",
+      "user_id": "u_warehouse_06"
+    },
+    {
+      "doc_no": "7000001105",
+      "material_id": "MAT-1017",
+      "movement_type": "309",
+      "quantity": 10,
+      "posting_date": "2026-02-03",
+      "user_id": "u_warehouse_05"
+    },
+    {
+      "doc_no": "7000001000",
+      "material_id": "MAT-1001",
+      "movement_type": "309",
+      "quantity": 200,
+      "posting_date": "2026-03-16",
+      "user_id": "u_warehouse_07"
+    },
+    {
+      "doc_no": "7000001132",
+      "material_id": "MAT-1045",
+      "movement_type": "411",
+      "quantity": 10,
+      "posting_date": "2026-02-28",
+      "user_id": "u_warehouse_03"
+    },
+    {
+      "doc_no": "7000001392",
+      "material_id": "MAT-1047",
+      "movement_type": "101",
+      "quantity": 25,
+      "posting_date": "2026-03-26",
+      "user_id": "u_warehouse_02"
+    },
+    {
+      "doc_no": "7000001272",
+      "material_id": "MAT-1036",
+      "movement_type": "601",
+      "quantity": 10,
+      "posting_date": "2026-02-22",
+      "user_id": "u_warehouse_02"
+    },
+    {
+      "doc_no": "7000001302",
+      "material_id": "MAT-1024",
+      "movement_type": "101",
+      "quantity": 1000,
+      "posting_date": "2026-02-26",
+      "user_id": "u_warehouse_01"
+    },
+    {
+      "doc_no": "7000001073",
+      "material_id": "MAT-1010",
+      "movement_type": "702",
+      "quantity": 500,
+      "posting_date": "2026-01-18",
+      "user_id": "u_warehouse_07"
+    },
+    {
+      "doc_no": "7000001069",
+      "material_id": "MAT-1010",
+      "movement_type": "702",
+      "quantity": 100,
+      "posting_date": "2026-04-14",
+      "user_id": "u_warehouse_03"
+    },
+    {
+      "doc_no": "7000001393",
+      "material_id": "MAT-1013",
+      "movement_type": "601",
+      "quantity": 25,
+      "posting_date": "2026-01-19",
+      "user_id": "u_warehouse_05"
+    },
+    {
+      "doc_no": "7000001070",
+      "material_id": "MAT-1010",
+      "movement_type": "702",
+      "quantity": 200,
+      "posting_date": "2026-03-02",
+      "user_id": "u_warehouse_06"
+    },
+    {
+      "doc_no": "7000001158",
+      "material_id": "MAT-1040",
+      "movement_type": "351",
+      "quantity": 25,
+      "posting_date": "2026-01-02",
+      "user_id": "u_warehouse_08"
+    },
+    {
+      "doc_no": "7000001327",
+      "material_id": "MAT-1020",
+      "movement_type": "101",
+      "quantity": 200,
+      "posting_date": "2026-02-15",
+      "user_id": "u_warehouse_04"
+    },
+    {
+      "doc_no": "7000001316",
+      "material_id": "MAT-1056",
+      "movement_type": "601",
+      "quantity": 200,
+      "posting_date": "2026-03-08",
+      "user_id": "u_warehouse_02"
+    },
+    {
+      "doc_no": "7000001100",
+      "material_id": "MAT-1014",
+      "movement_type": "562",
+      "quantity": 10,
+      "posting_date": "2026-04-03",
+      "user_id": "u_warehouse_06"
+    },
+    {
+      "doc_no": "7000001208",
+      "material_id": "MAT-1007",
+      "movement_type": "101",
+      "quantity": 50,
+      "posting_date": "2026-03-09",
+      "user_id": "u_warehouse_04"
+    },
+    {
+      "doc_no": "7000001081",
+      "material_id": "MAT-1011",
+      "movement_type": "561",
+      "quantity": 200,
+      "posting_date": "2026-01-01",
+      "user_id": "u_warehouse_03"
+    },
+    {
+      "doc_no": "7000001165",
+      "material_id": "MAT-1014",
+      "movement_type": "261",
+      "quantity": 10,
+      "posting_date": "2026-03-16",
+      "user_id": "u_warehouse_02"
+    },
+    {
+      "doc_no": "7000001016",
+      "material_id": "MAT-1004",
+      "movement_type": "562",
+      "quantity": 500,
+      "posting_date": "2026-02-14",
+      "user_id": "u_warehouse_08"
+    },
+    {
+      "doc_no": "7000001301",
+      "material_id": "MAT-1007",
+      "movement_type": "101",
+      "quantity": 25,
+      "posting_date": "2026-02-15",
+      "user_id": "u_warehouse_07"
+    },
+    {
+      "doc_no": "7000001091",
+      "material_id": "MAT-1012",
+      "movement_type": "561",
+      "quantity": 100,
+      "posting_date": "2026-01-16",
+      "user_id": "u_warehouse_07"
+    },
+    {
+      "doc_no": "7000001040",
+      "material_id": "MAT-1008",
+      "movement_type": "309",
+      "quantity": 10,
+      "posting_date": "2026-03-14",
+      "user_id": "u_warehouse_03"
+    },
+    {
+      "doc_no": "7000001264",
+      "material_id": "MAT-1060",
+      "movement_type": "101",
+      "quantity": 50,
+      "posting_date": "2026-03-07",
+      "user_id": "u_warehouse_03"
+    },
+    {
+      "doc_no": "7000001372",
+      "material_id": "MAT-1011",
+      "movement_type": "601",
+      "quantity": 10,
+      "posting_date": "2026-03-09",
+      "user_id": "u_warehouse_04"
+    },
+    {
+      "doc_no": "7000001015",
+      "material_id": "MAT-1004",
+      "movement_type": "309",
+      "quantity": 200,
+      "posting_date": "2026-03-15",
+      "user_id": "u_warehouse_06"
+    },
+    {
+      "doc_no": "7000001101",
+      "material_id": "MAT-1014",
+      "movement_type": "309",
+      "quantity": 50,
+      "posting_date": "2026-03-12",
+      "user_id": "u_warehouse_08"
+    },
+    {
+      "doc_no": "7000001345",
+      "material_id": "MAT-1042",
+      "movement_type": "101",
+      "quantity": 10,
+      "posting_date": "2026-02-12",
+      "user_id": "u_warehouse_05"
+    },
+    {
+      "doc_no": "7000001244",
+      "material_id": "MAT-1053",
+      "movement_type": "601",
+      "quantity": 25,
+      "posting_date": "2026-03-05",
+      "user_id": "u_warehouse_03"
+    },
+    {
+      "doc_no": "7000001026",
+      "material_id": "MAT-1006",
+      "movement_type": "561",
+      "quantity": 100,
+      "posting_date": "2026-02-21",
+      "user_id": "u_warehouse_05"
+    },
+    {
+      "doc_no": "7000001044",
+      "material_id": "MAT-1008",
+      "movement_type": "702",
+      "quantity": 50,
+      "posting_date": "2026-03-02",
+      "user_id": "u_warehouse_02"
+    },
+    {
+      "doc_no": "7000001381",
+      "material_id": "MAT-1057",
+      "movement_type": "101",
+      "quantity": 50,
+      "posting_date": "2026-01-27",
+      "user_id": "u_warehouse_05"
+    },
+    {
+      "doc_no": "7000001324",
+      "material_id": "MAT-1027",
+      "movement_type": "351",
+      "quantity": 50,
+      "posting_date": "2026-01-07",
+      "user_id": "u_warehouse_03"
+    },
+    {
+      "doc_no": "7000001034",
+      "material_id": "MAT-1007",
+      "movement_type": "561",
+      "quantity": 500,
+      "posting_date": "2026-04-20",
+      "user_id": "u_warehouse_01"
+    },
+    {
+      "doc_no": "7000001360",
+      "material_id": "MAT-1053",
+      "movement_type": "351",
+      "quantity": 500,
+      "posting_date": "2026-01-09",
+      "user_id": "u_warehouse_07"
+    },
+    {
+      "doc_no": "7000001174",
+      "material_id": "MAT-1017",
+      "movement_type": "411",
+      "quantity": 10,
+      "posting_date": "2026-02-20",
+      "user_id": "u_warehouse_07"
+    },
+    {
+      "doc_no": "7000001378",
+      "material_id": "MAT-1041",
+      "movement_type": "101",
+      "quantity": 100,
+      "posting_date": "2026-04-11",
+      "user_id": "u_warehouse_02"
+    },
+    {
+      "doc_no": "7000001311",
+      "material_id": "MAT-1038",
+      "movement_type": "411",
+      "quantity": 200,
+      "posting_date": "2026-03-06",
+      "user_id": "u_warehouse_04"
+    },
+    {
+      "doc_no": "7000001090",
+      "material_id": "MAT-1012",
+      "movement_type": "702",
+      "quantity": 25,
+      "posting_date": "2026-04-18",
+      "user_id": "u_warehouse_08"
+    },
+    {
+      "doc_no": "7000001388",
+      "material_id": "MAT-1042",
+      "movement_type": "261",
+      "quantity": 200,
+      "posting_date": "2026-01-25",
+      "user_id": "u_warehouse_05"
+    },
+    {
+      "doc_no": "7000001280",
+      "material_id": "MAT-1008",
+      "movement_type": "101",
+      "quantity": 100,
+      "posting_date": "2026-03-15",
+      "user_id": "u_warehouse_06"
+    },
+    {
+      "doc_no": "7000001013",
+      "material_id": "MAT-1003",
+      "movement_type": "702",
+      "quantity": 100,
+      "posting_date": "2026-01-22",
+      "user_id": "u_warehouse_06"
+    },
+    {
+      "doc_no": "7000001228",
+      "material_id": "MAT-1042",
+      "movement_type": "351",
+      "quantity": 500,
+      "posting_date": "2026-03-01",
+      "user_id": "u_warehouse_01"
+    },
+    {
+      "doc_no": "7000001287",
+      "material_id": "MAT-1059",
+      "movement_type": "601",
+      "quantity": 50,
+      "posting_date": "2026-01-07",
+      "user_id": "u_warehouse_07"
+    },
+    {
+      "doc_no": "7000001141",
+      "material_id": "MAT-1006",
+      "movement_type": "351",
+      "quantity": 200,
+      "posting_date": "2026-04-20",
+      "user_id": "u_warehouse_03"
+    },
+    {
+      "doc_no": "7000001332",
+      "material_id": "MAT-1041",
+      "movement_type": "261",
+      "quantity": 1000,
+      "posting_date": "2026-03-27",
+      "user_id": "u_warehouse_05"
+    },
+    {
+      "doc_no": "7000001389",
+      "material_id": "MAT-1020",
+      "movement_type": "351",
+      "quantity": 25,
+      "posting_date": "2026-04-03",
+      "user_id": "u_warehouse_03"
+    },
+    {
+      "doc_no": "7000001299",
+      "material_id": "MAT-1029",
+      "movement_type": "351",
+      "quantity": 1000,
+      "posting_date": "2026-04-15",
+      "user_id": "u_warehouse_08"
+    },
+    {
+      "doc_no": "7000001134",
+      "material_id": "MAT-1024",
+      "movement_type": "411",
+      "quantity": 200,
+      "posting_date": "2026-02-11",
+      "user_id": "u_warehouse_04"
+    },
+    {
+      "doc_no": "7000001184",
+      "material_id": "MAT-1011",
+      "movement_type": "601",
+      "quantity": 100,
+      "posting_date": "2026-02-13",
+      "user_id": "u_warehouse_05"
+    },
+    {
+      "doc_no": "7000001087",
+      "material_id": "MAT-1011",
+      "movement_type": "309",
+      "quantity": 100,
+      "posting_date": "2026-02-11",
+      "user_id": "u_warehouse_04"
+    },
+    {
+      "doc_no": "7000001342",
+      "material_id": "MAT-1046",
+      "movement_type": "351",
+      "quantity": 10,
+      "posting_date": "2026-02-18",
+      "user_id": "u_warehouse_07"
+    },
+    {
+      "doc_no": "7000001172",
+      "material_id": "MAT-1001",
+      "movement_type": "411",
+      "quantity": 1000,
+      "posting_date": "2026-02-13",
+      "user_id": "u_warehouse_07"
+    },
+    {
+      "doc_no": "7000001086",
+      "material_id": "MAT-1011",
+      "movement_type": "702",
+      "quantity": 100,
+      "posting_date": "2026-03-13",
+      "user_id": "u_warehouse_01"
+    },
+    {
+      "doc_no": "7000001032",
+      "material_id": "MAT-1007",
+      "movement_type": "562",
+      "quantity": 50,
+      "posting_date": "2026-01-01",
+      "user_id": "u_warehouse_03"
+    },
+    {
+      "doc_no": "7000001106",
+      "material_id": "MAT-1018",
+      "movement_type": "309",
+      "quantity": 25,
+      "posting_date": "2026-02-04",
+      "user_id": "u_warehouse_03"
+    },
+    {
+      "doc_no": "7000001197",
+      "material_id": "MAT-1006",
+      "movement_type": "411",
+      "quantity": 25,
+      "posting_date": "2026-02-19",
+      "user_id": "u_warehouse_07"
+    },
+    {
+      "doc_no": "7000001320",
+      "material_id": "MAT-1029",
+      "movement_type": "261",
+      "quantity": 25,
+      "posting_date": "2026-03-20",
+      "user_id": "u_warehouse_01"
+    },
+    {
+      "doc_no": "7000001365",
+      "material_id": "MAT-1028",
+      "movement_type": "411",
+      "quantity": 10,
+      "posting_date": "2026-02-14",
+      "user_id": "u_warehouse_05"
+    },
+    {
+      "doc_no": "7000001396",
+      "material_id": "MAT-1030",
+      "movement_type": "101",
+      "quantity": 10,
+      "posting_date": "2026-02-21",
+      "user_id": "u_warehouse_07"
+    },
+    {
+      "doc_no": "7000001279",
+      "material_id": "MAT-1014",
+      "movement_type": "101",
+      "quantity": 100,
+      "posting_date": "2026-01-21",
+      "user_id": "u_warehouse_07"
+    },
+    {
+      "doc_no": "7000001130",
+      "material_id": "MAT-1028",
+      "movement_type": "261",
+      "quantity": 10,
+      "posting_date": "2026-01-11",
+      "user_id": "u_warehouse_07"
+    },
+    {
+      "doc_no": "7000001024",
+      "material_id": "MAT-1005",
+      "movement_type": "561",
+      "quantity": 50,
+      "posting_date": "2026-01-17",
+      "user_id": "u_warehouse_04"
+    },
+    {
+      "doc_no": "7000001286",
+      "material_id": "MAT-1049",
+      "movement_type": "261",
+      "quantity": 50,
+      "posting_date": "2026-01-17",
+      "user_id": "u_warehouse_01"
+    },
+    {
+      "doc_no": "7000001390",
+      "material_id": "MAT-1016",
+      "movement_type": "411",
+      "quantity": 200,
+      "posting_date": "2026-03-08",
+      "user_id": "u_warehouse_06"
+    },
+    {
+      "doc_no": "7000001339",
+      "material_id": "MAT-1027",
+      "movement_type": "261",
+      "quantity": 200,
+      "posting_date": "2026-03-19",
+      "user_id": "u_warehouse_07"
+    },
+    {
+      "doc_no": "7000001007",
+      "material_id": "MAT-1002",
+      "movement_type": "701",
+      "quantity": 500,
+      "posting_date": "2026-03-10",
+      "user_id": "u_warehouse_07"
+    },
+    {
+      "doc_no": "7000001366",
+      "material_id": "MAT-1060",
+      "movement_type": "411",
+      "quantity": 10,
+      "posting_date": "2026-04-02",
+      "user_id": "u_warehouse_06"
+    },
+    {
+      "doc_no": "7000001046",
+      "material_id": "MAT-1008",
+      "movement_type": "701",
+      "quantity": 50,
+      "posting_date": "2026-01-11",
+      "user_id": "u_warehouse_03"
+    },
+    {
+      "doc_no": "7000001374",
+      "material_id": "MAT-1007",
+      "movement_type": "601",
+      "quantity": 500,
+      "posting_date": "2026-04-12",
+      "user_id": "u_warehouse_03"
+    },
+    {
+      "doc_no": "7000001187",
+      "material_id": "MAT-1008",
+      "movement_type": "261",
+      "quantity": 500,
+      "posting_date": "2026-01-21",
+      "user_id": "u_warehouse_02"
+    },
+    {
+      "doc_no": "7000001109",
+      "material_id": "MAT-1019",
+      "movement_type": "562",
+      "quantity": 10,
+      "posting_date": "2026-02-05",
+      "user_id": "u_warehouse_01"
+    },
+    {
+      "doc_no": "7000001346",
+      "material_id": "MAT-1046",
+      "movement_type": "101",
+      "quantity": 50,
+      "posting_date": "2026-03-23",
+      "user_id": "u_warehouse_07"
+    },
+    {
+      "doc_no": "7000001234",
+      "material_id": "MAT-1013",
+      "movement_type": "411",
+      "quantity": 200,
+      "posting_date": "2026-02-27",
+      "user_id": "u_warehouse_04"
+    },
+    {
+      "doc_no": "7000001229",
+      "material_id": "MAT-1020",
+      "movement_type": "601",
+      "quantity": 1000,
+      "posting_date": "2026-02-17",
+      "user_id": "u_warehouse_06"
+    },
+    {
+      "doc_no": "7000001317",
+      "material_id": "MAT-1017",
+      "movement_type": "351",
+      "quantity": 500,
+      "posting_date": "2026-04-20",
+      "user_id": "u_warehouse_07"
+    },
+    {
+      "doc_no": "7000001266",
+      "material_id": "MAT-1007",
+      "movement_type": "351",
+      "quantity": 500,
+      "posting_date": "2026-03-21",
+      "user_id": "u_warehouse_06"
+    },
+    {
+      "doc_no": "7000001179",
+      "material_id": "MAT-1033",
+      "movement_type": "411",
+      "quantity": 25,
+      "posting_date": "2026-04-09",
+      "user_id": "u_warehouse_06"
+    },
+    {
+      "doc_no": "7000001386",
+      "material_id": "MAT-1011",
+      "movement_type": "601",
+      "quantity": 100,
+      "posting_date": "2026-03-30",
+      "user_id": "u_warehouse_05"
+    },
+    {
+      "doc_no": "7000001041",
+      "material_id": "MAT-1008",
+      "movement_type": "702",
+      "quantity": 10,
+      "posting_date": "2026-02-16",
+      "user_id": "u_warehouse_01"
+    },
+    {
+      "doc_no": "7000001329",
+      "material_id": "MAT-1014",
+      "movement_type": "411",
+      "quantity": 200,
+      "posting_date": "2026-04-17",
+      "user_id": "u_warehouse_08"
+    },
+    {
+      "doc_no": "7000001153",
+      "material_id": "MAT-1055",
+      "movement_type": "411",
+      "quantity": 25,
+      "posting_date": "2026-04-04",
+      "user_id": "u_warehouse_04"
+    },
+    {
+      "doc_no": "7000001138",
+      "material_id": "MAT-1033",
+      "movement_type": "101",
+      "quantity": 10,
+      "posting_date": "2026-02-03",
+      "user_id": "u_warehouse_02"
+    },
+    {
+      "doc_no": "7000001349",
+      "material_id": "MAT-1058",
+      "movement_type": "261",
+      "quantity": 1000,
+      "posting_date": "2026-04-06",
+      "user_id": "u_warehouse_04"
+    },
+    {
+      "doc_no": "7000001127",
+      "material_id": "MAT-1015",
+      "movement_type": "411",
+      "quantity": 25,
+      "posting_date": "2026-04-17",
+      "user_id": "u_warehouse_03"
+    },
+    {
+      "doc_no": "7000001364",
+      "material_id": "MAT-1007",
+      "movement_type": "261",
+      "quantity": 50,
+      "posting_date": "2026-02-10",
+      "user_id": "u_warehouse_06"
+    },
+    {
+      "doc_no": "7000001359",
+      "material_id": "MAT-1055",
+      "movement_type": "351",
+      "quantity": 1000,
+      "posting_date": "2026-02-16",
+      "user_id": "u_warehouse_04"
+    },
+    {
+      "doc_no": "7000001224",
+      "material_id": "MAT-1002",
+      "movement_type": "351",
+      "quantity": 25,
+      "posting_date": "2026-02-23",
+      "user_id": "u_warehouse_01"
+    },
+    {
+      "doc_no": "7000001119",
+      "material_id": "MAT-1025",
+      "movement_type": "702",
+      "quantity": 25,
+      "posting_date": "2026-02-07",
+      "user_id": "u_warehouse_08"
+    },
+    {
+      "doc_no": "7000001123",
+      "material_id": "MAT-1026",
+      "movement_type": "702",
+      "quantity": 100,
+      "posting_date": "2026-02-01",
+      "user_id": "u_warehouse_08"
+    },
+    {
+      "doc_no": "7000001249",
+      "material_id": "MAT-1016",
+      "movement_type": "601",
+      "quantity": 10,
+      "posting_date": "2026-03-25",
+      "user_id": "u_warehouse_01"
+    },
+    {
+      "doc_no": "7000001190",
+      "material_id": "MAT-1009",
+      "movement_type": "351",
+      "quantity": 25,
+      "posting_date": "2026-02-01",
+      "user_id": "u_warehouse_02"
+    },
+    {
+      "doc_no": "7000001343",
+      "material_id": "MAT-1048",
+      "movement_type": "601",
+      "quantity": 10,
+      "posting_date": "2026-04-05",
+      "user_id": "u_warehouse_08"
+    },
+    {
+      "doc_no": "7000001121",
+      "material_id": "MAT-1026",
+      "movement_type": "562",
+      "quantity": 10,
+      "posting_date": "2026-02-02",
+      "user_id": "u_warehouse_01"
+    },
+    {
+      "doc_no": "7000001242",
+      "material_id": "MAT-1002",
+      "movement_type": "261",
+      "quantity": 10,
+      "posting_date": "2026-03-02",
+      "user_id": "u_warehouse_08"
+    },
+    {
+      "doc_no": "7000001222",
+      "material_id": "MAT-1058",
+      "movement_type": "261",
+      "quantity": 100,
+      "posting_date": "2026-02-23",
+      "user_id": "u_warehouse_01"
+    },
+    {
+      "doc_no": "7000001314",
+      "material_id": "MAT-1058",
+      "movement_type": "601",
+      "quantity": 25,
+      "posting_date": "2026-04-12",
+      "user_id": "u_warehouse_05"
+    },
+    {
+      "doc_no": "7000001067",
+      "material_id": "MAT-1010",
+      "movement_type": "701",
+      "quantity": 500,
+      "posting_date": "2026-01-11",
+      "user_id": "u_warehouse_03"
+    },
+    {
+      "doc_no": "7000001030",
+      "material_id": "MAT-1006",
+      "movement_type": "561",
+      "quantity": 25,
+      "posting_date": "2026-03-26",
+      "user_id": "u_warehouse_04"
+    },
+    {
+      "doc_no": "7000001142",
+      "material_id": "MAT-1043",
+      "movement_type": "351",
+      "quantity": 100,
+      "posting_date": "2026-04-08",
+      "user_id": "u_warehouse_06"
+    },
+    {
+      "doc_no": "7000001029",
+      "material_id": "MAT-1006",
+      "movement_type": "561",
+      "quantity": 25,
+      "posting_date": "2026-01-11",
+      "user_id": "u_warehouse_03"
+    },
+    {
+      "doc_no": "7000001292",
+      "material_id": "MAT-1023",
+      "movement_type": "101",
+      "quantity": 25,
+      "posting_date": "2026-02-01",
+      "user_id": "u_warehouse_04"
+    },
+    {
+      "doc_no": "7000001290",
+      "material_id": "MAT-1054",
+      "movement_type": "601",
+      "quantity": 25,
+      "posting_date": "2026-03-14",
+      "user_id": "u_warehouse_04"
+    },
+    {
+      "doc_no": "7000001319",
+      "material_id": "MAT-1037",
+      "movement_type": "261",
+      "quantity": 50,
+      "posting_date": "2026-02-12",
+      "user_id": "u_warehouse_02"
+    },
+    {
+      "doc_no": "7000001020",
+      "material_id": "MAT-1005",
+      "movement_type": "702",
+      "quantity": 500,
+      "posting_date": "2026-04-16",
+      "user_id": "u_warehouse_08"
+    },
+    {
+      "doc_no": "7000001274",
+      "material_id": "MAT-1041",
+      "movement_type": "351",
+      "quantity": 10,
+      "posting_date": "2026-03-25",
+      "user_id": "u_warehouse_03"
+    },
+    {
+      "doc_no": "7000001336",
+      "material_id": "MAT-1035",
+      "movement_type": "101",
+      "quantity": 100,
+      "posting_date": "2026-01-24",
+      "user_id": "u_warehouse_04"
+    },
+    {
+      "doc_no": "7000001177",
+      "material_id": "MAT-1007",
+      "movement_type": "101",
+      "quantity": 1000,
+      "posting_date": "2026-03-26",
+      "user_id": "u_warehouse_05"
+    },
+    {
+      "doc_no": "7000001126",
+      "material_id": "MAT-1027",
+      "movement_type": "702",
+      "quantity": 50,
+      "posting_date": "2026-03-30",
+      "user_id": "u_warehouse_04"
+    },
+    {
+      "doc_no": "7000001357",
+      "material_id": "MAT-1002",
+      "movement_type": "101",
+      "quantity": 25,
+      "posting_date": "2026-03-30",
+      "user_id": "u_warehouse_01"
+    },
+    {
+      "doc_no": "7000001076",
+      "material_id": "MAT-1010",
+      "movement_type": "702",
+      "quantity": 50,
+      "posting_date": "2026-02-03",
+      "user_id": "u_warehouse_07"
+    },
+    {
+      "doc_no": "7000001253",
+      "material_id": "MAT-1012",
+      "movement_type": "261",
+      "quantity": 25,
+      "posting_date": "2026-02-23",
+      "user_id": "u_warehouse_08"
+    },
+    {
+      "doc_no": "7000001201",
+      "material_id": "MAT-1060",
+      "movement_type": "351",
+      "quantity": 1000,
+      "posting_date": "2026-03-01",
+      "user_id": "u_warehouse_08"
+    },
+    {
+      "doc_no": "7000001306",
+      "material_id": "MAT-1040",
+      "movement_type": "101",
+      "quantity": 25,
+      "posting_date": "2026-01-17",
+      "user_id": "u_warehouse_08"
+    },
+    {
+      "doc_no": "7000001171",
+      "material_id": "MAT-1023",
+      "movement_type": "601",
+      "quantity": 50,
+      "posting_date": "2026-01-16",
+      "user_id": "u_warehouse_06"
+    },
+    {
+      "doc_no": "7000001023",
+      "material_id": "MAT-1005",
+      "movement_type": "702",
+      "quantity": 10,
+      "posting_date": "2026-03-05",
+      "user_id": "u_warehouse_01"
+    },
+    {
+      "doc_no": "7000001217",
+      "material_id": "MAT-1044",
+      "movement_type": "601",
+      "quantity": 25,
+      "posting_date": "2026-01-01",
+      "user_id": "u_warehouse_05"
+    },
+    {
+      "doc_no": "7000001227",
+      "material_id": "MAT-1060",
+      "movement_type": "261",
+      "quantity": 50,
+      "posting_date": "2026-01-25",
+      "user_id": "u_warehouse_03"
+    },
+    {
+      "doc_no": "7000001176",
+      "material_id": "MAT-1049",
+      "movement_type": "411",
+      "quantity": 1000,
+      "posting_date": "2026-01-07",
+      "user_id": "u_warehouse_05"
+    },
+    {
+      "doc_no": "7000001156",
+      "material_id": "MAT-1040",
+      "movement_type": "261",
+      "quantity": 10,
+      "posting_date": "2026-03-18",
+      "user_id": "u_warehouse_03"
+    },
+    {
+      "doc_no": "7000001042",
+      "material_id": "MAT-1008",
+      "movement_type": "309",
+      "quantity": 25,
+      "posting_date": "2026-03-20",
+      "user_id": "u_warehouse_07"
+    },
+    {
+      "doc_no": "7000001271",
+      "material_id": "MAT-1005",
+      "movement_type": "261",
+      "quantity": 10,
+      "posting_date": "2026-04-12",
+      "user_id": "u_warehouse_08"
+    },
+    {
+      "doc_no": "7000001202",
+      "material_id": "MAT-1016",
+      "movement_type": "101",
+      "quantity": 25,
+      "posting_date": "2026-01-20",
+      "user_id": "u_warehouse_03"
+    },
+    {
+      "doc_no": "7000001103",
+      "material_id": "MAT-1015",
+      "movement_type": "562",
+      "quantity": 200,
+      "posting_date": "2026-03-21",
+      "user_id": "u_warehouse_05"
+    },
+    {
+      "doc_no": "7000001363",
+      "material_id": "MAT-1053",
+      "movement_type": "411",
+      "quantity": 100,
+      "posting_date": "2026-01-13",
+      "user_id": "u_warehouse_03"
+    },
+    {
+      "doc_no": "7000001254",
+      "material_id": "MAT-1040",
+      "movement_type": "261",
+      "quantity": 500,
+      "posting_date": "2026-03-10",
+      "user_id": "u_warehouse_02"
+    },
+    {
+      "doc_no": "7000001353",
+      "material_id": "MAT-1028",
+      "movement_type": "261",
+      "quantity": 200,
+      "posting_date": "2026-02-09",
+      "user_id": "u_warehouse_04"
+    },
+    {
+      "doc_no": "7000001238",
+      "material_id": "MAT-1052",
+      "movement_type": "101",
+      "quantity": 50,
+      "posting_date": "2026-01-25",
+      "user_id": "u_warehouse_02"
+    },
+    {
+      "doc_no": "7000001281",
+      "material_id": "MAT-1030",
+      "movement_type": "261",
+      "quantity": 25,
+      "posting_date": "2026-01-02",
+      "user_id": "u_warehouse_01"
+    },
+    {
+      "doc_no": "7000001198",
+      "material_id": "MAT-1042",
+      "movement_type": "601",
+      "quantity": 100,
+      "posting_date": "2026-02-09",
+      "user_id": "u_warehouse_01"
+    },
+    {
+      "doc_no": "7000001047",
+      "material_id": "MAT-1008",
+      "movement_type": "309",
+      "quantity": 500,
+      "posting_date": "2026-02-13",
+      "user_id": "u_warehouse_05"
+    },
+    {
+      "doc_no": "7000001059",
+      "material_id": "MAT-1009",
+      "movement_type": "701",
+      "quantity": 500,
+      "posting_date": "2026-02-14",
+      "user_id": "u_warehouse_06"
+    },
+    {
+      "doc_no": "7000001251",
+      "material_id": "MAT-1028",
+      "movement_type": "101",
+      "quantity": 10,
+      "posting_date": "2026-02-03",
+      "user_id": "u_warehouse_02"
+    },
+    {
+      "doc_no": "7000001036",
+      "material_id": "MAT-1007",
+      "movement_type": "701",
+      "quantity": 100,
+      "posting_date": "2026-02-20",
+      "user_id": "u_warehouse_02"
+    },
+    {
+      "doc_no": "7000001148",
+      "material_id": "MAT-1007",
+      "movement_type": "601",
+      "quantity": 1000,
+      "posting_date": "2026-02-27",
+      "user_id": "u_warehouse_01"
+    },
+    {
+      "doc_no": "7000001025",
+      "material_id": "MAT-1005",
+      "movement_type": "701",
+      "quantity": 100,
+      "posting_date": "2026-03-05",
+      "user_id": "u_warehouse_02"
+    },
+    {
+      "doc_no": "7000001383",
+      "material_id": "MAT-1025",
+      "movement_type": "261",
+      "quantity": 100,
+      "posting_date": "2026-01-17",
+      "user_id": "u_warehouse_01"
+    },
+    {
+      "doc_no": "7000001275",
+      "material_id": "MAT-1026",
+      "movement_type": "411",
+      "quantity": 100,
+      "posting_date": "2026-02-06",
+      "user_id": "u_warehouse_05"
+    },
+    {
+      "doc_no": "7000001075",
+      "material_id": "MAT-1010",
+      "movement_type": "561",
+      "quantity": 50,
+      "posting_date": "2026-03-06",
+      "user_id": "u_warehouse_04"
+    },
+    {
+      "doc_no": "7000001340",
+      "material_id": "MAT-1053",
+      "movement_type": "351",
+      "quantity": 25,
+      "posting_date": "2026-03-07",
+      "user_id": "u_warehouse_05"
+    },
+    {
+      "doc_no": "7000001018",
+      "material_id": "MAT-1004",
+      "movement_type": "562",
+      "quantity": 100,
+      "posting_date": "2026-03-31",
+      "user_id": "u_warehouse_02"
+    },
+    {
+      "doc_no": "7000001053",
+      "material_id": "MAT-1008",
+      "movement_type": "561",
+      "quantity": 200,
+      "posting_date": "2026-03-11",
+      "user_id": "u_warehouse_06"
+    },
+    {
+      "doc_no": "7000001384",
+      "material_id": "MAT-1023",
+      "movement_type": "351",
+      "quantity": 50,
+      "posting_date": "2026-03-08",
+      "user_id": "u_warehouse_03"
+    },
+    {
+      "doc_no": "7000001168",
+      "material_id": "MAT-1015",
+      "movement_type": "601",
+      "quantity": 100,
+      "posting_date": "2026-02-20",
+      "user_id": "u_warehouse_01"
+    },
+    {
+      "doc_no": "7000001003",
+      "material_id": "MAT-1001",
+      "movement_type": "702",
+      "quantity": 50,
+      "posting_date": "2026-03-13",
+      "user_id": "u_warehouse_03"
+    },
+    {
+      "doc_no": "7000001149",
+      "material_id": "MAT-1041",
+      "movement_type": "101",
+      "quantity": 500,
+      "posting_date": "2026-03-10",
+      "user_id": "u_warehouse_04"
+    },
+    {
+      "doc_no": "7000001162",
+      "material_id": "MAT-1030",
+      "movement_type": "101",
+      "quantity": 200,
+      "posting_date": "2026-01-26",
+      "user_id": "u_warehouse_05"
+    },
+    {
+      "doc_no": "7000001088",
+      "material_id": "MAT-1011",
+      "movement_type": "562",
+      "quantity": 100,
+      "posting_date": "2026-03-07",
+      "user_id": "u_warehouse_08"
+    },
+    {
+      "doc_no": "7000001212",
+      "material_id": "MAT-1036",
+      "movement_type": "261",
+      "quantity": 10,
+      "posting_date": "2026-02-22",
+      "user_id": "u_warehouse_05"
+    },
+    {
+      "doc_no": "7000001296",
+      "material_id": "MAT-1038",
+      "movement_type": "261",
+      "quantity": 100,
+      "posting_date": "2026-02-19",
+      "user_id": "u_warehouse_06"
+    },
+    {
+      "doc_no": "7000001284",
+      "material_id": "MAT-1010",
+      "movement_type": "411",
+      "quantity": 50,
+      "posting_date": "2026-01-21",
+      "user_id": "u_warehouse_03"
+    },
+    {
+      "doc_no": "7000001241",
+      "material_id": "MAT-1060",
+      "movement_type": "411",
+      "quantity": 50,
+      "posting_date": "2026-01-01",
+      "user_id": "u_warehouse_02"
+    },
+    {
+      "doc_no": "7000001289",
+      "material_id": "MAT-1041",
+      "movement_type": "261",
+      "quantity": 200,
+      "posting_date": "2026-02-21",
+      "user_id": "u_warehouse_04"
+    },
+    {
+      "doc_no": "7000001083",
+      "material_id": "MAT-1011",
+      "movement_type": "702",
+      "quantity": 10,
+      "posting_date": "2026-02-11",
+      "user_id": "u_warehouse_08"
+    },
+    {
+      "doc_no": "7000001231",
+      "material_id": "MAT-1018",
+      "movement_type": "101",
+      "quantity": 50,
+      "posting_date": "2026-02-23",
+      "user_id": "u_warehouse_02"
+    },
+    {
+      "doc_no": "7000001144",
+      "material_id": "MAT-1003",
+      "movement_type": "351",
+      "quantity": 500,
+      "posting_date": "2026-02-24",
+      "user_id": "u_warehouse_03"
+    },
+    {
+      "doc_no": "7000001333",
+      "material_id": "MAT-1026",
+      "movement_type": "411",
+      "quantity": 10,
+      "posting_date": "2026-01-08",
+      "user_id": "u_warehouse_06"
+    },
+    {
+      "doc_no": "7000001021",
+      "material_id": "MAT-1005",
+      "movement_type": "562",
+      "quantity": 500,
+      "posting_date": "2026-02-19",
+      "user_id": "u_warehouse_06"
+    },
+    {
+      "doc_no": "7000001014",
+      "material_id": "MAT-1004",
+      "movement_type": "561",
+      "quantity": 100,
+      "posting_date": "2026-02-23",
+      "user_id": "u_warehouse_01"
+    },
+    {
+      "doc_no": "7000001283",
+      "material_id": "MAT-1006",
+      "movement_type": "351",
+      "quantity": 200,
+      "posting_date": "2026-02-17",
+      "user_id": "u_warehouse_03"
+    },
+    {
+      "doc_no": "7000001268",
+      "material_id": "MAT-1003",
+      "movement_type": "261",
+      "quantity": 50,
+      "posting_date": "2026-01-05",
+      "user_id": "u_warehouse_04"
+    },
+    {
+      "doc_no": "7000001077",
+      "material_id": "MAT-1010",
+      "movement_type": "561",
+      "quantity": 10,
+      "posting_date": "2026-04-05",
+      "user_id": "u_warehouse_06"
+    },
+    {
+      "doc_no": "7000001391",
+      "material_id": "MAT-1011",
+      "movement_type": "261",
+      "quantity": 50,
+      "posting_date": "2026-01-25",
+      "user_id": "u_warehouse_05"
+    },
+    {
+      "doc_no": "7000001039",
+      "material_id": "MAT-1007",
+      "movement_type": "561",
+      "quantity": 10,
+      "posting_date": "2026-02-13",
+      "user_id": "u_warehouse_01"
+    },
+    {
+      "doc_no": "7000001185",
+      "material_id": "MAT-1020",
+      "movement_type": "411",
+      "quantity": 500,
+      "posting_date": "2026-04-05",
+      "user_id": "u_warehouse_05"
+    },
+    {
+      "doc_no": "7000001043",
+      "material_id": "MAT-1008",
+      "movement_type": "561",
+      "quantity": 500,
+      "posting_date": "2026-02-02",
+      "user_id": "u_warehouse_06"
+    },
+    {
+      "doc_no": "7000001219",
+      "material_id": "MAT-1013",
+      "movement_type": "411",
+      "quantity": 1000,
+      "posting_date": "2026-04-15",
+      "user_id": "u_warehouse_04"
+    },
+    {
+      "doc_no": "7000001248",
+      "material_id": "MAT-1033",
+      "movement_type": "261",
+      "quantity": 100,
+      "posting_date": "2026-04-07",
+      "user_id": "u_warehouse_03"
+    },
+    {
+      "doc_no": "7000001245",
+      "material_id": "MAT-1001",
+      "movement_type": "411",
+      "quantity": 1000,
+      "posting_date": "2026-03-30",
+      "user_id": "u_warehouse_03"
+    },
+    {
+      "doc_no": "7000001164",
+      "material_id": "MAT-1005",
+      "movement_type": "351",
+      "quantity": 100,
+      "posting_date": "2026-02-04",
+      "user_id": "u_warehouse_07"
+    },
+    {
+      "doc_no": "7000001154",
+      "material_id": "MAT-1015",
+      "movement_type": "601",
+      "quantity": 100,
+      "posting_date": "2026-04-19",
+      "user_id": "u_warehouse_07"
+    },
+    {
+      "doc_no": "7000001125",
+      "material_id": "MAT-1027",
+      "movement_type": "701",
+      "quantity": 200,
+      "posting_date": "2026-04-17",
+      "user_id": "u_warehouse_07"
+    },
+    {
+      "doc_no": "7000001183",
+      "material_id": "MAT-1042",
+      "movement_type": "411",
+      "quantity": 100,
+      "posting_date": "2026-01-07",
+      "user_id": "u_warehouse_03"
+    },
+    {
+      "doc_no": "7000001143",
+      "material_id": "MAT-1047",
+      "movement_type": "601",
+      "quantity": 25,
+      "posting_date": "2026-02-06",
+      "user_id": "u_warehouse_03"
+    },
+    {
+      "doc_no": "7000001001",
+      "material_id": "MAT-1001",
+      "movement_type": "309",
+      "quantity": 25,
+      "posting_date": "2026-01-06",
+      "user_id": "u_warehouse_03"
+    },
+    {
+      "doc_no": "7000001246",
+      "material_id": "MAT-1039",
+      "movement_type": "261",
+      "quantity": 50,
+      "posting_date": "2026-04-21",
+      "user_id": "u_warehouse_06"
+    },
+    {
+      "doc_no": "7000001095",
+      "material_id": "MAT-1012",
+      "movement_type": "561",
+      "quantity": 50,
+      "posting_date": "2026-01-18",
+      "user_id": "u_warehouse_08"
+    },
+    {
+      "doc_no": "7000001218",
+      "material_id": "MAT-1048",
+      "movement_type": "351",
+      "quantity": 10,
+      "posting_date": "2026-01-27",
+      "user_id": "u_warehouse_08"
+    },
+    {
+      "doc_no": "7000001307",
+      "material_id": "MAT-1019",
+      "movement_type": "261",
+      "quantity": 500,
+      "posting_date": "2026-04-11",
+      "user_id": "u_warehouse_04"
+    },
+    {
+      "doc_no": "7000001192",
+      "material_id": "MAT-1016",
+      "movement_type": "411",
+      "quantity": 50,
+      "posting_date": "2026-04-14",
+      "user_id": "u_warehouse_04"
+    },
+    {
+      "doc_no": "7000001136",
+      "material_id": "MAT-1001",
+      "movement_type": "411",
+      "quantity": 100,
+      "posting_date": "2026-01-11",
+      "user_id": "u_warehouse_08"
+    },
+    {
+      "doc_no": "7000001368",
+      "material_id": "MAT-1055",
+      "movement_type": "411",
+      "quantity": 200,
+      "posting_date": "2026-04-06",
+      "user_id": "u_warehouse_01"
+    },
+    {
+      "doc_no": "7000001181",
+      "material_id": "MAT-1059",
+      "movement_type": "351",
+      "quantity": 200,
+      "posting_date": "2026-01-27",
+      "user_id": "u_warehouse_02"
+    },
+    {
+      "doc_no": "7000001282",
+      "material_id": "MAT-1036",
+      "movement_type": "261",
+      "quantity": 500,
+      "posting_date": "2026-04-14",
+      "user_id": "u_warehouse_07"
+    },
+    {
+      "doc_no": "7000001064",
+      "material_id": "MAT-1010",
+      "movement_type": "309",
+      "quantity": 100,
+      "posting_date": "2026-04-11",
+      "user_id": "u_warehouse_04"
+    },
+    {
+      "doc_no": "7000001150",
+      "material_id": "MAT-1032",
+      "movement_type": "411",
+      "quantity": 10,
+      "posting_date": "2026-02-28",
+      "user_id": "u_warehouse_02"
+    },
+    {
+      "doc_no": "7000001239",
+      "material_id": "MAT-1058",
+      "movement_type": "351",
+      "quantity": 50,
+      "posting_date": "2026-02-16",
+      "user_id": "u_warehouse_05"
+    },
+    {
+      "doc_no": "7000001211",
+      "material_id": "MAT-1021",
+      "movement_type": "261",
+      "quantity": 100,
+      "posting_date": "2026-03-09",
+      "user_id": "u_warehouse_04"
+    },
+    {
+      "doc_no": "7000001373",
+      "material_id": "MAT-1019",
+      "movement_type": "101",
+      "quantity": 10,
+      "posting_date": "2026-02-14",
+      "user_id": "u_warehouse_08"
+    },
+    {
+      "doc_no": "7000001074",
+      "material_id": "MAT-1010",
+      "movement_type": "561",
+      "quantity": 25,
+      "posting_date": "2026-01-04",
+      "user_id": "u_warehouse_05"
+    },
+    {
+      "doc_no": "7000001115",
+      "material_id": "MAT-1022",
+      "movement_type": "562",
+      "quantity": 200,
+      "posting_date": "2026-01-17",
+      "user_id": "u_warehouse_01"
+    },
+    {
+      "doc_no": "7000001240",
+      "material_id": "MAT-1022",
+      "movement_type": "351",
+      "quantity": 10,
+      "posting_date": "2026-02-03",
+      "user_id": "u_warehouse_06"
+    },
+    {
+      "doc_no": "7000001098",
+      "material_id": "MAT-1012",
+      "movement_type": "561",
+      "quantity": 500,
+      "posting_date": "2026-02-25",
+      "user_id": "u_warehouse_07"
+    },
+    {
+      "doc_no": "7000001035",
+      "material_id": "MAT-1007",
+      "movement_type": "701",
+      "quantity": 500,
+      "posting_date": "2026-04-13",
+      "user_id": "u_warehouse_07"
+    },
+    {
+      "doc_no": "7000001066",
+      "material_id": "MAT-1010",
+      "movement_type": "309",
+      "quantity": 500,
+      "posting_date": "2026-02-20",
+      "user_id": "u_warehouse_08"
+    },
+    {
+      "doc_no": "7000001084",
+      "material_id": "MAT-1011",
+      "movement_type": "309",
+      "quantity": 200,
+      "posting_date": "2026-01-08",
+      "user_id": "u_warehouse_04"
+    },
+    {
+      "doc_no": "7000001108",
+      "material_id": "MAT-1019",
+      "movement_type": "701",
+      "quantity": 25,
+      "posting_date": "2026-03-10",
+      "user_id": "u_warehouse_08"
+    },
+    {
+      "doc_no": "7000001236",
+      "material_id": "MAT-1041",
+      "movement_type": "601",
+      "quantity": 25,
+      "posting_date": "2026-04-14",
+      "user_id": "u_warehouse_07"
+    },
+    {
+      "doc_no": "7000001312",
+      "material_id": "MAT-1021",
+      "movement_type": "411",
+      "quantity": 10,
+      "posting_date": "2026-01-26",
+      "user_id": "u_warehouse_03"
+    },
+    {
+      "doc_no": "7000001112",
+      "material_id": "MAT-1021",
+      "movement_type": "309",
+      "quantity": 200,
+      "posting_date": "2026-04-20",
+      "user_id": "u_warehouse_04"
+    },
+    {
+      "doc_no": "7000001269",
+      "material_id": "MAT-1053",
+      "movement_type": "101",
+      "quantity": 1000,
+      "posting_date": "2026-02-11",
+      "user_id": "u_warehouse_07"
+    },
+    {
+      "doc_no": "7000001205",
+      "material_id": "MAT-1051",
+      "movement_type": "261",
+      "quantity": 25,
+      "posting_date": "2026-03-14",
+      "user_id": "u_warehouse_01"
+    },
+    {
+      "doc_no": "7000001155",
+      "material_id": "MAT-1005",
+      "movement_type": "601",
+      "quantity": 500,
+      "posting_date": "2026-02-06",
+      "user_id": "u_warehouse_01"
+    },
+    {
+      "doc_no": "7000001114",
+      "material_id": "MAT-1022",
+      "movement_type": "701",
+      "quantity": 10,
+      "posting_date": "2026-02-13",
+      "user_id": "u_warehouse_07"
+    },
+    {
+      "doc_no": "7000001055",
+      "material_id": "MAT-1009",
+      "movement_type": "561",
+      "quantity": 100,
+      "posting_date": "2026-04-05",
+      "user_id": "u_warehouse_04"
+    },
+    {
+      "doc_no": "7000001135",
+      "material_id": "MAT-1003",
+      "movement_type": "411",
+      "quantity": 25,
+      "posting_date": "2026-02-15",
+      "user_id": "u_warehouse_03"
+    },
+    {
+      "doc_no": "7000001297",
+      "material_id": "MAT-1029",
+      "movement_type": "351",
+      "quantity": 100,
+      "posting_date": "2026-01-23",
+      "user_id": "u_warehouse_01"
+    },
+    {
+      "doc_no": "7000001180",
+      "material_id": "MAT-1051",
+      "movement_type": "601",
+      "quantity": 10,
+      "posting_date": "2026-04-14",
+      "user_id": "u_warehouse_07"
+    },
+    {
+      "doc_no": "7000001376",
+      "material_id": "MAT-1037",
+      "movement_type": "261",
+      "quantity": 50,
+      "posting_date": "2026-04-15",
+      "user_id": "u_warehouse_04"
+    },
+    {
+      "doc_no": "7000001356",
+      "material_id": "MAT-1040",
+      "movement_type": "261",
+      "quantity": 50,
+      "posting_date": "2026-01-19",
+      "user_id": "u_warehouse_01"
+    },
+    {
+      "doc_no": "7000001038",
+      "material_id": "MAT-1007",
+      "movement_type": "561",
+      "quantity": 10,
+      "posting_date": "2026-01-27",
+      "user_id": "u_warehouse_08"
+    },
+    {
+      "doc_no": "7000001006",
+      "material_id": "MAT-1002",
+      "movement_type": "702",
+      "quantity": 10,
+      "posting_date": "2026-03-21",
+      "user_id": "u_warehouse_04"
+    },
+    {
+      "doc_no": "7000001031",
+      "material_id": "MAT-1006",
+      "movement_type": "309",
+      "quantity": 100,
+      "posting_date": "2026-04-17",
+      "user_id": "u_warehouse_03"
+    },
+    {
+      "doc_no": "7000001354",
+      "material_id": "MAT-1026",
+      "movement_type": "351",
+      "quantity": 200,
+      "posting_date": "2026-01-10",
+      "user_id": "u_warehouse_03"
+    },
+    {
+      "doc_no": "7000001195",
+      "material_id": "MAT-1022",
+      "movement_type": "101",
+      "quantity": 100,
+      "posting_date": "2026-02-05",
+      "user_id": "u_warehouse_06"
+    },
+    {
+      "doc_no": "7000001140",
+      "material_id": "MAT-1002",
+      "movement_type": "411",
+      "quantity": 50,
+      "posting_date": "2026-03-22",
+      "user_id": "u_warehouse_04"
+    },
+    {
+      "doc_no": "7000001129",
+      "material_id": "MAT-1001",
+      "movement_type": "101",
+      "quantity": 500,
+      "posting_date": "2026-04-05",
+      "user_id": "u_warehouse_05"
+    },
+    {
+      "doc_no": "7000001028",
+      "material_id": "MAT-1006",
+      "movement_type": "701",
+      "quantity": 50,
+      "posting_date": "2026-03-29",
+      "user_id": "u_warehouse_07"
+    },
+    {
+      "doc_no": "7000001182",
+      "material_id": "MAT-1004",
+      "movement_type": "601",
+      "quantity": 100,
+      "posting_date": "2026-03-20",
+      "user_id": "u_warehouse_03"
+    },
+    {
+      "doc_no": "7000001062",
+      "material_id": "MAT-1009",
+      "movement_type": "701",
+      "quantity": 200,
+      "posting_date": "2026-03-20",
+      "user_id": "u_warehouse_01"
+    },
+    {
+      "doc_no": "7000001263",
+      "material_id": "MAT-1015",
+      "movement_type": "101",
+      "quantity": 10,
+      "posting_date": "2026-01-25",
+      "user_id": "u_warehouse_04"
+    },
+    {
+      "doc_no": "7000001200",
+      "material_id": "MAT-1038",
+      "movement_type": "601",
+      "quantity": 10,
+      "posting_date": "2026-01-10",
+      "user_id": "u_warehouse_07"
+    },
+    {
+      "doc_no": "7000001094",
+      "material_id": "MAT-1012",
+      "movement_type": "309",
+      "quantity": 25,
+      "posting_date": "2026-04-02",
+      "user_id": "u_warehouse_06"
+    },
+    {
+      "doc_no": "7000001107",
+      "material_id": "MAT-1019",
+      "movement_type": "701",
+      "quantity": 500,
+      "posting_date": "2026-04-15",
+      "user_id": "u_warehouse_05"
+    },
+    {
+      "doc_no": "7000001325",
+      "material_id": "MAT-1032",
+      "movement_type": "261",
+      "quantity": 200,
+      "posting_date": "2026-03-25",
+      "user_id": "u_warehouse_01"
+    },
+    {
+      "doc_no": "7000001210",
+      "material_id": "MAT-1001",
+      "movement_type": "351",
+      "quantity": 50,
+      "posting_date": "2026-02-28",
+      "user_id": "u_warehouse_05"
+    },
+    {
+      "doc_no": "7000001175",
+      "material_id": "MAT-1056",
+      "movement_type": "351",
+      "quantity": 10,
+      "posting_date": "2026-02-16",
+      "user_id": "u_warehouse_07"
+    },
+    {
+      "doc_no": "7000001267",
+      "material_id": "MAT-1014",
+      "movement_type": "101",
+      "quantity": 50,
+      "posting_date": "2026-02-13",
+      "user_id": "u_warehouse_03"
+    },
+    {
+      "doc_no": "7000001189",
+      "material_id": "MAT-1029",
+      "movement_type": "411",
+      "quantity": 1000,
+      "posting_date": "2026-02-27",
+      "user_id": "u_warehouse_07"
+    },
+    {
+      "doc_no": "7000001008",
+      "material_id": "MAT-1002",
+      "movement_type": "562",
+      "quantity": 100,
+      "posting_date": "2026-03-16",
+      "user_id": "u_warehouse_08"
+    },
+    {
+      "doc_no": "7000001262",
+      "material_id": "MAT-1054",
+      "movement_type": "601",
+      "quantity": 50,
+      "posting_date": "2026-01-06",
+      "user_id": "u_warehouse_05"
+    },
+    {
+      "doc_no": "7000001243",
+      "material_id": "MAT-1050",
+      "movement_type": "601",
+      "quantity": 1000,
+      "posting_date": "2026-02-02",
+      "user_id": "u_warehouse_07"
+    },
+    {
+      "doc_no": "7000001104",
+      "material_id": "MAT-1016",
+      "movement_type": "702",
+      "quantity": 10,
+      "posting_date": "2026-01-15",
+      "user_id": "u_warehouse_04"
+    },
+    {
+      "doc_no": "7000001277",
+      "material_id": "MAT-1027",
+      "movement_type": "601",
+      "quantity": 10,
+      "posting_date": "2026-04-21",
+      "user_id": "u_warehouse_06"
+    },
+    {
+      "doc_no": "7000001348",
+      "material_id": "MAT-1006",
+      "movement_type": "351",
+      "quantity": 10,
+      "posting_date": "2026-01-22",
+      "user_id": "u_warehouse_05"
+    },
+    {
+      "doc_no": "7000001294",
+      "material_id": "MAT-1043",
+      "movement_type": "411",
+      "quantity": 10,
+      "posting_date": "2026-02-19",
+      "user_id": "u_warehouse_08"
+    },
+    {
+      "doc_no": "7000001051",
+      "material_id": "MAT-1008",
+      "movement_type": "309",
+      "quantity": 500,
+      "posting_date": "2026-04-19",
+      "user_id": "u_warehouse_05"
+    },
+    {
+      "doc_no": "7000001178",
+      "material_id": "MAT-1041",
+      "movement_type": "261",
+      "quantity": 25,
+      "posting_date": "2026-02-04",
+      "user_id": "u_warehouse_07"
+    },
+    {
+      "doc_no": "7000001344",
+      "material_id": "MAT-1012",
+      "movement_type": "261",
+      "quantity": 10,
+      "posting_date": "2026-02-03",
+      "user_id": "u_warehouse_04"
+    },
+    {
+      "doc_no": "7000001102",
+      "material_id": "MAT-1015",
+      "movement_type": "701",
+      "quantity": 500,
+      "posting_date": "2026-01-03",
+      "user_id": "u_warehouse_07"
+    },
+    {
+      "doc_no": "7000001082",
+      "material_id": "MAT-1011",
+      "movement_type": "561",
+      "quantity": 25,
+      "posting_date": "2026-03-02",
+      "user_id": "u_warehouse_02"
+    },
+    {
+      "doc_no": "7000001111",
+      "material_id": "MAT-1020",
+      "movement_type": "309",
+      "quantity": 500,
+      "posting_date": "2026-01-12",
+      "user_id": "u_warehouse_05"
+    },
+    {
+      "doc_no": "7000001278",
+      "material_id": "MAT-1042",
+      "movement_type": "261",
+      "quantity": 100,
+      "posting_date": "2026-04-04",
+      "user_id": "u_warehouse_07"
+    },
+    {
+      "doc_no": "7000001351",
+      "material_id": "MAT-1039",
+      "movement_type": "261",
+      "quantity": 100,
+      "posting_date": "2026-04-20",
+      "user_id": "u_warehouse_08"
+    },
+    {
+      "doc_no": "7000001019",
+      "material_id": "MAT-1004",
+      "movement_type": "309",
+      "quantity": 500,
+      "posting_date": "2026-03-31",
+      "user_id": "u_warehouse_05"
+    },
+    {
+      "doc_no": "7000001054",
+      "material_id": "MAT-1009",
+      "movement_type": "561",
+      "quantity": 200,
+      "posting_date": "2026-04-14",
+      "user_id": "u_warehouse_04"
+    },
+    {
+      "doc_no": "7000001250",
+      "material_id": "MAT-1031",
+      "movement_type": "351",
+      "quantity": 200,
+      "posting_date": "2026-02-11",
+      "user_id": "u_warehouse_03"
+    },
+    {
+      "doc_no": "7000001199",
+      "material_id": "MAT-1009",
+      "movement_type": "101",
+      "quantity": 100,
+      "posting_date": "2026-04-01",
+      "user_id": "u_warehouse_08"
+    },
+    {
+      "doc_no": "7000001005",
+      "material_id": "MAT-1002",
+      "movement_type": "562",
+      "quantity": 10,
+      "posting_date": "2026-03-12",
+      "user_id": "u_warehouse_02"
+    },
+    {
+      "doc_no": "7000001167",
+      "material_id": "MAT-1039",
+      "movement_type": "351",
+      "quantity": 50,
+      "posting_date": "2026-01-15",
+      "user_id": "u_warehouse_06"
+    },
+    {
+      "doc_no": "7000001335",
+      "material_id": "MAT-1016",
+      "movement_type": "261",
+      "quantity": 10,
+      "posting_date": "2026-01-06",
+      "user_id": "u_warehouse_01"
+    },
+    {
+      "doc_no": "7000001093",
+      "material_id": "MAT-1012",
+      "movement_type": "701",
+      "quantity": 10,
+      "posting_date": "2026-01-28",
+      "user_id": "u_warehouse_05"
+    },
+    {
+      "doc_no": "7000001338",
+      "material_id": "MAT-1040",
+      "movement_type": "351",
+      "quantity": 500,
+      "posting_date": "2026-01-26",
+      "user_id": "u_warehouse_03"
+    },
+    {
+      "doc_no": "7000001265",
+      "material_id": "MAT-1029",
+      "movement_type": "351",
+      "quantity": 50,
+      "posting_date": "2026-04-10",
+      "user_id": "u_warehouse_01"
+    },
+    {
+      "doc_no": "7000001209",
+      "material_id": "MAT-1025",
+      "movement_type": "411",
+      "quantity": 25,
+      "posting_date": "2026-04-12",
+      "user_id": "u_warehouse_01"
+    },
+    {
+      "doc_no": "7000001318",
+      "material_id": "MAT-1048",
+      "movement_type": "411",
+      "quantity": 50,
+      "posting_date": "2026-02-18",
+      "user_id": "u_warehouse_06"
+    },
+    {
+      "doc_no": "7000001010",
+      "material_id": "MAT-1003",
+      "movement_type": "561",
+      "quantity": 10,
+      "posting_date": "2026-03-15",
+      "user_id": "u_warehouse_05"
+    },
+    {
+      "doc_no": "7000001233",
+      "material_id": "MAT-1053",
+      "movement_type": "601",
+      "quantity": 10,
+      "posting_date": "2026-01-07",
+      "user_id": "u_warehouse_08"
+    },
+    {
+      "doc_no": "7000001247",
+      "material_id": "MAT-1030",
+      "movement_type": "411",
+      "quantity": 1000,
+      "posting_date": "2026-04-11",
+      "user_id": "u_warehouse_02"
+    },
+    {
+      "doc_no": "7000001216",
+      "material_id": "MAT-1045",
+      "movement_type": "411",
+      "quantity": 500,
+      "posting_date": "2026-02-23",
+      "user_id": "u_warehouse_06"
+    },
+    {
+      "doc_no": "7000001128",
+      "material_id": "MAT-1026",
+      "movement_type": "411",
+      "quantity": 10,
+      "posting_date": "2026-04-18",
+      "user_id": "u_warehouse_03"
+    },
+    {
+      "doc_no": "7000001080",
+      "material_id": "MAT-1011",
+      "movement_type": "702",
+      "quantity": 200,
+      "posting_date": "2026-01-03",
+      "user_id": "u_warehouse_08"
+    },
+    {
+      "doc_no": "7000001322",
+      "material_id": "MAT-1047",
+      "movement_type": "101",
+      "quantity": 500,
+      "posting_date": "2026-01-05",
+      "user_id": "u_warehouse_04"
+    },
+    {
+      "doc_no": "7000001204",
+      "material_id": "MAT-1006",
+      "movement_type": "351",
+      "quantity": 1000,
+      "posting_date": "2026-01-06",
+      "user_id": "u_warehouse_01"
+    },
+    {
+      "doc_no": "7000001382",
+      "material_id": "MAT-1017",
+      "movement_type": "601",
+      "quantity": 200,
+      "posting_date": "2026-03-06",
+      "user_id": "u_warehouse_03"
+    },
+    {
+      "doc_no": "7000001214",
+      "material_id": "MAT-1006",
+      "movement_type": "411",
+      "quantity": 25,
+      "posting_date": "2026-03-27",
+      "user_id": "u_warehouse_07"
+    },
+    {
+      "doc_no": "7000001050",
+      "material_id": "MAT-1008",
+      "movement_type": "702",
+      "quantity": 10,
+      "posting_date": "2026-04-08",
+      "user_id": "u_warehouse_05"
+    },
+    {
+      "doc_no": "7000001370",
+      "material_id": "MAT-1023",
+      "movement_type": "601",
+      "quantity": 500,
+      "posting_date": "2026-01-07",
+      "user_id": "u_warehouse_04"
+    },
+    {
+      "doc_no": "7000001321",
+      "material_id": "MAT-1019",
+      "movement_type": "351",
+      "quantity": 50,
+      "posting_date": "2026-02-09",
+      "user_id": "u_warehouse_06"
+    },
+    {
+      "doc_no": "7000001133",
+      "material_id": "MAT-1011",
+      "movement_type": "411",
+      "quantity": 100,
+      "posting_date": "2026-01-01",
+      "user_id": "u_warehouse_05"
+    },
+    {
+      "doc_no": "7000001160",
+      "material_id": "MAT-1045",
+      "movement_type": "261",
+      "quantity": 500,
+      "posting_date": "2026-03-04",
+      "user_id": "u_warehouse_05"
+    },
+    {
+      "doc_no": "7000001221",
+      "material_id": "MAT-1007",
+      "movement_type": "351",
+      "quantity": 100,
+      "posting_date": "2026-03-20",
+      "user_id": "u_warehouse_03"
+    },
+    {
+      "doc_no": "7000001232",
+      "material_id": "MAT-1036",
+      "movement_type": "261",
+      "quantity": 100,
+      "posting_date": "2026-02-15",
+      "user_id": "u_warehouse_05"
+    },
+    {
+      "doc_no": "7000001063",
+      "material_id": "MAT-1009",
+      "movement_type": "701",
+      "quantity": 500,
+      "posting_date": "2026-02-14",
+      "user_id": "u_warehouse_02"
+    },
+    {
+      "doc_no": "7000001371",
+      "material_id": "MAT-1046",
+      "movement_type": "101",
+      "quantity": 200,
+      "posting_date": "2026-04-15",
+      "user_id": "u_warehouse_05"
+    },
+    {
+      "doc_no": "7000001092",
+      "material_id": "MAT-1012",
+      "movement_type": "701",
+      "quantity": 50,
+      "posting_date": "2026-01-10",
+      "user_id": "u_warehouse_04"
+    },
+    {
+      "doc_no": "7000001347",
+      "material_id": "MAT-1044",
+      "movement_type": "351",
+      "quantity": 50,
+      "posting_date": "2026-02-07",
+      "user_id": "u_warehouse_04"
+    },
+    {
+      "doc_no": "7000001375",
+      "material_id": "MAT-1032",
+      "movement_type": "351",
+      "quantity": 50,
+      "posting_date": "2026-04-17",
+      "user_id": "u_warehouse_05"
+    },
+    {
+      "doc_no": "7000001298",
+      "material_id": "MAT-1001",
+      "movement_type": "351",
+      "quantity": 100,
+      "posting_date": "2026-03-01",
+      "user_id": "u_warehouse_04"
+    },
+    {
+      "doc_no": "7000001380",
+      "material_id": "MAT-1060",
+      "movement_type": "601",
+      "quantity": 500,
+      "posting_date": "2026-01-12",
+      "user_id": "u_warehouse_07"
+    },
+    {
+      "doc_no": "7000001328",
+      "material_id": "MAT-1027",
+      "movement_type": "351",
+      "quantity": 50,
+      "posting_date": "2026-03-17",
+      "user_id": "u_warehouse_03"
+    },
+    {
+      "doc_no": "7000001334",
+      "material_id": "MAT-1039",
+      "movement_type": "351",
+      "quantity": 100,
+      "posting_date": "2026-03-19",
+      "user_id": "u_warehouse_08"
+    },
+    {
+      "doc_no": "7000001369",
+      "material_id": "MAT-1051",
+      "movement_type": "601",
+      "quantity": 10,
+      "posting_date": "2026-02-25",
+      "user_id": "u_warehouse_02"
+    },
+    {
+      "doc_no": "7000001341",
+      "material_id": "MAT-1005",
+      "movement_type": "411",
+      "quantity": 500,
+      "posting_date": "2026-01-07",
+      "user_id": "u_warehouse_08"
+    },
+    {
+      "doc_no": "7000001117",
+      "material_id": "MAT-1024",
+      "movement_type": "561",
+      "quantity": 50,
+      "posting_date": "2026-01-07",
+      "user_id": "u_warehouse_03"
+    },
+    {
+      "doc_no": "7000001215",
+      "material_id": "MAT-1060",
+      "movement_type": "411",
+      "quantity": 25,
+      "posting_date": "2026-03-05",
+      "user_id": "u_warehouse_01"
+    },
+    {
+      "doc_no": "7000001331",
+      "material_id": "MAT-1046",
+      "movement_type": "261",
+      "quantity": 100,
+      "posting_date": "2026-01-13",
+      "user_id": "u_warehouse_02"
+    },
+    {
+      "doc_no": "7000001300",
+      "material_id": "MAT-1054",
+      "movement_type": "261",
+      "quantity": 1000,
+      "posting_date": "2026-03-02",
+      "user_id": "u_warehouse_07"
+    },
+    {
+      "doc_no": "7000001293",
+      "material_id": "MAT-1003",
+      "movement_type": "351",
+      "quantity": 1000,
+      "posting_date": "2026-04-07",
+      "user_id": "u_warehouse_01"
+    },
+    {
+      "doc_no": "7000001358",
+      "material_id": "MAT-1045",
+      "movement_type": "101",
+      "quantity": 500,
+      "posting_date": "2026-01-06",
+      "user_id": "u_warehouse_02"
+    },
+    {
+      "doc_no": "7000001220",
+      "material_id": "MAT-1015",
+      "movement_type": "601",
+      "quantity": 25,
+      "posting_date": "2026-02-03",
+      "user_id": "u_warehouse_05"
+    },
+    {
+      "doc_no": "7000001124",
+      "material_id": "MAT-1027",
+      "movement_type": "309",
+      "quantity": 500,
+      "posting_date": "2026-04-15",
+      "user_id": "u_warehouse_07"
+    },
+    {
+      "doc_no": "7000001379",
+      "material_id": "MAT-1041",
+      "movement_type": "411",
+      "quantity": 50,
+      "posting_date": "2026-01-13",
+      "user_id": "u_warehouse_07"
+    },
+    {
+      "doc_no": "7000001002",
+      "material_id": "MAT-1001",
+      "movement_type": "562",
+      "quantity": 100,
+      "posting_date": "2026-01-19",
+      "user_id": "u_warehouse_02"
+    },
+    {
+      "doc_no": "7000001207",
+      "material_id": "MAT-1034",
+      "movement_type": "601",
+      "quantity": 500,
+      "posting_date": "2026-04-08",
+      "user_id": "u_warehouse_02"
+    },
+    {
+      "doc_no": "7000001377",
+      "material_id": "MAT-1045",
+      "movement_type": "261",
+      "quantity": 100,
+      "posting_date": "2026-01-22",
+      "user_id": "u_warehouse_02"
+    },
+    {
+      "doc_no": "7000001309",
+      "material_id": "MAT-1011",
+      "movement_type": "411",
+      "quantity": 200,
+      "posting_date": "2026-02-05",
+      "user_id": "u_warehouse_08"
+    },
+    {
+      "doc_no": "7000001131",
+      "material_id": "MAT-1056",
+      "movement_type": "351",
+      "quantity": 500,
+      "posting_date": "2026-02-06",
+      "user_id": "u_warehouse_04"
+    },
+    {
+      "doc_no": "7000001072",
+      "material_id": "MAT-1010",
+      "movement_type": "309",
+      "quantity": 10,
+      "posting_date": "2026-04-13",
+      "user_id": "u_warehouse_02"
+    },
+    {
+      "doc_no": "7000001011",
+      "material_id": "MAT-1003",
+      "movement_type": "702",
+      "quantity": 100,
+      "posting_date": "2026-02-13",
+      "user_id": "u_warehouse_08"
+    },
+    {
+      "doc_no": "7000001237",
+      "material_id": "MAT-1003",
+      "movement_type": "601",
+      "quantity": 10,
+      "posting_date": "2026-03-01",
+      "user_id": "u_warehouse_02"
+    },
+    {
+      "doc_no": "7000001151",
+      "material_id": "MAT-1048",
+      "movement_type": "351",
+      "quantity": 200,
+      "posting_date": "2026-01-12",
+      "user_id": "u_warehouse_02"
+    },
+    {
+      "doc_no": "7000001323",
+      "material_id": "MAT-1010",
+      "movement_type": "411",
+      "quantity": 200,
+      "posting_date": "2026-03-22",
+      "user_id": "u_warehouse_07"
+    },
+    {
+      "doc_no": "7000001256",
+      "material_id": "MAT-1024",
+      "movement_type": "411",
+      "quantity": 500,
+      "posting_date": "2026-02-03",
+      "user_id": "u_warehouse_04"
+    },
+    {
+      "doc_no": "7000001113",
+      "material_id": "MAT-1022",
+      "movement_type": "309",
+      "quantity": 50,
+      "posting_date": "2026-04-21",
+      "user_id": "u_warehouse_02"
+    },
+    {
+      "doc_no": "7000001355",
+      "material_id": "MAT-1010",
+      "movement_type": "101",
+      "quantity": 10,
+      "posting_date": "2026-01-15",
+      "user_id": "u_warehouse_02"
+    }
+  ],
+  "mara": [
+    {
+      "material_id": "MAT-1001",
+      "material_name": "HPLC Column C18 250x4.6mm",
+      "material_group": "Lab Consumable",
+      "unit_of_measure": "EA"
+    },
+    {
+      "material_id": "MAT-1002",
+      "material_name": "Acetonitrile HPLC Grade",
+      "material_group": "Solvent",
+      "unit_of_measure": "L"
+    },
+    {
+      "material_id": "MAT-1003",
+      "material_name": "Methanol AR 2.5L",
+      "material_group": "Solvent",
+      "unit_of_measure": "L"
+    },
+    {
+      "material_id": "MAT-1004",
+      "material_name": "Buffer Phosphate pH 7.4",
+      "material_group": "Reagent",
+      "unit_of_measure": "L"
+    },
+    {
+      "material_id": "MAT-1005",
+      "material_name": "Sterile Filter 0.22um",
+      "material_group": "Lab Consumable",
+      "unit_of_measure": "EA"
+    },
+    {
+      "material_id": "MAT-1006",
+      "material_name": "Petri Dish 90mm",
+      "material_group": "Lab Consumable",
+      "unit_of_measure": "EA"
+    },
+    {
+      "material_id": "MAT-1007",
+      "material_name": "Centrifuge Tube 50ml",
+      "material_group": "Lab Consumable",
+      "unit_of_measure": "EA"
+    },
+    {
+      "material_id": "MAT-1008",
+      "material_name": "Microplate 96-well black",
+      "material_group": "Lab Consumable",
+      "unit_of_measure": "EA"
+    },
+    {
+      "material_id": "MAT-1009",
+      "material_name": "Pipette Tips 200uL",
+      "material_group": "Lab Consumable",
+      "unit_of_measure": "EA"
+    },
+    {
+      "material_id": "MAT-1010",
+      "material_name": "Glass Beaker 250ml",
+      "material_group": "Glassware",
+      "unit_of_measure": "EA"
+    },
+    {
+      "material_id": "MAT-1011",
+      "material_name": "Volumetric Flask 100ml",
+      "material_group": "Glassware",
+      "unit_of_measure": "EA"
+    },
+    {
+      "material_id": "MAT-1012",
+      "material_name": "pH Meter Calibration Buffer",
+      "material_group": "Reagent",
+      "unit_of_measure": "L"
+    },
+    {
+      "material_id": "MAT-1013",
+      "material_name": "Sodium chloride AR 500g",
+      "material_group": "Reagent",
+      "unit_of_measure": "KG"
+    },
+    {
+      "material_id": "MAT-1014",
+      "material_name": "Potassium dihydrogen phosphate",
+      "material_group": "Reagent",
+      "unit_of_measure": "KG"
+    },
+    {
+      "material_id": "MAT-1015",
+      "material_name": "Sulphuric acid AR 2.5L",
+      "material_group": "Reagent",
+      "unit_of_measure": "L"
+    },
+    {
+      "material_id": "MAT-1016",
+      "material_name": "Hydrochloric acid AR",
+      "material_group": "Reagent",
+      "unit_of_measure": "L"
+    },
+    {
+      "material_id": "MAT-1017",
+      "material_name": "Ethanol AR 2.5L",
+      "material_group": "Solvent",
+      "unit_of_measure": "L"
+    },
+    {
+      "material_id": "MAT-1018",
+      "material_name": "DMSO HPLC Grade 1L",
+      "material_group": "Solvent",
+      "unit_of_measure": "L"
+    },
+    {
+      "material_id": "MAT-1019",
+      "material_name": "PCR Reagent Kit",
+      "material_group": "Reagent",
+      "unit_of_measure": "EA"
+    },
+    {
+      "material_id": "MAT-1020",
+      "material_name": "Cell Culture DMEM 500ml",
+      "material_group": "Reagent",
+      "unit_of_measure": "L"
+    },
+    {
+      "material_id": "MAT-1021",
+      "material_name": "Magnetic Stir Bar 25mm",
+      "material_group": "Lab Consumable",
+      "unit_of_measure": "EA"
+    },
+    {
+      "material_id": "MAT-1022",
+      "material_name": "Filter Paper Whatman No 1",
+      "material_group": "Lab Consumable",
+      "unit_of_measure": "EA"
+    },
+    {
+      "material_id": "MAT-1023",
+      "material_name": "Latex Gloves Medium",
+      "material_group": "PPE",
+      "unit_of_measure": "EA"
+    },
+    {
+      "material_id": "MAT-1024",
+      "material_name": "Nitrile Gloves Large",
+      "material_group": "PPE",
+      "unit_of_measure": "EA"
+    },
+    {
+      "material_id": "MAT-1025",
+      "material_name": "Lab Coat Medium",
+      "material_group": "PPE",
+      "unit_of_measure": "EA"
+    },
+    {
+      "material_id": "MAT-1026",
+      "material_name": "Safety Goggles",
+      "material_group": "PPE",
+      "unit_of_measure": "EA"
+    },
+    {
+      "material_id": "MAT-1027",
+      "material_name": "Glass Pipette 10ml",
+      "material_group": "Glassware",
+      "unit_of_measure": "EA"
+    },
+    {
+      "material_id": "MAT-1028",
+      "material_name": "Test Tube 15ml borosilicate",
+      "material_group": "Glassware",
+      "unit_of_measure": "EA"
+    },
+    {
+      "material_id": "MAT-1029",
+      "material_name": "Erlenmeyer Flask 500ml",
+      "material_group": "Glassware",
+      "unit_of_measure": "EA"
+    },
+    {
+      "material_id": "MAT-1030",
+      "material_name": "Spatula stainless steel",
+      "material_group": "Lab Consumable",
+      "unit_of_measure": "EA"
+    },
+    {
+      "material_id": "MAT-1031",
+      "material_name": "Distilled Water 5L",
+      "material_group": "Solvent",
+      "unit_of_measure": "L"
+    },
+    {
+      "material_id": "MAT-1032",
+      "material_name": "Tris HCl Buffer 1M",
+      "material_group": "Reagent",
+      "unit_of_measure": "L"
+    },
+    {
+      "material_id": "MAT-1033",
+      "material_name": "Glycerol AR Grade 1L",
+      "material_group": "Reagent",
+      "unit_of_measure": "L"
+    },
+    {
+      "material_id": "MAT-1034",
+      "material_name": "Agarose Powder 100g",
+      "material_group": "Reagent",
+      "unit_of_measure": "KG"
+    },
+    {
+      "material_id": "MAT-1035",
+      "material_name": "Ethidium Bromide solution",
+      "material_group": "Reagent",
+      "unit_of_measure": "L"
+    },
+    {
+      "material_id": "MAT-1036",
+      "material_name": "PCR Tubes 0.2ml",
+      "material_group": "Lab Consumable",
+      "unit_of_measure": "EA"
+    },
+    {
+      "material_id": "MAT-1037",
+      "material_name": "Cryovials 2ml",
+      "material_group": "Lab Consumable",
+      "unit_of_measure": "EA"
+    },
+    {
+      "material_id": "MAT-1038",
+      "material_name": "Falcon Tube 15ml",
+      "material_group": "Lab Consumable",
+      "unit_of_measure": "EA"
+    },
+    {
+      "material_id": "MAT-1039",
+      "material_name": "Microcentrifuge Tube 1.5ml",
+      "material_group": "Lab Consumable",
+      "unit_of_measure": "EA"
+    },
+    {
+      "material_id": "MAT-1040",
+      "material_name": "Sterile Syringe 10ml",
+      "material_group": "Lab Consumable",
+      "unit_of_measure": "EA"
+    },
+    {
+      "material_id": "MAT-1041",
+      "material_name": "Hypodermic Needle 21G",
+      "material_group": "Lab Consumable",
+      "unit_of_measure": "EA"
+    },
+    {
+      "material_id": "MAT-1042",
+      "material_name": "Petri Dish 60mm",
+      "material_group": "Lab Consumable",
+      "unit_of_measure": "EA"
+    },
+    {
+      "material_id": "MAT-1043",
+      "material_name": "Cell Scraper 25cm",
+      "material_group": "Lab Consumable",
+      "unit_of_measure": "EA"
+    },
+    {
+      "material_id": "MAT-1044",
+      "material_name": "Serological Pipette 10ml",
+      "material_group": "Lab Consumable",
+      "unit_of_measure": "EA"
+    },
+    {
+      "material_id": "MAT-1045",
+      "material_name": "Cuvette quartz 10mm",
+      "material_group": "Glassware",
+      "unit_of_measure": "EA"
+    },
+    {
+      "material_id": "MAT-1046",
+      "material_name": "TLC Plate Silica Gel 60",
+      "material_group": "Lab Consumable",
+      "unit_of_measure": "EA"
+    },
+    {
+      "material_id": "MAT-1047",
+      "material_name": "Parafilm M roll",
+      "material_group": "Lab Consumable",
+      "unit_of_measure": "EA"
+    },
+    {
+      "material_id": "MAT-1048",
+      "material_name": "Aluminium Foil roll",
+      "material_group": "Lab Consumable",
+      "unit_of_measure": "EA"
+    },
+    {
+      "material_id": "MAT-1049",
+      "material_name": "Weighing Boat plastic",
+      "material_group": "Lab Consumable",
+      "unit_of_measure": "EA"
+    },
+    {
+      "material_id": "MAT-1050",
+      "material_name": "Lab Marker fine tip",
+      "material_group": "Lab Consumable",
+      "unit_of_measure": "EA"
+    },
+    {
+      "material_id": "MAT-1051",
+      "material_name": "Wash Bottle 500ml",
+      "material_group": "Lab Consumable",
+      "unit_of_measure": "EA"
+    },
+    {
+      "material_id": "MAT-1052",
+      "material_name": "Burette 50ml class A",
+      "material_group": "Glassware",
+      "unit_of_measure": "EA"
+    },
+    {
+      "material_id": "MAT-1053",
+      "material_name": "Pipette Stand",
+      "material_group": "Lab Equipment",
+      "unit_of_measure": "EA"
+    },
+    {
+      "material_id": "MAT-1054",
+      "material_name": "Tube Rack 50-place",
+      "material_group": "Lab Consumable",
+      "unit_of_measure": "EA"
+    },
+    {
+      "material_id": "MAT-1055",
+      "material_name": "Ice Bucket 4L",
+      "material_group": "Lab Equipment",
+      "unit_of_measure": "EA"
+    },
+    {
+      "material_id": "MAT-1056",
+      "material_name": "Bunsen Burner",
+      "material_group": "Lab Equipment",
+      "unit_of_measure": "EA"
+    },
+    {
+      "material_id": "MAT-1057",
+      "material_name": "Tripod Stand",
+      "material_group": "Lab Equipment",
+      "unit_of_measure": "EA"
+    },
+    {
+      "material_id": "MAT-1058",
+      "material_name": "Wire Gauze 15cm",
+      "material_group": "Lab Consumable",
+      "unit_of_measure": "EA"
+    },
+    {
+      "material_id": "MAT-1059",
+      "material_name": "Crucible Tongs",
+      "material_group": "Lab Equipment",
+      "unit_of_measure": "EA"
+    },
+    {
+      "material_id": "MAT-1060",
+      "material_name": "Mortar and Pestle 100ml",
+      "material_group": "Lab Equipment",
+      "unit_of_measure": "EA"
+    }
+  ]
+}

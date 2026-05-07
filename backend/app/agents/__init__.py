@@ -209,6 +209,21 @@ CATALOG: list[AgentDef] = [
         module="app.dma",
         implemented=True,
     ),
+
+    # ── CACM — Continuous Audit & Continuous Monitoring. Walks SAP-style
+    # KPIs/KRIs through a 6-stage pipeline (extract → transform → load →
+    # rules → exceptions → dashboard). Lives under /api/cacm/*.
+    AgentDef(
+        type="cacm",
+        display_name="CACM",
+        name="CACM",
+        tagline="A technology-enabled audit and risk monitoring solution designed to identify control gaps.",
+        category="Control Effectiveness Monitoring",
+        icon="shield-check",
+        default_departments=("qa_compliance",),
+        module="app.agents.cacm",
+        implemented=True,
+    ),
 ]
 
 

@@ -41,3 +41,4 @@ frontend/.vite/
 # Generic build output
 dist/
 coverage/
+.superpowers/
