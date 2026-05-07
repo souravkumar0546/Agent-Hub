@@ -1,9 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import AppShell from "../../components/AppShell.jsx";
 import { getDashboard, getRun } from "../api.js";
 import DashboardCharts from "../components/DashboardCharts.jsx";
 import "../styles.css";
+
+const EMPTY_FILTERS = {
+  companies: [],
+  locations: [],
+  risk_levels: [],
+  aging_buckets: [],
+  po_creators: [],
+  movement_types: [],
+  material_groups: [],
+  reversals: [],
+};
 
 export default function DashboardPage() {
   const { runId } = useParams();
@@ -11,14 +22,16 @@ export default function DashboardPage() {
   const [run, setRun] = useState(null);
   const [err, setErr] = useState("");
   const [loading, setLoading] = useState(true);
+  const [filters, setFilters] = useState(EMPTY_FILTERS);
 
+  // Initial load — pulls run summary + first dashboard payload.
   useEffect(() => {
     let cancelled = false;
     if (!runId) return;
     setLoading(true);
     setErr("");
     Promise.all([
-      getDashboard(runId),
+      getDashboard(runId, EMPTY_FILTERS),
       getRun(runId).catch(() => null),
     ])
       .then(([d, r]) => {
@@ -38,17 +51,57 @@ export default function DashboardPage() {
     };
   }, [runId]);
 
+  // Re-fetch on filter change. Skips the initial mount because filters start
+  // empty and the initial effect above already fetched with empty filters.
+  useEffect(() => {
+    if (!runId) return undefined;
+    if (
+      filters.companies.length === 0 &&
+      filters.locations.length === 0 &&
+      filters.risk_levels.length === 0 &&
+      filters.aging_buckets.length === 0 &&
+      filters.po_creators.length === 0 &&
+      (filters.movement_types?.length || 0) === 0 &&
+      (filters.material_groups?.length || 0) === 0 &&
+      (filters.reversals?.length || 0) === 0
+    ) {
+      // Avoid duplicate fetch on first mount; the initial effect handles it.
+      // But if user clears filters AFTER applying some, we still need to
+      // re-fetch. Trigger only when `data` already exists (i.e. we're past
+      // initial mount).
+      if (!data) return undefined;
+    }
+    let cancelled = false;
+    setErr("");
+    getDashboard(runId, filters)
+      .then((d) => {
+        if (cancelled) return;
+        setData(d);
+      })
+      .catch((e) => {
+        if (cancelled) return;
+        setErr(e.response?.data?.detail || e.message || "Failed to load dashboard.");
+      });
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [runId, filters]);
+
+  const onFiltersChange = useCallback((next) => setFilters(next), []);
+  const onClearFilters = useCallback(() => setFilters(EMPTY_FILTERS), []);
+
   const kpiName = data?.kpi_name || data?.kpi_type || run?.kpi_type || "Run dashboard";
+  const kpiType = data?.kpi_type || run?.kpi_type || "";
 
   const isEmpty =
     !loading &&
     !err &&
     data &&
     !data.totals &&
-    !data.by_risk &&
-    !data.by_company &&
-    !data.by_vendor &&
-    !data.monthly_trend;
+    !data.aging_buckets &&
+    !data.company_breakdown &&
+    !data.movement_type_distribution;
 
   return (
     <AppShell crumbs={["Agent Hub", "Prism", `Run ${runId}`, "Dashboard"]}>
@@ -81,7 +134,15 @@ export default function DashboardPage() {
         </div>
       )}
 
-      {!loading && !err && data && !isEmpty && <DashboardCharts data={data} />}
+      {!loading && !err && data && !isEmpty && (
+        <DashboardCharts
+          data={data}
+          kpiType={kpiType}
+          filters={filters}
+          onFiltersChange={onFiltersChange}
+          onClearFilters={onClearFilters}
+        />
+      )}
     </AppShell>
   );
 }

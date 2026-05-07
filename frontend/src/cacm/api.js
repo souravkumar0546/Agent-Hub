@@ -64,8 +64,30 @@ export async function getExceptions(runId, { risk } = {}) {
   return data;
 }
 
-export async function getDashboard(runId) {
-  const { data } = await API.get(`/runs/${runId}/dashboard`);
+/** Fetch the dashboard payload for a run. `filters` is an object whose
+ *  values are arrays of strings; each one maps to a comma-separated query
+ *  param. Unknown / empty arrays are dropped so the URL stays clean.
+ *  The keys cover both Procurement (companies/locations/risk/aging/creators)
+ *  and Inventory (movement_types/material_groups/reversals) — extra keys
+ *  on either side are simply ignored by the backend. */
+export async function getDashboard(runId, filters = {}) {
+  const params = {};
+  for (const key of [
+    "companies",
+    "locations",
+    "risk_levels",
+    "aging_buckets",
+    "po_creators",
+    "movement_types",
+    "material_groups",
+    "reversals",
+  ]) {
+    const v = filters[key];
+    if (Array.isArray(v) && v.length > 0) {
+      params[key] = v.join(",");
+    }
+  }
+  const { data } = await API.get(`/runs/${runId}/dashboard`, { params });
   return data;
 }
 

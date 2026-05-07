@@ -38,7 +38,12 @@ _PROCESS_FILES: dict[str, str] = {
 }
 
 # Movement types treated as "adjustments" for repeated_material_adjustments.
-_ADJUSTMENT_MOVEMENT_TYPES = {"309", "561", "562", "701", "702"}
+# Includes the 8 SAP codes the Inventory dashboard surfaces (701/702 surplus
+# /deficit, 551/552 scrap + reversal, 561/562 init-stock + reversal,
+# 711/712 blocked + reversal) plus 309 (legacy back-compat).
+_ADJUSTMENT_MOVEMENT_TYPES = {
+    "309", "551", "552", "561", "562", "701", "702", "711", "712",
+}
 
 
 # Names that look like derived / pre-joined tables — excluded from the

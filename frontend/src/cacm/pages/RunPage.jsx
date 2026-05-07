@@ -36,7 +36,18 @@ const STAGE_ORDER = [
   { key: "dashboard", label: "Dashboard" },
 ];
 
-const RUN_FAKE_DELAY_MS = 900; // brief spinner so the click feels weighty
+// Per-stage spinner duration after the user (or autopilot) hits "Run". Longer
+// values make the demo feel like real work is happening — fetching, parsing,
+// computing — instead of an instant flicker.
+const RUN_FAKE_DELAY_MS = 2800;
+// How long a completed stage stays visible under autopilot before we
+// auto-advance to the next stage. Long enough that a viewer can actually
+// read the results panel.
+const AUTOPILOT_STAGE_PAUSE_MS = 3500;
+// Pause after the rule engine completes before navigating to the Exception
+// Report. Slightly longer so the totals (records / exceptions / risk
+// distribution) sit on screen as the climax.
+const AUTOPILOT_FINISH_PAUSE_MS = 4000;
 
 function fakeDelay(ms = RUN_FAKE_DELAY_MS) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -87,10 +98,18 @@ function StageRail({ currentStage, completedStages, onJumpTo }) {
 
 /* ──────────────────────────── Stage 1: Extraction ─────────────────── */
 
-function ExtractionStage({ runId, kpiMeta, onComplete, completed }) {
+function ExtractionStage({
+  runId,
+  kpiMeta,
+  onComplete,
+  completed,
+  autopilot,
+  onScheduleAll,
+}) {
   const [running, setRunning] = useState(false);
   const [data, setData] = useState(null);
   const [err, setErr] = useState("");
+  const [source, setSource] = useState("SAP ECC");
 
   const planned = kpiMeta?.source_tables || [];
 
@@ -110,6 +129,26 @@ function ExtractionStage({ runId, kpiMeta, onComplete, completed }) {
     }
   }
 
+  // Autopilot: when on, auto-fire the run on mount (or when autopilot flips
+  // on later) so the demo plays itself end-to-end.
+  useEffect(() => {
+    if (autopilot && !data && !running) {
+      handleRun();
+    }
+    // We deliberately depend only on `autopilot` so a re-render doesn't
+    // double-trigger; `data`/`running` checks above guard the body.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [autopilot]);
+
+  // Once the run finishes under autopilot, advance after a short pause so
+  // the audience sees the extracted-tables panel render.
+  useEffect(() => {
+    if (autopilot && data && !completed) {
+      const t = setTimeout(() => onComplete(), AUTOPILOT_STAGE_PAUSE_MS);
+      return () => clearTimeout(t);
+    }
+  }, [autopilot, data, completed, onComplete]);
+
   async function handleDownload(tableName) {
     try {
       await downloadCacmFile(
@@ -128,6 +167,42 @@ function ExtractionStage({ runId, kpiMeta, onComplete, completed }) {
         <p className="cacm-wizard-stage-subtitle">
           Pull source data from SAP ECC / Datawarehouse to Prism staging area.
         </p>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 10,
+            marginTop: 12,
+            flexWrap: "wrap",
+          }}
+        >
+          <label
+            htmlFor="cacm-data-source"
+            style={{ fontSize: 13, color: "var(--ink-dim)" }}
+          >
+            Data source
+          </label>
+          <select
+            id="cacm-data-source"
+            value={source}
+            onChange={(e) => setSource(e.target.value)}
+            disabled={running || !!data}
+            style={{
+              padding: "6px 10px",
+              borderRadius: 6,
+              border: "1px solid var(--border)",
+              background: "var(--bg-card)",
+              color: "var(--ink)",
+              fontSize: 13,
+            }}
+          >
+            <option value="SAP ECC">SAP ECC</option>
+            <option value="SAP S/4HANA">SAP S/4HANA</option>
+            <option value="Datawarehouse">Datawarehouse</option>
+            <option value="Oracle EBS">Oracle EBS</option>
+            <option value="Custom CSV upload">Custom CSV upload</option>
+          </select>
+        </div>
       </div>
 
       <div>
@@ -170,20 +245,45 @@ function ExtractionStage({ runId, kpiMeta, onComplete, completed }) {
 
       <div className="cacm-wizard-actions">
         {!data && (
-          <button
-            type="button"
-            className="btn btn-primary"
-            onClick={handleRun}
-            disabled={running}
-          >
-            {running ? "Running…" : "Run Data Extraction"}
-          </button>
+          <>
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={handleRun}
+              disabled={running || autopilot}
+            >
+              {running ? "Running…" : "Run Data Extraction"}
+            </button>
+            {!autopilot && onScheduleAll && (
+              <button
+                type="button"
+                className="btn"
+                onClick={onScheduleAll}
+                disabled={running}
+                title="Auto-run every stage and land on the Exception Report when done."
+              >
+                ▶︎ Schedule whole process
+              </button>
+            )}
+            {autopilot && (
+              <span
+                style={{
+                  fontSize: 12,
+                  color: "var(--ink-muted)",
+                  alignSelf: "center",
+                }}
+              >
+                Auto-pilot engaged — Prism is driving the run for you.
+              </span>
+            )}
+          </>
         )}
         {data && !completed && (
           <button
             type="button"
             className="btn btn-primary"
             onClick={onComplete}
+            disabled={autopilot}
           >
             Proceed to Transformation →
           </button>
@@ -289,11 +389,23 @@ function SampleRowsPreview({ rows, columns, expanded = false }) {
 
 /* ──────────────────────────── Stage 2: Transformation ─────────────── */
 
-function TransformationStage({ runId, onComplete, completed }) {
+function TransformationStage({ runId, onComplete, completed, autopilot }) {
   const [running, setRunning] = useState(false);
   const [data, setData] = useState(null);
   const [extractedTables, setExtractedTables] = useState(null);
   const [err, setErr] = useState("");
+
+  useEffect(() => {
+    if (autopilot && !data && !running) handleRun();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [autopilot]);
+
+  useEffect(() => {
+    if (autopilot && data && !completed) {
+      const t = setTimeout(() => onComplete(), AUTOPILOT_STAGE_PAUSE_MS);
+      return () => clearTimeout(t);
+    }
+  }, [autopilot, data, completed, onComplete]);
 
   async function handleRun() {
     setRunning(true);
@@ -445,12 +557,24 @@ function PreRunRulesList({ runId }) {
 
 /* ──────────────────────────── Stage 3: Loading ─────────────────────── */
 
-function LoadingStage({ runId, onComplete, completed }) {
+function LoadingStage({ runId, onComplete, completed, autopilot }) {
   const [running, setRunning] = useState(false);
   const [plan, setPlan] = useState(null); // pre-run preview
   const [data, setData] = useState(null); // post-run with loaded checks
   const [tablesDone, setTablesDone] = useState(0);
   const [err, setErr] = useState("");
+
+  useEffect(() => {
+    if (autopilot && !data && !running && plan) handleRun();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [autopilot, plan]);
+
+  useEffect(() => {
+    if (autopilot && data && !completed) {
+      const t = setTimeout(() => onComplete(), AUTOPILOT_STAGE_PAUSE_MS);
+      return () => clearTimeout(t);
+    }
+  }, [autopilot, data, completed, onComplete]);
 
   // Pre-fetch the plan so we can list target tables before the user runs.
   useEffect(() => {
@@ -565,7 +689,7 @@ function LoadingStage({ runId, onComplete, completed }) {
 
 /* ──────────────────────────── Stage 4: Rule Engine ─────────────────── */
 
-function RuleEngineStage({ runId, onComplete, completed }) {
+function RuleEngineStage({ runId, onComplete, completed, autopilot }) {
   const [plan, setPlan] = useState(null);
   const [running, setRunning] = useState(false);
   const [data, setData] = useState(null);
@@ -583,6 +707,20 @@ function RuleEngineStage({ runId, onComplete, completed }) {
       cancelled = true;
     };
   }, [runId]);
+
+  // Autopilot: auto-fire once the plan is loaded; the parent will navigate
+  // to /exceptions after `completed` flips, so no auto-advance here.
+  useEffect(() => {
+    if (autopilot && plan && !data && !running) handleRun();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [autopilot, plan]);
+
+  useEffect(() => {
+    if (autopilot && data && !completed) {
+      const t = setTimeout(() => onComplete(), AUTOPILOT_STAGE_PAUSE_MS);
+      return () => clearTimeout(t);
+    }
+  }, [autopilot, data, completed, onComplete]);
 
   async function handleRun() {
     setRunning(true);
@@ -804,16 +942,28 @@ function ExceptionReportStage({ runId, run, onComplete, completed }) {
 
 /* ──────────────────────────── Stage 6: Dashboard ───────────────────── */
 
+// Empty filter state shared by the in-wizard dashboard so it renders the
+// same Procurement-rich layout as the standalone /dashboard route.
+const DASHBOARD_EMPTY_FILTERS = {
+  companies: [],
+  locations: [],
+  risk_levels: [],
+  aging_buckets: [],
+  po_creators: [],
+};
+
 function DashboardStage({ runId }) {
   const [data, setData] = useState(null);
   const [err, setErr] = useState("");
   const [loading, setLoading] = useState(true);
+  const [filters, setFilters] = useState(DASHBOARD_EMPTY_FILTERS);
 
+  // Initial load with empty filters.
   useEffect(() => {
     let cancelled = false;
     setLoading(true);
     setErr("");
-    getDashboard(runId)
+    getDashboard(runId, DASHBOARD_EMPTY_FILTERS)
       .then((d) => {
         if (cancelled) return;
         setData(d);
@@ -830,6 +980,27 @@ function DashboardStage({ runId }) {
     };
   }, [runId]);
 
+  // Re-fetch when filters change. Skip the no-op initial mount where
+  // filters are empty AND we already have data from the initial fetch.
+  useEffect(() => {
+    if (!data) return undefined;
+    let cancelled = false;
+    setErr("");
+    getDashboard(runId, filters)
+      .then((d) => {
+        if (cancelled) return;
+        setData(d);
+      })
+      .catch((e) => {
+        if (cancelled) return;
+        setErr(e.response?.data?.detail || e.message || "Failed to load dashboard.");
+      });
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filters]);
+
   return (
     <div className="cacm-wizard-stage">
       <div>
@@ -840,7 +1011,15 @@ function DashboardStage({ runId }) {
       </div>
       {err && <div className="inv-warning">{err}</div>}
       {loading && <div className="cacm-loading">Loading dashboard…</div>}
-      {!loading && data && <DashboardCharts data={data} />}
+      {!loading && data && (
+        <DashboardCharts
+          data={data}
+          kpiType={data.kpi_type}
+          filters={filters}
+          onFiltersChange={setFilters}
+          onClearFilters={() => setFilters(DASHBOARD_EMPTY_FILTERS)}
+        />
+      )}
     </div>
   );
 }
@@ -857,6 +1036,23 @@ export default function RunPage() {
 
   const [currentStage, setCurrentStage] = useState("extraction");
   const [completedStages, setCompletedStages] = useState(() => new Set());
+  // Autopilot mode: when on, every stage auto-runs and auto-advances on a
+  // short timer so the demo plays itself end-to-end. Triggered by the
+  // "Schedule whole process" button on Stage 1.
+  const [autopilot, setAutopilot] = useState(false);
+
+  // Once the rule engine completes under autopilot, jump straight to the
+  // standalone Exceptions page — that's the "land them on the report"
+  // outcome the user wants. The brief delay lets the rule-engine result
+  // sit on screen for a moment so the audience sees the totals.
+  useEffect(() => {
+    if (autopilot && completedStages.has("rules")) {
+      const t = setTimeout(() => {
+        navigate(`/agents/cacm/runs/${runId}/exceptions`);
+      }, AUTOPILOT_FINISH_PAUSE_MS);
+      return () => clearTimeout(t);
+    }
+  }, [autopilot, completedStages, runId, navigate]);
 
   // Initial run summary fetch.
   useEffect(() => {
@@ -962,6 +1158,8 @@ export default function RunPage() {
               kpiMeta={kpiMeta}
               completed={completedStages.has("extraction")}
               onComplete={() => advanceFrom("extraction", "transformation")}
+              autopilot={autopilot}
+              onScheduleAll={() => setAutopilot(true)}
             />
           )}
           {currentStage === "transformation" && (
@@ -969,6 +1167,7 @@ export default function RunPage() {
               runId={runId}
               completed={completedStages.has("transformation")}
               onComplete={() => advanceFrom("transformation", "loading")}
+              autopilot={autopilot}
             />
           )}
           {currentStage === "loading" && (
@@ -976,6 +1175,7 @@ export default function RunPage() {
               runId={runId}
               completed={completedStages.has("loading")}
               onComplete={() => advanceFrom("loading", "rules")}
+              autopilot={autopilot}
             />
           )}
           {currentStage === "rules" && (
@@ -983,6 +1183,7 @@ export default function RunPage() {
               runId={runId}
               completed={completedStages.has("rules")}
               onComplete={() => advanceFrom("rules", "exceptions")}
+              autopilot={autopilot}
             />
           )}
           {currentStage === "exceptions" && (

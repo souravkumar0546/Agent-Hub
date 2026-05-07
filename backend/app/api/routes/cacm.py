@@ -28,6 +28,7 @@ import csv
 import io
 from collections import Counter
 from datetime import datetime, timedelta, timezone
+from typing import Any
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from fastapi.responses import Response
@@ -337,9 +338,371 @@ def export_xlsx(
 # ── Dashboard ────────────────────────────────────────────────────────────────
 
 
+# Aging-bucket thresholds — mirror `_aging_bucket` in service.py but keep
+# both labels (audit-friendly + dashboard "0-3 Days") and the risk level.
+_AGING_BUCKETS = (
+    ("0-3 Days", "Low", 0, 3),
+    ("4-14 Days", "Medium", 4, 14),
+    ("15+ Days", "High", 15, 10**9),
+)
+
+# Month order for the monthly trend (Apr → Mar fiscal-year style).
+_MONTH_ABBR = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+
+# Distinct colours for the location grid, recycled if more than 5 locations.
+_LOCATION_COLOURS = ["purple", "red", "blue", "orange", "green"]
+
+# Pretty-label company codes — shown next to the raw code in the breakdown.
+_COMPANY_LABELS = {"1000": "Acme", "2000": "Beta", "3000": "Gamma"}
+
+
+# ── Inventory dashboard support ──────────────────────────────────────────────
+
+# Inventory company labels — match the user's mockup (ACME / Vertex / Nexus / Apex).
+_INV_COMPANY_LABELS = {
+    "1000": "ACME",
+    "2000": "Vertex",
+    "3000": "Nexus",
+    "4000": "Apex",
+}
+
+# Plant labels — pretty city names attached to the SAP plant code.
+_INV_LOCATION_LABELS = {
+    "BLR1": "Bengaluru",
+    "CHN1": "Chennai",
+    "MUM1": "Mumbai",
+    "HYD1": "Hyderabad",
+    "DEL1": "Delhi",
+}
+
+# Per-location colour token, keyed by werks. Recharts/CSS resolves these
+# tokens via LOCATION_COLOR_MAP on the frontend.
+_INV_LOCATION_COLOURS = {
+    "BLR1": "purple",
+    "CHN1": "red",
+    "MUM1": "orange",
+    "HYD1": "teal",
+    "DEL1": "green",
+}
+
+# Movement type catalog — keep a stable order so the bar chart axis doesn't
+# shuffle as filters change. Each entry: (code, label, color-token).
+_INV_MOVEMENT_TYPES: list[tuple[str, str, str]] = [
+    ("701", "701 Surplus", "orange"),
+    ("702", "702 Deficit", "red"),
+    ("551", "551 Scrap", "purple"),
+    ("561", "561 Init.Stock", "teal"),
+    ("562", "562 Rev.Init", "lavender"),
+    ("552", "552 Rev.Scrap", "amber"),
+    ("711", "711 Blocked", "green"),
+    ("712", "712 Rev.Blk", "grey"),
+]
+
+# Material-group → colour mapping for the donut chart.
+_INV_MATERIAL_GROUP_COLOURS = {
+    "Electronics": "purple",
+    "Mechanical": "red",
+    "Raw Material": "orange",
+    "Lubricants": "teal",
+    "Packaging": "amber",
+    "Safety": "green",
+}
+
+
+def _inv_risk_from_count(count: float | int | None) -> str:
+    """Derive risk band from adjustment count, mirroring the kpi_catalog
+    risk bands [(4,5,Low),(6,9,Medium),(10,None,High)]."""
+    try:
+        c = int(count or 0)
+    except (TypeError, ValueError):
+        c = 0
+    if c >= 10:
+        return "High"
+    if c >= 6:
+        return "Medium"
+    return "Low"
+
+
+def _inventory_exception_view(e: CacmException) -> dict:
+    """Flatten an inventory exception into a denormalised dict for filter/aggregation.
+
+    Falls back gracefully if any field is missing — the orchestrator
+    populates them via `metadata_fields` on the kpi_catalog spec, but
+    older runs may not.
+    """
+    payload = e.payload_json or {}
+    fields = payload.get("fields") or {}
+    agg_value = fields.get("agg_value") or 0
+    return {
+        "exception_no": e.exception_no,
+        "risk": e.risk or _inv_risk_from_count(agg_value),
+        "agg_value": int(float(agg_value)) if agg_value else 0,
+        "company_code": str(fields.get("company_code") or "") or None,
+        "werks": str(fields.get("werks") or "") or None,
+        "lgort": str(fields.get("lgort") or "") or None,
+        "material_id": fields.get("material_id") or None,
+        "material_name": fields.get("material_name") or None,
+        "material_group": fields.get("material_group") or None,
+        "movement_type": str(fields.get("movement_type") or "") or None,
+        "posting_date": fields.get("posting_date") or None,
+        "adjustment_amount": float(fields.get("adjustment_amount") or 0),
+        "user_id": fields.get("user_id") or None,
+        "reversal_indicator": bool(fields.get("reversal_indicator") or False),
+    }
+
+
+def _build_inventory_dashboard(run: CacmRun, excs: list[CacmException], q: dict) -> dict:
+    """Compute the Inventory-shape dashboard payload.
+
+    `q` is a dict of CSV-string filter params (companies, locations,
+    risk_levels, movement_types, material_groups, reversals). Filters
+    narrow the exception set BEFORE every aggregation except
+    `filter_options`, which always returns the full distinct set.
+    """
+    all_views = [_inventory_exception_view(e) for e in excs]
+
+    filter_options = {
+        "companies": sorted({v["company_code"] for v in all_views if v["company_code"]}),
+        "locations": sorted({v["werks"] for v in all_views if v["werks"]}),
+        "risk_levels": ["High", "Medium", "Low"],
+        "movement_types": sorted({v["movement_type"] for v in all_views if v["movement_type"]}),
+        "material_groups": sorted({v["material_group"] for v in all_views if v["material_group"]}),
+        "reversals": ["Yes", "No"],
+    }
+
+    f_companies = set(_split_csv(q.get("companies")))
+    f_locations = set(_split_csv(q.get("locations")))
+    f_risks = set(_split_csv(q.get("risk_levels")))
+    f_movement_types = set(_split_csv(q.get("movement_types")))
+    f_material_groups = set(_split_csv(q.get("material_groups")))
+    # Reversals filter is Yes / No / both.
+    f_reversals_raw = _split_csv(q.get("reversals"))
+    f_reversals: set[bool] = set()
+    for v in f_reversals_raw:
+        if v.lower() == "yes":
+            f_reversals.add(True)
+        elif v.lower() == "no":
+            f_reversals.add(False)
+
+    def _passes(v: dict) -> bool:
+        if f_companies and (v["company_code"] not in f_companies):
+            return False
+        if f_locations and (v["werks"] not in f_locations):
+            return False
+        if f_risks and (v["risk"] not in f_risks):
+            return False
+        if f_movement_types and (v["movement_type"] not in f_movement_types):
+            return False
+        if f_material_groups and (v["material_group"] not in f_material_groups):
+            return False
+        if f_reversals and (v["reversal_indicator"] not in f_reversals):
+            return False
+        return True
+
+    views = [v for v in all_views if _passes(v)]
+    total_exceptions = len(views)
+
+    # ── Totals tiles ────────────────────────────────────────────────────────
+    # Spec says "High Risk (>= 6 ADJ.)" — the dashboard tile counts every
+    # exception whose adjustment count crosses 6, which spans both the
+    # Medium risk band (6-9) and the High band (10+).
+    high_risk_count = sum(1 for v in views if v["agg_value"] >= 6)
+    high_risk_pct = (high_risk_count / total_exceptions * 100.0) if total_exceptions else 0.0
+    total_adj_value = sum(abs(v["adjustment_amount"]) for v in views)
+    avg_adj_count = (sum(v["agg_value"] for v in views) / total_exceptions) if total_exceptions else 0.0
+    reversal_count = sum(1 for v in views if v["reversal_indicator"])
+    reversal_pct = (reversal_count / total_exceptions * 100.0) if total_exceptions else 0.0
+    unique_materials = len({v["material_id"] for v in views if v["material_id"]})
+
+    totals = {
+        "total_exceptions": total_exceptions,
+        "high_risk_count": high_risk_count,
+        "high_risk_pct": round(high_risk_pct, 1),
+        "total_adj_value": round(total_adj_value, 2),
+        "avg_adj_count": round(avg_adj_count, 1),
+        "reversal_transactions": reversal_count,
+        "reversal_pct": round(reversal_pct, 1),
+        "unique_materials": unique_materials,
+        # Legacy keys some clients still consume.
+        "records": run.total_records or 0,
+        "exceptions": total_exceptions,
+        "exception_pct": run.exception_pct or 0.0,
+        "total_records": run.total_records or 0,
+    }
+
+    # ── Movement type distribution (vertical bar) ───────────────────────────
+    # Always show all 8 spec types in stable order; missing ones get 0.
+    counts_by_mt: dict[str, int] = {}
+    for v in views:
+        mt = v["movement_type"]
+        if not mt:
+            continue
+        counts_by_mt[mt] = counts_by_mt.get(mt, 0) + 1
+    movement_type_distribution = [
+        {"code": code, "label": label, "color": colour, "count": int(counts_by_mt.get(code, 0))}
+        for code, label, colour in _INV_MOVEMENT_TYPES
+    ]
+
+    # ── Monthly trend (Apr-Dec area + line) ─────────────────────────────────
+    monthly_map: dict[str, dict[str, float]] = {}
+    for v in views:
+        d = v["posting_date"]
+        if not d or len(d) < 7:
+            continue
+        ym = d[:7]
+        bucket = monthly_map.setdefault(ym, {"count": 0, "total_value": 0.0})
+        bucket["count"] += 1
+        bucket["total_value"] += abs(v["adjustment_amount"])
+
+    monthly_trend = []
+    for ym in sorted(monthly_map.keys()):
+        try:
+            month_idx = int(ym[5:7])
+            month_label = _MONTH_ABBR[month_idx - 1]
+        except (ValueError, IndexError):
+            month_label = ym
+        monthly_trend.append({
+            "month": month_label,
+            "year_month": ym,
+            "exceptions": int(monthly_map[ym]["count"]),
+            "total_value": round(monthly_map[ym]["total_value"], 2),
+        })
+
+    # ── Company breakdown — stacked bars by risk ────────────────────────────
+    company_bucket: dict[str, dict[str, int]] = {}
+    for v in views:
+        cc = v["company_code"]
+        if not cc:
+            continue
+        b = company_bucket.setdefault(cc, {"high": 0, "medium": 0, "low": 0})
+        b[v["risk"].lower()] = b.get(v["risk"].lower(), 0) + 1
+    company_breakdown = []
+    for cc in sorted(company_bucket.keys()):
+        b = company_bucket[cc]
+        label_name = _INV_COMPANY_LABELS.get(cc, cc)
+        company_breakdown.append({
+            "company_code": cc,
+            "label": f"{label_name} ({cc})",
+            "high": int(b.get("high", 0)),
+            "medium": int(b.get("medium", 0)),
+            "low": int(b.get("low", 0)),
+            "count": int(b.get("high", 0) + b.get("medium", 0) + b.get("low", 0)),
+        })
+
+    # ── Material group exposure — donut ─────────────────────────────────────
+    group_bucket: dict[str, float] = {}
+    for v in views:
+        g = v["material_group"]
+        if not g:
+            continue
+        group_bucket[g] = group_bucket.get(g, 0.0) + abs(v["adjustment_amount"])
+    total_group_value = sum(group_bucket.values()) or 1.0
+    material_group_exposure = []
+    for g, val in sorted(group_bucket.items(), key=lambda kv: -kv[1]):
+        material_group_exposure.append({
+            "group": g,
+            "value": round(val, 2),
+            "pct": round(val / total_group_value * 100.0, 1),
+            "color": _INV_MATERIAL_GROUP_COLOURS.get(g, "purple"),
+        })
+
+    # ── Location analysis — horizontal bars ─────────────────────────────────
+    loc_bucket: dict[str, dict[str, int]] = {}
+    for v in views:
+        loc = v["werks"]
+        if not loc:
+            continue
+        b = loc_bucket.setdefault(loc, {"count": 0, "high_count": 0})
+        b["count"] += 1
+        if v["risk"] == "High":
+            b["high_count"] += 1
+    location_analysis = []
+    for loc in sorted(loc_bucket.keys(), key=lambda k: -loc_bucket[k]["count"]):
+        b = loc_bucket[loc]
+        label_name = _INV_LOCATION_LABELS.get(loc, loc)
+        location_analysis.append({
+            "location": loc,
+            "label": f"{label_name} ({loc})",
+            "count": int(b["count"]),
+            "high_count": int(b["high_count"]),
+            "color": _INV_LOCATION_COLOURS.get(loc, "purple"),
+        })
+
+    # Legacy keys for backwards-compat / existing /test_cacm_dashboard expectations.
+    by_risk = {"High": 0, "Medium": 0, "Low": 0}
+    for v in views:
+        by_risk[v["risk"]] = by_risk.get(v["risk"], 0) + 1
+    by_risk = {k: c for k, c in by_risk.items() if c > 0}
+    by_company_legacy = {row["company_code"]: row["count"] for row in company_breakdown[:10]}
+
+    return {
+        "kpi_type": run.kpi_type,
+        "process": run.process,
+        "totals": totals,
+        "filter_options": filter_options,
+        "movement_type_distribution": movement_type_distribution,
+        "monthly_trend": monthly_trend,
+        "company_breakdown": company_breakdown,
+        "material_group_exposure": material_group_exposure,
+        "location_analysis": location_analysis,
+        # Legacy keys still consumed by older smoke tests / generic dashboard.
+        "by_risk": by_risk,
+        "by_company": by_company_legacy,
+        "by_vendor": {},
+    }
+
+
+def _aging_for(diff_days: float | int | None) -> tuple[str, str]:
+    """Return (bucket_label, risk_level) for a delay in days. Defaults to Low/0-3."""
+    try:
+        d = int(diff_days) if diff_days is not None else 0
+    except (TypeError, ValueError):
+        d = 0
+    for label, risk, lo, hi in _AGING_BUCKETS:
+        if lo <= d <= hi:
+            return label, risk
+    return _AGING_BUCKETS[-1][0], _AGING_BUCKETS[-1][1]
+
+
+def _split_csv(value: str | None) -> list[str]:
+    if not value:
+        return []
+    return [v.strip() for v in value.split(",") if v.strip()]
+
+
+def _exception_view(e: CacmException) -> dict:
+    """Flatten an exception into a denormalised dict for filter/aggregation."""
+    payload = e.payload_json or {}
+    fields = payload.get("fields") or {}
+    diff_days = fields.get("diff_days") or 0
+    aging_label, aging_risk = _aging_for(diff_days)
+    return {
+        "exception_no": e.exception_no,
+        "risk": e.risk,
+        "diff_days": int(diff_days) if isinstance(diff_days, (int, float)) else 0,
+        "company_code": str(fields.get("company_code") or "") or None,
+        "location": fields.get("location") or None,
+        "po_created_by": fields.get("po_created_by") or None,
+        "invoice_amount": float(fields.get("invoice_amount") or 0),
+        "po_amount": float(fields.get("po_amount") or 0),
+        "po_created": fields.get("po_created") or None,
+        "invoice_posted": fields.get("invoice_posted") or None,
+        "aging_label": aging_label,
+        "aging_risk": aging_risk,
+    }
+
+
 @router.get("/runs/{run_id}/dashboard")
 def get_dashboard(
     run_id: int,
+    companies: str | None = Query(None),
+    locations: str | None = Query(None),
+    risk_levels: str | None = Query(None),
+    aging_buckets: str | None = Query(None),
+    po_creators: str | None = Query(None),
+    movement_types: str | None = Query(None),
+    material_groups: str | None = Query(None),
+    reversals: str | None = Query(None),
     ctx: OrgContext = Depends(require_org),
     db: Session = Depends(get_db),
 ) -> dict:
@@ -353,32 +716,227 @@ def get_dashboard(
         .all()
     )
 
-    by_risk: Counter = Counter(e.risk for e in excs)
-    by_company: Counter = Counter()
+    # ── Inventory KPI: branch to the inventory-specific payload ─────────────
+    if run.kpi_type == "repeated_material_adjustments" or run.process == "Inventory":
+        return _build_inventory_dashboard(
+            run,
+            excs,
+            {
+                "companies": companies,
+                "locations": locations,
+                "risk_levels": risk_levels,
+                "movement_types": movement_types,
+                "material_groups": material_groups,
+                "reversals": reversals,
+            },
+        )
+
+    # All exceptions (denormalised) — used for filter_options (always full set).
+    all_views = [_exception_view(e) for e in excs]
+
+    # Filter options — derived from the full unfiltered view so dropdowns
+    # don't shrink as filters apply.
+    company_set = sorted({v["company_code"] for v in all_views if v["company_code"]})
+    location_set = sorted({v["location"] for v in all_views if v["location"]})
+    creator_set = sorted({v["po_created_by"] for v in all_views if v["po_created_by"]})
+    filter_options = {
+        "companies": company_set,
+        "locations": location_set,
+        "risk_levels": ["High", "Medium", "Low"],
+        "aging_buckets": [b[0] for b in _AGING_BUCKETS],
+        "po_creators": creator_set,
+    }
+
+    # Apply filters.
+    f_companies = set(_split_csv(companies))
+    f_locations = set(_split_csv(locations))
+    f_risks = set(_split_csv(risk_levels))
+    f_aging = set(_split_csv(aging_buckets))
+    f_creators = set(_split_csv(po_creators))
+
+    def _passes(v: dict) -> bool:
+        if f_companies and (v["company_code"] not in f_companies):
+            return False
+        if f_locations and (v["location"] not in f_locations):
+            return False
+        if f_risks and (v["risk"] not in f_risks):
+            return False
+        if f_aging and (v["aging_label"] not in f_aging):
+            return False
+        if f_creators and (v["po_created_by"] not in f_creators):
+            return False
+        return True
+
+    views = [v for v in all_views if _passes(v)]
+    total_exceptions = len(views)
+
+    # Totals
+    high_risk_count = sum(1 for v in views if v["risk"] == "High")
+    high_risk_pct = (high_risk_count / total_exceptions * 100.0) if total_exceptions else 0.0
+    total_invoice_amt = sum(v["invoice_amount"] for v in views)
+    avg_delay_days = (sum(v["diff_days"] for v in views) / total_exceptions) if total_exceptions else 0.0
+    if views:
+        max_v = max(views, key=lambda v: v["diff_days"])
+        max_delay_days = int(max_v["diff_days"])
+        max_delay_location = max_v["location"] or ""
+    else:
+        max_delay_days = 0
+        max_delay_location = ""
+
+    # Monthly trend (uses po_created month; sort calendar order).
+    monthly_map: dict[str, dict[str, float]] = {}
+    for v in views:
+        d = v["po_created"]
+        if not d or len(d) < 7:
+            continue
+        ym = d[:7]
+        bucket = monthly_map.setdefault(ym, {"count": 0, "delay_sum": 0.0})
+        bucket["count"] += 1
+        bucket["delay_sum"] += v["diff_days"]
+    monthly_trend = []
+    for ym in sorted(monthly_map.keys()):
+        cnt = int(monthly_map[ym]["count"])
+        avg = (monthly_map[ym]["delay_sum"] / cnt) if cnt else 0.0
+        try:
+            month_idx = int(ym[5:7])
+            month_label = _MONTH_ABBR[month_idx - 1]
+        except (ValueError, IndexError):
+            month_label = ym
+        monthly_trend.append(
+            {"month": month_label, "year_month": ym, "exceptions": cnt, "avg_delay": round(avg, 2)}
+        )
+
+    # Company breakdown — count + invoice_amt + per-risk segments.
+    company_buckets: dict[str, dict[str, Any]] = {}
+    for v in views:
+        cc = v["company_code"]
+        if not cc:
+            continue
+        b = company_buckets.setdefault(cc, {"count": 0, "total_invoice_amt": 0.0,
+                                            "high": 0, "medium": 0, "low": 0})
+        b["count"] += 1
+        b["total_invoice_amt"] += v["invoice_amount"]
+        if v["risk"] == "High":
+            b["high"] += 1
+        elif v["risk"] == "Medium":
+            b["medium"] += 1
+        else:
+            b["low"] += 1
+    company_breakdown = []
+    for cc, b in sorted(company_buckets.items(), key=lambda kv: -kv[1]["count"]):
+        label_name = _COMPANY_LABELS.get(cc, cc)
+        company_breakdown.append({
+            "company_code": cc,
+            "label": f"{label_name} ({cc})",
+            "count": b["count"],
+            "total_invoice_amt": b["total_invoice_amt"],
+            "high": b["high"],
+            "medium": b["medium"],
+            "low": b["low"],
+        })
+
+    # Aging buckets — always 3 entries, even if some are 0.
+    aging_counts: dict[str, int] = {b[0]: 0 for b in _AGING_BUCKETS}
+    for v in views:
+        aging_counts[v["aging_label"]] += 1
+    aging_buckets_out = []
+    for label, risk, _lo, _hi in _AGING_BUCKETS:
+        cnt = aging_counts[label]
+        pct = (cnt / total_exceptions * 100.0) if total_exceptions else 0.0
+        aging_buckets_out.append({
+            "label": label, "risk": risk, "count": cnt, "pct": round(pct, 1),
+        })
+
+    # PO creators — top 10 by count.
+    creator_buckets: dict[str, dict[str, float]] = {}
+    for v in views:
+        u = v["po_created_by"]
+        if not u:
+            continue
+        b = creator_buckets.setdefault(u, {"count": 0, "total_invoice_amt": 0.0})
+        b["count"] += 1
+        b["total_invoice_amt"] += v["invoice_amount"]
+    po_creators_out = []
+    for user, b in sorted(creator_buckets.items(), key=lambda kv: (-kv[1]["count"], kv[0]))[:10]:
+        po_creators_out.append({
+            "user": user,
+            "count": int(b["count"]),
+            "total_invoice_amt": b["total_invoice_amt"],
+        })
+
+    # Financial exposure — every (filtered) exception with the bubble dims.
+    financial_exposure = [
+        {
+            "exception_no": v["exception_no"],
+            "delay_days": v["diff_days"],
+            "invoice_amount": v["invoice_amount"],
+            "po_amount": v["po_amount"],
+            "risk": v["risk"],
+        }
+        for v in views
+    ]
+
+    # Location breakdown — count, ₹ exposure, % of filtered total.
+    location_buckets: dict[str, dict[str, float]] = {}
+    for v in views:
+        loc = v["location"]
+        if not loc:
+            continue
+        b = location_buckets.setdefault(loc, {"count": 0, "total_invoice_amt": 0.0})
+        b["count"] += 1
+        b["total_invoice_amt"] += v["invoice_amount"]
+    location_breakdown = []
+    for idx, (loc, b) in enumerate(sorted(location_buckets.items(), key=lambda kv: -kv[1]["count"])):
+        pct = (b["count"] / total_exceptions * 100.0) if total_exceptions else 0.0
+        location_breakdown.append({
+            "location": loc,
+            "count": int(b["count"]),
+            "total_invoice_amt": b["total_invoice_amt"],
+            "pct_of_total": round(pct, 1),
+            "color": _LOCATION_COLOURS[idx % len(_LOCATION_COLOURS)],
+        })
+
+    # ── Backward-compat keys (legacy test + Inventory dashboard) ────────────
+    by_risk = {"High": 0, "Medium": 0, "Low": 0}
+    for v in views:
+        by_risk[v["risk"]] = by_risk.get(v["risk"], 0) + 1
+    by_risk = {k: c for k, c in by_risk.items() if c > 0}
+    by_company_legacy = {row["company_code"]: row["count"] for row in company_breakdown[:10]}
     by_vendor: Counter = Counter()
-    monthly: Counter = Counter()
     for e in excs:
         fields = (e.payload_json or {}).get("fields", {}) or {}
-        if fields.get("company_code"):
-            by_company[str(fields["company_code"])] += 1
         if fields.get("vendor_code"):
             by_vendor[str(fields["vendor_code"])] += 1
-        # First date-like field in the payload determines the monthly bucket.
-        for k, v in fields.items():
-            if "date" in k.lower() and isinstance(v, str) and len(v) >= 7:
-                monthly[v[:7]] += 1
-                break
 
     return {
         "totals": {
+            # Legacy keys the original dashboard test asserts on.
             "records": run.total_records or 0,
-            "exceptions": run.total_exceptions or 0,
+            "exceptions": total_exceptions,
             "exception_pct": run.exception_pct or 0.0,
+            # New, richer totals.
+            "total_exceptions": total_exceptions,
+            "total_records": run.total_records or 0,
+            "high_risk_count": high_risk_count,
+            "high_risk_pct": round(high_risk_pct, 1),
+            "total_invoice_amt": total_invoice_amt,
+            "avg_delay_days": round(avg_delay_days, 1),
+            "max_delay_days": max_delay_days,
+            "max_delay_location": max_delay_location,
         },
-        "by_risk": dict(by_risk),
-        "by_company": dict(by_company.most_common(10)),
+        "filter_options": filter_options,
+        "monthly_trend": monthly_trend,
+        "company_breakdown": company_breakdown,
+        "aging_buckets": aging_buckets_out,
+        "po_creators": po_creators_out,
+        "financial_exposure": financial_exposure,
+        "location_breakdown": location_breakdown,
+        # Legacy keys for the original test + Inventory dashboard.
+        "by_risk": by_risk,
+        "by_company": by_company_legacy,
         "by_vendor": dict(by_vendor.most_common(10)),
-        "monthly_trend": dict(sorted(monthly.items())),
+        "kpi_type": run.kpi_type,
+        "process": run.process,
     }
 
 
@@ -560,7 +1118,8 @@ def stage_transformation(
             derived_summaries.append(DerivedTableSummary(
                 name=name,
                 source_join_summary=(
-                    "FILTER mseg WHERE movement_type IN (309, 561, 562, 701, 702)"
+                    "FILTER mseg WHERE movement_type IN "
+                    "(551, 552, 561, 562, 701, 702, 711, 712)"
                 ),
                 row_count=int(len(df)),
             ))
