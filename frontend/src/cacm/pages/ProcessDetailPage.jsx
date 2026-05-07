@@ -62,7 +62,7 @@ export default function ProcessDetailPage() {
   }
 
   return (
-    <AppShell crumbs={["Agent Hub", "CACM", process?.name || "Process"]}>
+    <AppShell crumbs={["Agent Hub", "Prism", process?.name || "Process"]}>
       <div className="cacm-hero">
         <div style={{ flex: 1, minWidth: 0 }}>
           <Link to="/agents/cacm" className="cacm-back-link">

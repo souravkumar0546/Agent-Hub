@@ -57,7 +57,7 @@ function StageRail({ currentStage, completedStages, onJumpTo }) {
   const completed = new Set(completedStages);
   return (
     <nav className="cacm-wizard-rail" aria-label="CACM stages">
-      <div className="cacm-wizard-rail-title">CACM Stages</div>
+      <div className="cacm-wizard-rail-title">Steps</div>
       {STAGE_ORDER.map((stage, idx) => {
         const isCurrent = stage.key === currentStage;
         const isDone = completed.has(stage.key);
@@ -126,7 +126,7 @@ function ExtractionStage({ runId, kpiMeta, onComplete, completed }) {
       <div>
         <h2 className="cacm-wizard-stage-title">Stage 1 — Data Extraction</h2>
         <p className="cacm-wizard-stage-subtitle">
-          Pull source data from the SAP ECC system into the CACM staging area.
+          Pull source data from SAP ECC / Datawarehouse to Prism staging area.
         </p>
       </div>
 
@@ -158,24 +158,11 @@ function ExtractionStage({ runId, kpiMeta, onComplete, completed }) {
           </div>
           <div className="cacm-wizard-table-grid">
             {data.tables.map((t) => (
-              <div key={t.name} className="cacm-wizard-table-card">
-                <div className="cacm-wizard-table-card-head">
-                  <span className="cacm-wizard-table-name">{t.name}</span>
-                  <span className="cacm-wizard-table-rowcount">
-                    {t.row_count.toLocaleString()} rows
-                  </span>
-                </div>
-                <SampleRowsPreview rows={t.sample_rows} columns={t.columns} />
-                <div>
-                  <button
-                    type="button"
-                    className="btn"
-                    onClick={() => handleDownload(t.name)}
-                  >
-                    Download CSV
-                  </button>
-                </div>
-              </div>
+              <ExtractedTableCard
+                key={t.name}
+                table={t}
+                onDownload={() => handleDownload(t.name)}
+              />
             ))}
           </div>
         </>
@@ -211,7 +198,39 @@ function ExtractionStage({ runId, kpiMeta, onComplete, completed }) {
   );
 }
 
-function SampleRowsPreview({ rows, columns }) {
+/** Card that wraps one extracted table — header + preview toggle + download. */
+function ExtractedTableCard({ table, onDownload }) {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <div className="cacm-wizard-table-card">
+      <div className="cacm-wizard-table-card-head">
+        <span className="cacm-wizard-table-name">{table.name}</span>
+        <span className="cacm-wizard-table-rowcount">
+          {table.row_count.toLocaleString()} rows
+        </span>
+      </div>
+      <SampleRowsPreview
+        rows={table.sample_rows}
+        columns={table.columns}
+        expanded={expanded}
+      />
+      <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+        <button
+          type="button"
+          className="btn"
+          onClick={() => setExpanded((v) => !v)}
+        >
+          {expanded ? "Collapse preview" : "Preview"}
+        </button>
+        <button type="button" className="btn" onClick={onDownload}>
+          Download CSV
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function SampleRowsPreview({ rows, columns, expanded = false }) {
   if (!rows || rows.length === 0) {
     return (
       <div style={{ fontSize: 12, color: "var(--ink-muted)" }}>
@@ -219,11 +238,16 @@ function SampleRowsPreview({ rows, columns }) {
       </div>
     );
   }
-  // Show only the first 5 rows and clip column count to keep the card readable.
-  const visibleCols = (columns || Object.keys(rows[0])).slice(0, 6);
-  const visibleRows = rows.slice(0, 5);
+  // Compact view: 5 rows × 6 columns. Expanded view: all rows × all columns
+  // (with horizontal scroll on the wrapper).
+  const allCols = columns || Object.keys(rows[0]);
+  const visibleCols = expanded ? allCols : allCols.slice(0, 6);
+  const visibleRows = expanded ? rows : rows.slice(0, 5);
   return (
-    <div className="cacm-wizard-mini-table-wrapper">
+    <div
+      className="cacm-wizard-mini-table-wrapper"
+      style={expanded ? { maxHeight: 320, overflowY: "auto" } : undefined}
+    >
       <table className="cacm-wizard-mini-table">
         <thead>
           <tr>
@@ -246,6 +270,19 @@ function SampleRowsPreview({ rows, columns }) {
           ))}
         </tbody>
       </table>
+      {!expanded && (rows.length > 5 || allCols.length > 6) && (
+        <div
+          style={{
+            fontSize: 11,
+            color: "var(--ink-muted)",
+            padding: "4px 8px",
+          }}
+        >
+          {rows.length > 5 && `+${rows.length - 5} more rows`}
+          {rows.length > 5 && allCols.length > 6 && " · "}
+          {allCols.length > 6 && `${allCols.length - 6} more columns hidden`}
+        </div>
+      )}
     </div>
   );
 }
@@ -255,21 +292,39 @@ function SampleRowsPreview({ rows, columns }) {
 function TransformationStage({ runId, onComplete, completed }) {
   const [running, setRunning] = useState(false);
   const [data, setData] = useState(null);
+  const [extractedTables, setExtractedTables] = useState(null);
   const [err, setErr] = useState("");
 
   async function handleRun() {
     setRunning(true);
     setErr("");
     try {
-      const [stage] = await Promise.all([
+      // Fetch transformation stats AND the underlying extracted tables in
+      // parallel so we can render the same per-table cards as Stage 1, but
+      // labelled as "Transformed datasets" — the user wants extracted tables
+      // surfaced as the transformed view (no separate derived-table block).
+      const [stage, extraction] = await Promise.all([
         getStageData(runId, "transformation"),
+        getStageData(runId, "extraction").catch(() => null),
         fakeDelay(),
       ]);
       setData(stage);
+      setExtractedTables(extraction?.tables || []);
     } catch (e) {
       setErr(e.response?.data?.detail || e.message || "Transformation failed.");
     } finally {
       setRunning(false);
+    }
+  }
+
+  async function handleDownload(tableName) {
+    try {
+      await downloadCacmFile(
+        extractedTableDownloadUrl(runId, tableName),
+        `${tableName}.csv`
+      );
+    } catch (e) {
+      setErr(e.response?.data?.detail || e.message || "Download failed.");
     }
   }
 
@@ -280,8 +335,8 @@ function TransformationStage({ runId, onComplete, completed }) {
           Stage 2 — Data Transformation
         </h2>
         <p className="cacm-wizard-stage-subtitle">
-          Cleanse, parse, and join the extracted tables so the rule engine
-          sees a uniform shape.
+          Cleanse, parse, and standardize the extracted tables so the rule
+          engine sees a uniform shape.
         </p>
       </div>
 
@@ -294,7 +349,7 @@ function TransformationStage({ runId, onComplete, completed }) {
           Click <strong>Run Transformation</strong> to begin.
         </p>
       )}
-      {running && <Spinner label="Cleansing, parsing, joining…" />}
+      {running && <Spinner label="Cleansing, parsing, standardizing…" />}
 
       {data && (
         <>
@@ -312,23 +367,21 @@ function TransformationStage({ runId, onComplete, completed }) {
               </span>
             </div>
           </div>
-          {data.derived_tables && data.derived_tables.length > 0 && (
-            <div>
-              <div className="cacm-wizard-section-label">Derived tables</div>
-              {data.derived_tables.map((d) => (
-                <div key={d.name} className="cacm-wizard-rule-card">
-                  <div className="cacm-wizard-table-card-head">
-                    <span className="cacm-wizard-table-name">{d.name}</span>
-                    <span className="cacm-wizard-table-rowcount">
-                      {d.row_count.toLocaleString()} rows
-                    </span>
-                  </div>
-                  <div style={{ fontSize: 12.5, color: "var(--ink-dim)" }}>
-                    {d.source_join_summary}
-                  </div>
-                </div>
-              ))}
-            </div>
+          {extractedTables && extractedTables.length > 0 && (
+            <>
+              <div className="cacm-wizard-section-label">
+                Transformed datasets ({extractedTables.length})
+              </div>
+              <div className="cacm-wizard-table-grid">
+                {extractedTables.map((t) => (
+                  <ExtractedTableCard
+                    key={t.name}
+                    table={t}
+                    onDownload={() => handleDownload(t.name)}
+                  />
+                ))}
+              </div>
+            </>
           )}
         </>
       )}
@@ -445,8 +498,8 @@ function LoadingStage({ runId, onComplete, completed }) {
       <div>
         <h2 className="cacm-wizard-stage-title">Stage 3 — Data Loading</h2>
         <p className="cacm-wizard-stage-subtitle">
-          Load the transformed data into the CCM data mart so the rule
-          engine can read it.
+          Load the transformed dataset into the Prism datamart so that we can
+          run the rule engine.
         </p>
       </div>
 
@@ -868,7 +921,7 @@ export default function RunPage() {
   }, [runId, currentStage]);
 
   return (
-    <AppShell crumbs={["Agent Hub", "CACM", `Run ${runId}`]}>
+    <AppShell crumbs={["Agent Hub", "Prism", `Run ${runId}`]}>
       <div className="cacm-hero">
         <div style={{ flex: 1, minWidth: 0 }}>
           <h1 className="page-title" style={{ marginBottom: 4 }}>
@@ -877,11 +930,11 @@ export default function RunPage() {
           <div className="page-subtitle" style={{ marginBottom: 8 }}>
             {kpiMeta?.rule_objective ||
               kpiMeta?.description ||
-              "Step-by-step CACM run — drive each stage with the buttons below."}
+              "Step-by-step Prism run — drive each stage with the buttons below."}
           </div>
           <div className="agent-meta">
             <span className="cap-tag cap-tag--accent">
-              {run?.process || kpiMeta?.process || "CACM"}
+              {run?.process || kpiMeta?.process || "Prism"}
             </span>
             {run?.kpi_type && <span className="cap-tag">{run.kpi_type}</span>}
           </div>

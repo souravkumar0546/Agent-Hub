@@ -59,11 +59,13 @@ PROCUREMENT_KPIS: list[KpiDef] = [
             ],
         },
         rule_conditions=[
-            "Tables in scope: EKBE, EKKO, EKPO, EBAN, T5VS5",
-            "Filter EKBE rows where BEWTP = 'Q' (invoice receipt) AND goods movement type is not null",
-            "Map purchasing documents to invoices using EKPO.EBELN + EKPO.EBELP",
-            "Flag cases where EKKO.AEDAT (PO Created on) > EKBE.BLDAT (Invoice document date)",
-            "Per the standard process the Invoice date should fall after the PO creation date — transactions that don't follow this surface as exceptions.",
+            "Review invoice receipt transactions from Purchasing Document History (EKBE) where the PO History Category indicates Invoice Receipt.",
+            "Match vendor invoices with the corresponding Purchase Orders and PO line items using Purchasing Document Item (EKPO).",
+            "Retrieve Purchase Order header details and PO Creation Date from Purchasing Document Header (EKKO).",
+            "Refer Purchase Requisition details from Purchase Requisition (EBAN), where applicable.",
+            "Use Tax and Language Reference Details (T5VS5) for supporting tax and localization reference information.",
+            "Compare the Vendor Invoice Date from Purchasing Document History (EKBE.BLDAT) with the Purchase Order Creation Date from Purchasing Document Header (EKKO.AEDAT).",
+            "Identify cases where the Vendor Invoice Date is earlier than the PO Creation Date.",
         ],
     ),
 ]
@@ -78,12 +80,12 @@ INVENTORY_KPIS: list[KpiDef] = [
         name="Repeated Adjustments for Same Materials",
         description="Materials with frequent inventory adjustments — typical control-weakness signal.",
         rule_objective=(
-            "Group MSEG inventory movements by material and count adjustment "
-            "movements (movement type 309 / 561 / 562 / 701 / 702 etc.). Flag "
-            "materials with more than 3 adjustment movements in the period — "
-            "indicates a process or measurement control gap."
+            "The KPI highlights repeated inventory adjustments for the same "
+            "materials, which may indicate weak inventory controls, stock "
+            "inaccuracies, manual intervention, process gaps, or potential "
+            "manipulation of inventory records."
         ),
-        source_tables=["MSEG", "MARA"],
+        source_tables=["MKPF", "MSEG", "MARA", "MBEW", "T001W", "T156", "T023"],
         pattern="aggregate_threshold",
         params={
             "table": "mseg_adjustments",
@@ -93,11 +95,21 @@ INVENTORY_KPIS: list[KpiDef] = [
             "threshold": 3,
             "as_fraction": False,
             "risk": [(4, 5, "Low"), (6, 9, "Medium"), (10, None, "High")],
-            "reason_template": "Material {key} has {value:.0f} adjustment movements",
+            "reason_template": "Material {material_id} ({material_name}) has {value:.0f} adjustment movements",
             "fields": [],
+            "metadata_fields": [
+                "company_code", "werks", "lgort", "material_id", "material_name",
+                "material_group", "movement_type", "doc_no", "line_item",
+                "posting_date", "quantity", "unit_of_measure", "adjustment_amount",
+                "user_id", "reversal_indicator",
+            ],
         },
         rule_conditions=[
-            "Aggregate MSEG inventory movements grouped by material_id, count adjustment movements (movement types 309 / 561 / 562 / 701 / 702) and flag any material with more than 3 adjustments in the period.",
+            "Filter inventory adjustment transactions from MSEG using relevant movement types (stock adjustments, inventory corrections, write-offs, reversals, manual stock postings).",
+            "Map inventory adjustment transactions using Material Number (MSEG.MATNR), Plant (MSEG.WERKS), Storage Location (MSEG.LGORT), and Posting Date (MKPF.BUDAT).",
+            "Identify cases where the same material has multiple adjustment postings within a defined monitoring period.",
+            "Flag materials where repeated reversals and repostings occur for the same material and quantity pattern.",
+            "Exclude system-generated or approved periodic inventory adjustment entries, wherever applicable.",
         ],
     ),
 ]

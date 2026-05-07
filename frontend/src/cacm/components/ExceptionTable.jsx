@@ -145,7 +145,83 @@ function ProcurementRow({ row, isOpen, onToggle }) {
   );
 }
 
-/* ────────────────────────── Generic / Inventory ────────────────────── */
+/* ────────────────────────── Inventory columns ─────────────────────── */
+
+const INVENTORY_COLUMNS = [
+  { key: "exception_no", label: "Exception #" },
+  { key: "risk", label: "Risk", isRisk: true },
+  { key: "company_code", label: "Company Code", source: "fields" },
+  { key: "werks", label: "Location", source: "fields" },
+  { key: "lgort", label: "Storage Location", source: "fields" },
+  { key: "material_id", label: "Material Number", source: "fields" },
+  { key: "material_name", label: "Material Description", source: "fields" },
+  { key: "material_group", label: "Material Group", source: "fields" },
+  { key: "movement_type", label: "Movement Type", source: "fields" },
+  { key: "doc_no", label: "Material Document #", source: "fields" },
+  { key: "line_item", label: "Doc Line Item", source: "fields", numeric: true },
+  { key: "posting_date", label: "Posting Date", source: "fields" },
+  { key: "quantity", label: "Qty Adjusted", source: "fields", numeric: true },
+  { key: "unit_of_measure", label: "UoM", source: "fields" },
+  { key: "adjustment_amount", label: "Adj Amount", source: "fields", numeric: true },
+  { key: "user_id", label: "Created By", source: "fields" },
+  { key: "agg_value", label: "# Adjustments", source: "fields", numeric: true },
+  { key: "reversal_indicator", label: "Reversal", source: "fields", boolish: true },
+];
+
+function InventoryRow({ row, isOpen, onToggle }) {
+  const payload = row.payload_json || {};
+  const fields = payload.fields || {};
+  return (
+    <>
+      <tr>
+        {INVENTORY_COLUMNS.map((col) => {
+          if (col.key === "exception_no") {
+            return <td key={col.key}>{row.exception_no}</td>;
+          }
+          if (col.isRisk) {
+            return (
+              <td key={col.key}>
+                <RiskBadge risk={row.risk} />
+              </td>
+            );
+          }
+          const v = fields[col.key];
+          let rendered;
+          if (col.numeric) rendered = formatNumber(v);
+          else if (col.boolish) {
+            // Booleans serialize as true/false; show "Yes"/"No" for readability.
+            rendered = v === true ? "Yes" : v === false ? "No" : "—";
+          } else {
+            rendered = formatString(v);
+          }
+          return <td key={col.key}>{rendered}</td>;
+        })}
+        <td>
+          <button
+            type="button"
+            className="cacm-exc-toggle"
+            onClick={onToggle}
+          >
+            {isOpen ? "Hide" : "Action"}
+          </button>
+        </td>
+      </tr>
+      {isOpen && (
+        <tr className="cacm-exc-detail-row">
+          <td colSpan={INVENTORY_COLUMNS.length + 1}>
+            <div className="cacm-exc-action" style={{ marginBottom: 8 }}>
+              <strong>Recommended action:</strong>{" "}
+              {payload.recommended_action || payload.action || "—"}
+            </div>
+            <PayloadDetails payload={payload} />
+          </td>
+        </tr>
+      )}
+    </>
+  );
+}
+
+/* ────────────────────────── Generic fallback ────────────────────── */
 
 function GenericRow({ row, isOpen, onToggle }) {
   const payload = row.payload_json || {};
@@ -201,13 +277,16 @@ export default function ExceptionTable({ rows = [], process }) {
     );
   }
 
-  // Detect process style. The Procurement KPI carries a much richer payload
-  // (company_code / location / po_no etc.) so we render a wider table.
-  const procurementPayload =
-    rows[0]?.payload_json?.fields?.po_no !== undefined ||
-    process === "Procurement";
+  // Detect process style by inspecting the first exception's payload shape.
+  // Procurement carries `po_no`; Inventory carries `material_id`. Each gets
+  // a dedicated wide table; anything else falls back to the generic 5-col view.
+  const firstFields = rows[0]?.payload_json?.fields || {};
+  const isProcurement =
+    firstFields.po_no !== undefined || process === "Procurement";
+  const isInventory =
+    firstFields.material_id !== undefined || process === "Inventory";
 
-  if (procurementPayload) {
+  if (isProcurement) {
     return (
       <div className="cacm-exc-wrapper">
         <table className="cacm-exc-table">
@@ -222,6 +301,33 @@ export default function ExceptionTable({ rows = [], process }) {
           <tbody>
             {rows.map((row) => (
               <ProcurementRow
+                key={row.id}
+                row={row}
+                isOpen={expanded.has(row.id)}
+                onToggle={() => toggle(row.id)}
+              />
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
+  }
+
+  if (isInventory) {
+    return (
+      <div className="cacm-exc-wrapper">
+        <table className="cacm-exc-table">
+          <thead>
+            <tr>
+              {INVENTORY_COLUMNS.map((c) => (
+                <th key={c.key}>{c.label}</th>
+              ))}
+              <th />
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((row) => (
+              <InventoryRow
                 key={row.id}
                 row={row}
                 isOpen={expanded.has(row.id)}

@@ -215,8 +215,8 @@ CATALOG: list[AgentDef] = [
     # rules → exceptions → dashboard). Lives under /api/cacm/*.
     AgentDef(
         type="cacm",
-        display_name="CACM",
-        name="CACM",
+        display_name="Prism",
+        name="Prism",
         tagline="A technology-enabled audit and risk monitoring solution designed to identify control gaps.",
         category="Control Effectiveness Monitoring",
         icon="shield-check",

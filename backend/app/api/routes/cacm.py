@@ -394,17 +394,18 @@ def get_dashboard(
 # they're descriptive labels, not authoritative state.
 _TRANSFORMATION_RULES: dict[str, list[str]] = {
     "Procurement": [
-        "Cleanse nulls and trim whitespace across all string columns",
-        "Parse dates from ISO strings to typed Timestamp values",
-        "Standardize vendor codes and normalize date formats",
-        "Map purchasing documents to invoices via EKPO.EBELN + EKPO.EBELP",
-        "Build derived `po_invoice_joined` view with company_code, location, and amounts",
+        "Convert all date fields into a consistent system date format, including PO Creation Date, Vendor Invoice Date, GR/IR Posting Date, and GR/IR Entry Date.",
+        "Trim leading and trailing spaces from all text-based fields to ensure consistent matching and reporting.",
+        "Handle blank, null, and special-character values across mandatory fields to improve data quality.",
+        "Normalize amount and quantity fields into numeric format for reporting and aggregation.",
+        "Standardize key fields such as Company Code, Plant, PO Number, PO Line Item, Document Type, User ID, Quantity, and Amount fields.",
     ],
     "Inventory": [
-        "Cleanse nulls and trim whitespace across all string columns",
-        "Parse posting dates and standardize movement-type codes",
-        "Filter MSEG to adjustment movement types (309, 561, 562, 701, 702)",
-        "Build derived `mseg_adjustments` slice for downstream aggregation",
+        "Convert all date fields into a consistent system date format, including Posting Date and Document Date.",
+        "Trim leading and trailing spaces from all text-based fields to ensure consistent matching and reporting.",
+        "Handle blank, null, and special-character values across mandatory fields to improve data quality.",
+        "Normalize quantity and amount fields into numeric format for reporting and aggregation.",
+        "Standardize key fields such as Material ID, Movement Type, Plant, User ID, and Quantity fields.",
     ],
 }
 

@@ -153,9 +153,23 @@ def _build_derived_tables(
     if process == "Inventory":
         if "mseg" in tables:
             mseg = tables["mseg"]
-            derived["mseg_adjustments"] = mseg[
+            adj = mseg[
                 mseg["movement_type"].astype(str).isin(_ADJUSTMENT_MOVEMENT_TYPES)
             ].copy()
+            # Left-join MARA on material_id so the rule pattern can project
+            # material_name / material_group into each per-material exception
+            # payload. MSEG already carries unit_of_measure as the per-txn UoM —
+            # rename the MARA column on collision so MSEG's wins.
+            if "mara" in tables:
+                mara = tables["mara"].copy()
+                mara_cols = [c for c in mara.columns if c != "material_id"]
+                rename_map = {
+                    c: f"mara_{c}" for c in mara_cols if c in adj.columns
+                }
+                if rename_map:
+                    mara = mara.rename(columns=rename_map)
+                adj = adj.merge(mara, how="left", on="material_id")
+            derived["mseg_adjustments"] = adj
 
     return derived
 

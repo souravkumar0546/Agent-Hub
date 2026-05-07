@@ -53,7 +53,7 @@ export default function LibraryPage() {
   }
 
   return (
-    <AppShell crumbs={["Agent Hub", "CACM"]}>
+    <AppShell crumbs={["Agent Hub", "Prism"]}>
       <div className="cacm-hero">
         <div style={{ flex: 1, minWidth: 0 }}>
           <h1 className="page-title" style={{ marginBottom: 4 }}>

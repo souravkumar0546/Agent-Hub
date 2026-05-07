@@ -39,7 +39,7 @@ export default function RunsHistoryPage() {
   }, []);
 
   return (
-    <AppShell crumbs={["Agent Hub", "CACM", "Runs"]}>
+    <AppShell crumbs={["Agent Hub", "Prism", "Runs"]}>
       <div className="cacm-hero">
         <div style={{ flex: 1, minWidth: 0 }}>
           <h1 className="page-title" style={{ marginBottom: 4 }}>

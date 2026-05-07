@@ -55,3 +55,55 @@ def test_flags_fraction_of_total():
     assert len(excs) == 1
     assert excs[0].fields["key"] == "A"
     assert "86%" in excs[0].reason
+
+
+def test_metadata_fields_projection_picks_latest_by_posting_date():
+    """Optional `metadata_fields` projects representative-row columns
+    into each exception's `fields`, and lets the reason template splat
+    those values too. Latest `posting_date` wins."""
+    df = pd.DataFrame({
+        "material_id": ["M1", "M1", "M1", "M1", "M2"],
+        "doc_no": ["d1", "d2", "d3", "d4", "d5"],
+        "material_name": ["Acme Widget"] * 4 + ["Other"],
+        "posting_date": pd.to_datetime([
+            "2026-01-01", "2026-04-01", "2026-02-15", "2026-03-10", "2026-04-02",
+        ]),
+        "movement_type": ["561", "562", "701", "702", "309"],
+    })
+    excs = aggregate_threshold(RuleContext(tables={"t": df}, kpi_type="x"), {
+        "table": "t", "group_by": ["material_id"],
+        "agg": {"column": "doc_no", "fn": "count"},
+        "op": ">", "threshold": 3, "as_fraction": False,
+        "risk": "High",
+        "reason_template": "Material {material_id} ({material_name}) has {value:.0f} adjustments",
+        "fields": [],
+        "metadata_fields": ["material_id", "material_name", "movement_type", "posting_date"],
+    })
+    assert len(excs) == 1
+    e = excs[0]
+    # Representative row is the latest posting_date (2026-04-01 → movement_type 562)
+    assert e.fields["material_id"] == "M1"
+    assert e.fields["material_name"] == "Acme Widget"
+    assert e.fields["movement_type"] == "562"
+    assert e.fields["posting_date"] == "2026-04-01"
+    # Aggregated bookkeeping still in fields
+    assert e.fields["agg_value"] == 4
+    # Reason template was given the metadata kwargs
+    assert "Acme Widget" in e.reason
+    assert "M1" in e.reason
+
+
+def test_metadata_fields_absent_keeps_legacy_behavior():
+    """No metadata_fields → behaviour identical to before this change."""
+    df = pd.DataFrame({"user": ["u1", "u1", "u2"], "doc": ["a", "b", "c"]})
+    excs = aggregate_threshold(RuleContext(tables={"t": df}, kpi_type="x"), {
+        "table": "t", "group_by": ["user"],
+        "agg": {"column": "doc", "fn": "count"},
+        "op": ">", "threshold": 1, "as_fraction": False,
+        "risk": "Medium",
+        "reason_template": "User {key} has {value} entries",
+        "fields": [],
+    })
+    assert len(excs) == 1
+    # No extra metadata keys leaked into the exception payload.
+    assert set(excs[0].fields.keys()) == {"key", "agg_value", "fraction"}

@@ -51,7 +51,7 @@ export default function DashboardPage() {
     !data.monthly_trend;
 
   return (
-    <AppShell crumbs={["Agent Hub", "CACM", `Run ${runId}`, "Dashboard"]}>
+    <AppShell crumbs={["Agent Hub", "Prism", `Run ${runId}`, "Dashboard"]}>
       <div className="cacm-hero">
         <div style={{ flex: 1, minWidth: 0 }}>
           <h1 className="page-title" style={{ marginBottom: 4 }}>

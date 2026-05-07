@@ -71,7 +71,7 @@ export default function ExceptionsPage() {
   }
 
   return (
-    <AppShell crumbs={["Agent Hub", "CACM", `Run ${runId}`, "Exceptions"]}>
+    <AppShell crumbs={["Agent Hub", "Prism", `Run ${runId}`, "Exceptions"]}>
       <div className="cacm-hero">
         <div style={{ flex: 1, minWidth: 0 }}>
           <h1 className="page-title" style={{ marginBottom: 4 }}>
