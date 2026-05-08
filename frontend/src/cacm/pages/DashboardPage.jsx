@@ -1,8 +1,9 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import AppShell from "../../components/AppShell.jsx";
 import { getDashboard, getRun } from "../api.js";
 import DashboardCharts from "../components/DashboardCharts.jsx";
+import { exportDashboardToPpt } from "../lib/dashboardPptExport.js";
 import "../styles.css";
 
 const EMPTY_FILTERS = {
@@ -94,6 +95,25 @@ export default function DashboardPage() {
   const kpiName = data?.kpi_name || data?.kpi_type || run?.kpi_type || "Run dashboard";
   const kpiType = data?.kpi_type || run?.kpi_type || "";
 
+  const [exporting, setExporting] = useState(false);
+  const dashboardRef = useRef(null);
+  const handleExportPpt = useCallback(async () => {
+    if (!data || !dashboardRef.current) return;
+    setExporting(true);
+    try {
+      await exportDashboardToPpt({
+        dashboardEl: dashboardRef.current,
+        kpiName,
+        kpiType,
+        runId,
+      });
+    } catch (e) {
+      setErr(e?.message || "Failed to export PPT.");
+    } finally {
+      setExporting(false);
+    }
+  }, [data, kpiName, kpiType, runId]);
+
   const isEmpty =
     !loading &&
     !err &&
@@ -121,6 +141,14 @@ export default function DashboardPage() {
           <Link to={`/agents/cacm/runs/${runId}/exceptions`} className="btn">
             View exceptions
           </Link>
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={handleExportPpt}
+            disabled={!data || loading || exporting}
+          >
+            {exporting ? "Exporting…" : "Export to PPT"}
+          </button>
         </div>
       </div>
 
@@ -135,13 +163,15 @@ export default function DashboardPage() {
       )}
 
       {!loading && !err && data && !isEmpty && (
-        <DashboardCharts
-          data={data}
-          kpiType={kpiType}
-          filters={filters}
-          onFiltersChange={onFiltersChange}
-          onClearFilters={onClearFilters}
-        />
+        <div ref={dashboardRef}>
+          <DashboardCharts
+            data={data}
+            kpiType={kpiType}
+            filters={filters}
+            onFiltersChange={onFiltersChange}
+            onClearFilters={onClearFilters}
+          />
+        </div>
       )}
     </AppShell>
   );

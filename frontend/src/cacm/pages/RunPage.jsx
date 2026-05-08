@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import AppShell from "../../components/AppShell.jsx";
 import {
@@ -14,6 +14,7 @@ import {
 } from "../api.js";
 import DashboardCharts from "../components/DashboardCharts.jsx";
 import ExceptionTable from "../components/ExceptionTable.jsx";
+import { exportDashboardToPpt } from "../lib/dashboardPptExport.js";
 import "../styles.css";
 
 /* ────────────────────────────────────────────────────────────────────────
@@ -940,11 +941,13 @@ const DASHBOARD_EMPTY_FILTERS = {
   po_creators: [],
 };
 
-function DashboardStage({ runId }) {
+function DashboardStage({ runId, kpiMeta, run }) {
   const [data, setData] = useState(null);
   const [err, setErr] = useState("");
   const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState(DASHBOARD_EMPTY_FILTERS);
+  const [exporting, setExporting] = useState(false);
+  const dashboardRef = useRef(null);
 
   // Initial load with empty filters.
   useEffect(() => {
@@ -989,24 +992,65 @@ function DashboardStage({ runId }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filters]);
 
+  async function handleExportPpt() {
+    if (!data || !dashboardRef.current) return;
+    setExporting(true);
+    setErr("");
+    try {
+      const kpiType = data.kpi_type || run?.kpi_type || kpiMeta?.type;
+      const kpiName =
+        data.kpi_name || kpiMeta?.name || run?.kpi_type || "Prism Dashboard";
+      await exportDashboardToPpt({
+        dashboardEl: dashboardRef.current,
+        kpiName,
+        kpiType,
+        runId,
+      });
+    } catch (e) {
+      setErr(e?.message || "Failed to export PPT.");
+    } finally {
+      setExporting(false);
+    }
+  }
+
   return (
     <div className="cacm-wizard-stage">
-      <div>
-        <h2 className="cacm-wizard-stage-title">Stage 6 — Dashboard</h2>
-        <p className="cacm-wizard-stage-subtitle">
-          Final view: aggregated risk and trend metrics for this run.
-        </p>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "flex-start",
+          justifyContent: "space-between",
+          gap: 12,
+          flexWrap: "wrap",
+        }}
+      >
+        <div>
+          <h2 className="cacm-wizard-stage-title">Stage 6 — Dashboard</h2>
+          <p className="cacm-wizard-stage-subtitle">
+            Final view: aggregated risk and trend metrics for this run.
+          </p>
+        </div>
+        <button
+          type="button"
+          className="btn btn-primary"
+          onClick={handleExportPpt}
+          disabled={!data || loading || exporting}
+        >
+          {exporting ? "Exporting…" : "Export to PPT"}
+        </button>
       </div>
       {err && <div className="inv-warning">{err}</div>}
       {loading && <div className="cacm-loading">Loading dashboard…</div>}
       {!loading && data && (
-        <DashboardCharts
-          data={data}
-          kpiType={data.kpi_type}
-          filters={filters}
-          onFiltersChange={setFilters}
-          onClearFilters={() => setFilters(DASHBOARD_EMPTY_FILTERS)}
-        />
+        <div ref={dashboardRef}>
+          <DashboardCharts
+            data={data}
+            kpiType={data.kpi_type}
+            filters={filters}
+            onFiltersChange={setFilters}
+            onClearFilters={() => setFilters(DASHBOARD_EMPTY_FILTERS)}
+          />
+        </div>
       )}
     </div>
   );
@@ -1181,7 +1225,9 @@ export default function RunPage() {
               onComplete={() => advanceFrom("exceptions", "dashboard")}
             />
           )}
-          {currentStage === "dashboard" && <DashboardStage runId={runId} />}
+          {currentStage === "dashboard" && (
+            <DashboardStage runId={runId} kpiMeta={kpiMeta} run={run} />
+          )}
         </div>
       </div>
     </AppShell>
