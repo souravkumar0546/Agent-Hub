@@ -104,7 +104,6 @@ function ExtractionStage({
   onComplete,
   completed,
   autopilot,
-  onScheduleAll,
 }) {
   const [running, setRunning] = useState(false);
   const [data, setData] = useState(null);
@@ -254,17 +253,6 @@ function ExtractionStage({
             >
               {running ? "Running…" : "Run Data Extraction"}
             </button>
-            {!autopilot && onScheduleAll && (
-              <button
-                type="button"
-                className="btn"
-                onClick={onScheduleAll}
-                disabled={running}
-                title="Auto-run every stage and land on the Exception Report when done."
-              >
-                ▶︎ Schedule whole process
-              </button>
-            )}
             {autopilot && (
               <span
                 style={{
@@ -1159,7 +1147,6 @@ export default function RunPage() {
               completed={completedStages.has("extraction")}
               onComplete={() => advanceFrom("extraction", "transformation")}
               autopilot={autopilot}
-              onScheduleAll={() => setAutopilot(true)}
             />
           )}
           {currentStage === "transformation" && (

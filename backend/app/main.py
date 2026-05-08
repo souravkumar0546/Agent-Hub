@@ -1,3 +1,4 @@
+import asyncio
 from contextlib import asynccontextmanager
 from pathlib import Path
 
@@ -87,7 +88,20 @@ async def lifespan(app: FastAPI):
         _ensure_bootstrap_super_admin(db)
     finally:
         db.close()
-    yield
+
+    # CACM schedule loop — single in-process scheduler. See
+    # docs/superpowers/specs/2026-05-08-cacm-kri-scheduling-design.md.
+    from app.agents.cacm.scheduler import scheduler_loop
+    scheduler_task = asyncio.create_task(scheduler_loop(SessionLocal))
+
+    try:
+        yield
+    finally:
+        scheduler_task.cancel()
+        try:
+            await scheduler_task
+        except asyncio.CancelledError:
+            pass
 
 
 app = FastAPI(title="Uniqus Labs API", version="0.1.0", lifespan=lifespan)

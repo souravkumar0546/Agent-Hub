@@ -37,6 +37,7 @@ from sqlalchemy.orm import Session
 
 from app.agents.cacm.kpi_catalog import kpi_by_type, kpis_by_process
 from app.agents.cacm.process_catalog import get_process, get_processes
+from app.agents.cacm.schedule_math import compute_next_run_at
 from app.agents.cacm.service import (
     SAMPLE_DATA_DIR,
     _PROCESS_FILES,
@@ -45,7 +46,7 @@ from app.agents.cacm.service import (
     run_pipeline,
 )
 from app.api.deps import OrgContext, get_db, require_org
-from app.models.cacm import CacmException, CacmRun, CacmRunEvent
+from app.models.cacm import CacmException, CacmRun, CacmRunEvent, CacmSchedule
 from app.schemas.cacm import (
     DerivedTableSummary,
     EventsResponse,
@@ -64,6 +65,10 @@ from app.schemas.cacm import (
     RuleEngineStageResponse,
     RunEvent,
     RunSummary,
+    ScheduleCreate,
+    ScheduleSummary,
+    ScheduleUpdate,
+    SchedulesResponse,
     StartRunRequest,
     StartRunResponse,
     TransformationStageResponse,
@@ -127,6 +132,124 @@ def get_process_detail(
     if p is None:
         raise HTTPException(status_code=404, detail=f"unknown process {process_key!r}")
     return _serialize_process(p)
+
+
+# ── Schedules ────────────────────────────────────────────────────────────────
+
+
+def _resolve_kri(process_key: str, kri_name: str) -> str:
+    """Look up `kpi_type` for a (process, kri_name) pair, or raise 400."""
+    proc = get_process(process_key)
+    if proc is None:
+        raise HTTPException(
+            status_code=400, detail=f"unknown process {process_key!r}",
+        )
+    for kri in proc.kris:
+        if kri.name == kri_name:
+            return kri.kpi_type
+    raise HTTPException(
+        status_code=400,
+        detail=f"unknown kri {kri_name!r} in process {process_key!r}",
+    )
+
+
+@router.post(
+    "/schedules",
+    response_model=ScheduleSummary,
+    status_code=status.HTTP_201_CREATED,
+)
+def create_schedule(
+    body: ScheduleCreate,
+    ctx: OrgContext = Depends(require_org),
+    db: Session = Depends(get_db),
+) -> ScheduleSummary:
+    kpi_type = _resolve_kri(body.process_key, body.kri_name)
+    now = datetime.now(timezone.utc)
+    next_run = compute_next_run_at(body.frequency, body.time_of_day, now=now)
+
+    existing = (
+        db.query(CacmSchedule)
+        .filter(
+            CacmSchedule.org_id == ctx.org_id,
+            CacmSchedule.process_key == body.process_key,
+            CacmSchedule.kri_name == body.kri_name,
+        )
+        .one_or_none()
+    )
+    if existing is not None:
+        existing.frequency = body.frequency
+        existing.time_of_day = body.time_of_day
+        existing.kpi_type = kpi_type
+        existing.next_run_at = next_run
+        existing.is_active = True
+        db.commit()
+        db.refresh(existing)
+        return ScheduleSummary.model_validate(existing)
+
+    row = CacmSchedule(
+        org_id=ctx.org_id,
+        user_id=ctx.user.id,
+        process_key=body.process_key,
+        kri_name=body.kri_name,
+        kpi_type=kpi_type,
+        frequency=body.frequency,
+        time_of_day=body.time_of_day,
+        next_run_at=next_run,
+        is_active=True,
+    )
+    db.add(row)
+    db.commit()
+    db.refresh(row)
+    return ScheduleSummary.model_validate(row)
+
+
+@router.get("/schedules", response_model=SchedulesResponse)
+def list_schedules(
+    process_key: str | None = Query(None),
+    ctx: OrgContext = Depends(require_org),
+    db: Session = Depends(get_db),
+) -> SchedulesResponse:
+    q = db.query(CacmSchedule).filter(CacmSchedule.org_id == ctx.org_id)
+    if process_key:
+        q = q.filter(CacmSchedule.process_key == process_key)
+    rows = q.order_by(CacmSchedule.id).all()
+    return SchedulesResponse(
+        schedules=[ScheduleSummary.model_validate(r) for r in rows],
+    )
+
+
+@router.put("/schedules/{schedule_id}", response_model=ScheduleSummary)
+def update_schedule(
+    schedule_id: int,
+    body: ScheduleUpdate,
+    ctx: OrgContext = Depends(require_org),
+    db: Session = Depends(get_db),
+) -> ScheduleSummary:
+    row = db.get(CacmSchedule, schedule_id)
+    if row is None or row.org_id != ctx.org_id:
+        raise HTTPException(status_code=404, detail="schedule not found")
+    row.frequency = body.frequency
+    row.time_of_day = body.time_of_day
+    row.next_run_at = compute_next_run_at(
+        body.frequency, body.time_of_day, now=datetime.now(timezone.utc),
+    )
+    db.commit()
+    db.refresh(row)
+    return ScheduleSummary.model_validate(row)
+
+
+@router.delete("/schedules/{schedule_id}")
+def delete_schedule(
+    schedule_id: int,
+    ctx: OrgContext = Depends(require_org),
+    db: Session = Depends(get_db),
+) -> dict:
+    row = db.get(CacmSchedule, schedule_id)
+    if row is None or row.org_id != ctx.org_id:
+        raise HTTPException(status_code=404, detail="schedule not found")
+    db.delete(row)
+    db.commit()
+    return {"deleted": True}
 
 
 # ── Run lifecycle ────────────────────────────────────────────────────────────

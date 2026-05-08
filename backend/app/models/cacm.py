@@ -1,6 +1,9 @@
 from datetime import datetime
 
-from sqlalchemy import String, Integer, Float, Text, DateTime, ForeignKey, JSON, UniqueConstraint, func
+from sqlalchemy import (
+    Boolean, String, Integer, Float, Text, DateTime, ForeignKey, JSON,
+    UniqueConstraint, func,
+)
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.core.database import Base
@@ -80,3 +83,54 @@ class CacmException(Base):
     payload_json: Mapped[dict] = mapped_column(JSON, nullable=False)
 
     run = relationship("CacmRun", back_populates="exceptions")
+
+
+class CacmSchedule(Base):
+    """Scheduled recurring run of a single CACM KRI.
+
+    One row per (org, process, KRI). Saving the same KRI again upserts
+    frequency/time/next_run_at. The `kpi_type` is denormalized at create
+    time so the scheduler doesn't depend on the catalog at fire time.
+    """
+
+    __tablename__ = "cacm_schedules"
+    __table_args__ = (
+        UniqueConstraint(
+            "org_id", "process_key", "kri_name",
+            name="uq_cacm_schedule_org_process_kri",
+        ),
+    )
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    org_id: Mapped[int] = mapped_column(
+        ForeignKey("organizations.id", ondelete="CASCADE"), index=True, nullable=False
+    )
+    user_id: Mapped[int | None] = mapped_column(
+        ForeignKey("users.id", ondelete="SET NULL"), nullable=True
+    )
+    process_key: Mapped[str] = mapped_column(String(64), nullable=False)
+    kri_name: Mapped[str] = mapped_column(String(255), nullable=False)
+    kpi_type: Mapped[str] = mapped_column(String(80), nullable=False)
+    frequency: Mapped[str] = mapped_column(String(16), nullable=False)
+    time_of_day: Mapped[str] = mapped_column(String(5), nullable=False)
+    next_run_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), index=True, nullable=False
+    )
+    last_run_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    last_run_id: Mapped[int | None] = mapped_column(
+        ForeignKey("cacm_runs.id", ondelete="SET NULL"), nullable=True
+    )
+    is_active: Mapped[bool] = mapped_column(
+        Boolean, nullable=False, server_default=func.true()
+    )
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, server_default=func.now()
+    )
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        nullable=False,
+        server_default=func.now(),
+        onupdate=func.now(),
+    )
+
+    last_run = relationship("CacmRun", foreign_keys=[last_run_id])

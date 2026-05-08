@@ -7,7 +7,7 @@ problem.
 from __future__ import annotations
 
 from datetime import datetime
-from typing import Any
+from typing import Any, Literal
 
 from pydantic import BaseModel, Field
 
@@ -170,3 +170,42 @@ class RuleEngineStageResponse(BaseModel):
     rule_summary: str                          # 1-line "what it does"
     exceptions_generated: int
     total_evaluated: int
+
+
+# ── Schedules ────────────────────────────────────────────────────────────────
+
+
+_FREQ = Literal[
+    "daily", "weekly", "monthly", "quarterly", "half_yearly", "annually",
+]
+
+
+class ScheduleCreate(BaseModel):
+    process_key: str = Field(min_length=1, max_length=64)
+    kri_name: str = Field(min_length=1, max_length=255)
+    frequency: _FREQ
+    time_of_day: str = Field(pattern=r"^[0-2]\d:[0-5]\d$")
+
+
+class ScheduleUpdate(BaseModel):
+    frequency: _FREQ
+    time_of_day: str = Field(pattern=r"^[0-2]\d:[0-5]\d$")
+
+
+class ScheduleSummary(BaseModel):
+    id: int
+    process_key: str
+    kri_name: str
+    kpi_type: str
+    frequency: str
+    time_of_day: str
+    next_run_at: datetime
+    last_run_at: datetime | None
+    last_run_id: int | None
+    is_active: bool
+
+    model_config = {"from_attributes": True}
+
+
+class SchedulesResponse(BaseModel):
+    schedules: list[ScheduleSummary]

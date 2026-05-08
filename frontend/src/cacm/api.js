@@ -195,3 +195,36 @@ export function useEvents(runId, intervalMs = 500) {
 
   return { events, status };
 }
+
+/* ── Schedules ────────────────────────────────────────────────────────── */
+
+/** Create or upsert a schedule. Backend uses (org, process_key, kri_name)
+ *  uniqueness — re-saving the same KRI returns the same id with new
+ *  freq/time. Body: { process_key, kri_name, frequency, time_of_day } */
+export async function createSchedule(body) {
+  const { data } = await API.post("/schedules", body);
+  return data;
+}
+
+/** List schedules for the current org, optionally filtered to one process.
+ *  `_t` cache-buster guarantees we never read a stale browser-cached
+ *  response after a save — `next_run_at` advances every minute so even a
+ *  short-lived 304 would show the wrong "next run". */
+export async function listSchedules({ processKey } = {}) {
+  const params = { _t: Date.now() };
+  if (processKey) params.process_key = processKey;
+  const { data } = await API.get("/schedules", { params });
+  return data;
+}
+
+/** Edit a schedule's frequency and time. */
+export async function updateSchedule(id, body) {
+  const { data } = await API.put(`/schedules/${id}`, body);
+  return data;
+}
+
+/** Delete a schedule. */
+export async function deleteSchedule(id) {
+  const { data } = await API.delete(`/schedules/${id}`);
+  return data;
+}
