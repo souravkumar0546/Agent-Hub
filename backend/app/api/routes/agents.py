@@ -2,13 +2,17 @@ from fastapi import APIRouter, Depends, HTTPException, Query, status
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
-from app.agents import CATALOG, display_name_for, is_implemented
+from app.agents import CATALOG, display_name_for, is_implemented, kind_for
 from app.api.deps import get_db, require_org, require_org_admin, OrgContext
 from app.models import Agent, AgentDepartment, AuditLog, Department, UserAgent
 from app.schemas.common import AgentOut, CatalogAgentOut, IdName
 
 
 router = APIRouter(prefix="/agents", tags=["agents"])
+
+
+# Accepted values for the `kind` query filter. "all" / None = no filter.
+KIND_FILTER_PATTERN = "^(agent|application|all)$"
 
 
 # ── Helpers ──────────────────────────────────────────────────────────────────
@@ -42,6 +46,7 @@ def _to_agent_out(agent: Agent, picked_ids: set[int]) -> AgentOut:
         is_picked=agent.id in picked_ids,
         implemented=is_implemented(agent.type),
         departments=depts,
+        kind=kind_for(agent.type),
     )
 
 
@@ -57,12 +62,21 @@ def list_agents(
         pattern="^(installed|picked|all)$",
         description="installed = enabled in this org; picked = in my workspace; all = every Agent row",
     ),
+    kind: str | None = Query(
+        None,
+        pattern=KIND_FILTER_PATTERN,
+        description="Surface namespace filter — 'agent' or 'application'. Omit / 'all' = both.",
+    ),
 ):
     """List agents in the org, scoped by `?scope=`:
 
     - `installed` (default): only agents the org admin has installed.
     - `picked`: only agents the current user has added to their personal workspace.
     - `all`: every Agent row — useful for admins browsing what's disabled.
+
+    Optional `?kind=` restricts to one surface namespace (`agent` or
+    `application`). The filter is applied post-query because the `kind`
+    is derived from the in-process CATALOG, not stored on the DB row.
     """
     picked_ids = _picked_agent_ids(db, ctx.user.id)
 
@@ -91,6 +105,9 @@ def list_agents(
             return []
         agents = [a for a in agents if any(ad.department_id == dept.id for ad in a.departments)]
 
+    if kind and kind != "all":
+        agents = [a for a in agents if kind_for(a.type) == kind]
+
     # Implemented + alphabetical (matches existing UX).
     agents.sort(key=lambda a: (not is_implemented(a.type), a.name.lower()))
     return [_to_agent_out(a, picked_ids) for a in agents]
@@ -107,6 +124,11 @@ def list_agents(
 def agent_catalog(
     ctx: OrgContext = Depends(require_org),
     db: Session = Depends(get_db),
+    kind: str | None = Query(
+        None,
+        pattern=KIND_FILTER_PATTERN,
+        description="Surface namespace filter — 'agent' or 'application'. Omit / 'all' = both.",
+    ),
 ):
     """Org-admin / member catalog view.
 
@@ -130,6 +152,8 @@ def agent_catalog(
 
     result: list[CatalogAgentOut] = []
     for spec in CATALOG:
+        if kind and kind != "all" and spec.kind != kind:
+            continue
         agent = installed_by_type.get(spec.type)
         if agent is None:
             # Not granted — hide entirely.
@@ -145,6 +169,7 @@ def agent_catalog(
             is_installed=bool(agent.is_enabled),
             is_picked=bool(agent.id in picked_ids),
             agent_id=agent.id,
+            kind=spec.kind,
         ))
     # Sort: implemented first, then alphabetical.
     result.sort(key=lambda e: (not e.implemented, e.name.lower()))

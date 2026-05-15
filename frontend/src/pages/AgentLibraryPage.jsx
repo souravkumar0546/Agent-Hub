@@ -60,12 +60,21 @@ function ActionButton({
 }
 
 
-export default function AgentLibraryPage() {
+// Single library component drives both the Agents Library and the
+// Applications Library routes. The `kind` prop toggles copy, the catalog
+// filter, and where the cards link out to.
+export default function AgentLibraryPage({ kind = 'agent' }) {
   const { isOrgAdmin } = useAuth();
   const navigate = useNavigate();
   const role = isOrgAdmin ? 'admin' : 'member';
   const confirm = useConfirm();
   const toast = useToast();
+
+  const isApp = kind === 'application';
+  const noun = isApp ? 'application' : 'agent';
+  const Noun = isApp ? 'Application' : 'Agent';
+  const nouns = `${noun}s`;
+  const crumb = isApp ? 'Application Library' : 'Agent Library';
 
   const [catalog, setCatalog] = useState([]);
   const [err, setErr] = useState('');
@@ -76,13 +85,13 @@ export default function AgentLibraryPage() {
 
   const load = useCallback(async () => {
     try {
-      const rows = await api('/agents/catalog');
+      const rows = await api(`/agents/catalog?kind=${kind}`);
       setCatalog(rows);
       setErr('');
     } catch (e) {
       setErr(e.message);
     }
-  }, []);
+  }, [kind]);
   useEffect(() => { load(); }, [load]);
 
   const categories = useMemo(() => {
@@ -216,16 +225,16 @@ export default function AgentLibraryPage() {
   }
 
   return (
-    <AppShell crumbs={['Agent Library']}>
+    <AppShell crumbs={[crumb]}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 18 }}>
         <div>
           <h1 className="page-title" style={{ marginBottom: 4 }}>
-            Agent <em>library</em>
+            {Noun} <em>library</em>
           </h1>
           <p className="page-subtitle" style={{ marginBottom: 0 }}>
             {role === 'admin'
-              ? 'Browse every agent on the platform. Install the ones your organisation needs.'
-              : 'Browse the agents your organisation has enabled. Add the ones you need to your workspace.'}
+              ? `Browse every ${noun} on the platform. Install the ones your organisation needs.`
+              : `Browse the ${nouns} your organisation has enabled. Add the ones you need to your workspace.`}
           </p>
         </div>
         <button className="btn" onClick={() => navigate(-1)}>← Back</button>
@@ -259,7 +268,7 @@ export default function AgentLibraryPage() {
             type="search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search agents by name, tagline, category…"
+            placeholder={`Search ${nouns} by name, tagline, category…`}
             style={{
               width: '100%',
               background: 'var(--bg)',

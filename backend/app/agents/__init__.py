@@ -7,6 +7,7 @@ those are stubs for now and will be filled in per-agent.
 """
 
 from dataclasses import dataclass, field
+from typing import Literal
 
 
 @dataclass(frozen=True)
@@ -26,6 +27,12 @@ class AgentDef:
     # Drives list ordering (implemented agents float to the top) and lets
     # the UI badge stubs as "coming soon".
     implemented: bool = False
+    # Surface namespace: "agent" (default) shows in the Agents Hub / Library;
+    # "application" splits into the parallel My Applications / Application
+    # Library views. The classification is derived at serialization time
+    # from CATALOG — no DB column / migration. New catalog entries default
+    # to "agent" so the platform stays backwards-compatible.
+    kind: Literal["agent", "application"] = "agent"
 
 
 def is_implemented(agent_type: str) -> bool:
@@ -33,6 +40,18 @@ def is_implemented(agent_type: str) -> bool:
         if d.type == agent_type:
             return d.implemented
     return False
+
+
+def kind_for(agent_type: str) -> str:
+    """Return "agent" or "application" for the given catalog type.
+
+    Falls back to "agent" if the type isn't in CATALOG so legacy DB rows
+    without a matching catalog entry default to the original namespace.
+    """
+    for d in CATALOG:
+        if d.type == agent_type:
+            return d.kind
+    return "agent"
 
 
 CATALOG: list[AgentDef] = [
@@ -223,6 +242,11 @@ CATALOG: list[AgentDef] = [
         default_departments=("qa_compliance",),
         module="app.agents.cacm",
         implemented=True,
+        # Prism is the first entry in the new "Applications" namespace —
+        # surfaces in My Applications / Application Library rather than
+        # the Agents Hub. URL stays /agents/cacm; only the classification
+        # changes.
+        kind="application",
     ),
 ]
 

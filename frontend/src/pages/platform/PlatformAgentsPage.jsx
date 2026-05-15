@@ -43,6 +43,22 @@ function OrgThumb({ org, size = 22 }) {
 }
 
 
+/** Small pill shown next to a catalog entry's name to distinguish the
+ *  "agent" namespace from the "application" namespace. Renders nothing
+ *  for plain agents to avoid visual noise — only flags applications. */
+function KindBadge({ kind }) {
+  if (kind !== 'application') return null;
+  return (
+    <span
+      className="cap-tag cap-tag--accent"
+      style={{ marginLeft: 8, verticalAlign: 'middle', fontFamily: 'var(--sans)', fontSize: 10 }}
+    >
+      Application
+    </span>
+  );
+}
+
+
 /**
  * Platform-level agent management.
  *
@@ -60,6 +76,12 @@ export default function PlatformAgentsPage() {
   const [loading, setLoading] = useState(true);
   const [orgId, setOrgId] = useState(null);
   const [busyType, setBusyType] = useState(null);
+  // Surface-namespace filter — 'all' (default) shows both, 'agent' /
+  // 'application' restrict the matrix to one. The backend honours the
+  // same query param, but applying it client-side keeps the load() call
+  // unchanged and lets the super admin flip between segments without
+  // refetching.
+  const [kindFilter, setKindFilter] = useState('all');
   const confirm = useConfirm();
   const toast = useToast();
 
@@ -85,7 +107,8 @@ export default function PlatformAgentsPage() {
 
   const org = orgs.find((o) => o.id === orgId) || null;
 
-  // For the chosen org, split the catalog into granted vs not-granted.
+  // For the chosen org, split the catalog into granted vs not-granted —
+  // and drop any entry whose `kind` doesn't match the active filter.
   const { granted, notGranted } = useMemo(() => {
     if (!org) return { granted: [], notGranted: [] };
     const instByType = new Map(
@@ -96,6 +119,7 @@ export default function PlatformAgentsPage() {
     const grantedList = [];
     const notGrantedList = [];
     for (const entry of catalog) {
+      if (kindFilter !== 'all' && (entry.kind || 'agent') !== kindFilter) continue;
       const inst = instByType.get(entry.type);
       if (inst && inst.granted_by_platform) {
         grantedList.push({ entry, installation: inst });
@@ -106,7 +130,7 @@ export default function PlatformAgentsPage() {
       }
     }
     return { granted: grantedList, notGranted: notGrantedList };
-  }, [org, catalog, installations]);
+  }, [org, catalog, installations, kindFilter]);
 
   // Build id → name map for the currently-selected org's departments so we
   // can render the org admin's chosen scope inline.
@@ -189,6 +213,25 @@ export default function PlatformAgentsPage() {
 
       {err && <div className="inv-warning" style={{ marginBottom: 14 }}>{err}</div>}
 
+      {/* Surface-namespace toggle. Defaults to "All" so the page looks
+          identical to what super admins remember; flipping to Agents or
+          Applications scopes both the Granted and Not-granted lists. */}
+      <div className="filter-row" style={{ marginBottom: 14 }}>
+        {[
+          { value: 'all', label: 'All' },
+          { value: 'agent', label: 'Agents' },
+          { value: 'application', label: 'Applications' },
+        ].map((opt) => (
+          <button
+            key={opt.value}
+            className={`filter-chip${kindFilter === opt.value ? ' active' : ''}`}
+            onClick={() => setKindFilter(opt.value)}
+          >
+            {opt.label}
+          </button>
+        ))}
+      </div>
+
       {/* Org picker */}
       <div style={{
         background: 'var(--bg-card)', border: '1px solid var(--border)',
@@ -240,7 +283,7 @@ export default function PlatformAgentsPage() {
           </div>
           {granted.length === 0 ? (
             <div className="empty" style={{ marginBottom: 26 }}>
-              No agents granted yet. Pick some from the "Not granted" list below.
+              No entries granted yet. Pick some from the "Not granted" list below.
             </div>
           ) : (
             <div style={{
@@ -272,6 +315,7 @@ export default function PlatformAgentsPage() {
                           {entry.name}
                         </span>
                       )}
+                      <KindBadge kind={entry.kind} />
                     </div>
                     <div style={{ color: 'var(--ink-muted)', fontSize: 12, marginTop: 2 }}>
                       {entry.category || '—'}
@@ -310,7 +354,7 @@ export default function PlatformAgentsPage() {
             <h2>Not granted <em>— {notGranted.length}</em></h2>
           </div>
           {notGranted.length === 0 ? (
-            <div className="empty">Every catalog agent has been granted to this org.</div>
+            <div className="empty">Every catalog entry has been granted to this org.</div>
           ) : (
             <div style={{
               background: 'var(--bg-card)', border: '1px solid var(--border)',
@@ -344,6 +388,7 @@ export default function PlatformAgentsPage() {
                             {entry.name}
                           </span>
                         )}
+                        <KindBadge kind={entry.kind} />
                         {!entry.implemented && (
                           <span className="cap-tag" style={{ marginLeft: 8, verticalAlign: 'middle', fontFamily: 'var(--sans)' }}>
                             Coming soon

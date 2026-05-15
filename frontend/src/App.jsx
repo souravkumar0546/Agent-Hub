@@ -163,6 +163,25 @@ export default function App() {
           </ProtectedRoute>
         }
       />
+      {/* Parallel Applications namespace — same components, kind="application"
+          flips copy and the kind=application query filter. Prism (cacm) is
+          the only entry today; the agent URL /agents/cacm is unchanged. */}
+      <Route
+        path="/applications"
+        element={
+          <ProtectedRoute>
+            <AgentHubPage kind="application" />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/applications/library"
+        element={
+          <ProtectedRoute>
+            <AgentLibraryPage kind="application" />
+          </ProtectedRoute>
+        }
+      />
       <Route
         path="/settings"
         element={

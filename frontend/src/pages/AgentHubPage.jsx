@@ -6,8 +6,21 @@ import { api, getOrgId } from '../lib/api.js';
 import { useAuth } from '../lib/auth.jsx';
 
 
-export default function AgentHubPage() {
+// The hub renders two parallel namespaces — Agents (default) and
+// Applications. They differ only in copy, breadcrumbs, the kind filter
+// applied to the listing call, and the library link. Everything else
+// (scope handling, dept chips, redirect behaviour) is identical, so we
+// drive both off a single `kind` prop.
+export default function AgentHubPage({ kind = 'agent' }) {
   const { user, isSuperAdmin, isOrgAdmin } = useAuth();
+
+  const isApp = kind === 'application';
+  const libraryHref = isApp ? '/applications/library' : '/library';
+  const noun = isApp ? 'application' : 'agent';
+  const Noun = isApp ? 'Application' : 'Agent';
+  const nouns = `${noun}s`;
+  const Nouns = `${Noun}s`;
+  const crumb = isApp ? 'Application Hub' : 'Agent Hub';
 
   // Super-admins land on the platform dashboard unless they've explicitly
   // opened a specific org via the platform page (session flag).
@@ -37,11 +50,11 @@ export default function AgentHubPage() {
 
   useEffect(() => {
     setLoading(true);
-    api(`/agents?scope=${scope}`)
+    api(`/agents?scope=${scope}&kind=${kind}`)
       .then((list) => { setAgents(list); setErr(''); })
       .catch((e) => setErr(e.message))
       .finally(() => setLoading(false));
-  }, [scope]);
+  }, [scope, kind]);
 
   useEffect(() => {
     // Personal dashboard gives us today's run count scoped to this user + org.
@@ -74,16 +87,16 @@ export default function AgentHubPage() {
   const deptCount = user?.departments?.length || 0;
 
   return (
-    <AppShell crumbs={['Agent Hub']}>
+    <AppShell crumbs={[crumb]}>
       <section className="hero">
         <div>
           <h1>
-            Your <em>agents</em>, ready to work.
+            Your <em>{nouns}</em>, ready to work.
           </h1>
           <p>
             {scope === 'picked'
-              ? 'Agents in your personal workspace. Add more from the Agent Library when you need them.'
-              : 'Every agent installed in this organisation. Members pick the ones they need into their own workspace.'}
+              ? `${Nouns} in your personal workspace. Add more from the ${Noun} Library when you need them.`
+              : `Every ${noun} installed in this organisation. Members pick the ones they need into their own workspace.`}
           </p>
         </div>
         <div className="stats">
@@ -106,9 +119,9 @@ export default function AgentHubPage() {
 
       <div className="section-header">
         <h2>
-          {scope === 'picked' ? 'My agents' : 'Installed agents'} <em>— {filtered.length}{activeDept ? ` / ${agents.length}` : ''}</em>
+          {scope === 'picked' ? `My ${nouns}` : `Installed ${nouns}`} <em>— {filtered.length}{activeDept ? ` / ${agents.length}` : ''}</em>
         </h2>
-        <Link to="/library" className="btn btn-primary">
+        <Link to={libraryHref} className="btn btn-primary">
           {scope === 'picked' ? '+ Add from library' : 'Manage library'}
         </Link>
       </div>
@@ -129,7 +142,7 @@ export default function AgentHubPage() {
       )}
 
       {loading ? (
-        <div className="empty">Loading agents…</div>
+        <div className="empty">Loading {nouns}…</div>
       ) : filtered.length === 0 ? (
         <div className="empty" style={{ textAlign: 'center' }}>
           {scope === 'picked' ? (
@@ -138,19 +151,19 @@ export default function AgentHubPage() {
                 Your workspace is empty
               </div>
               <div style={{ fontSize: 13, marginBottom: 14 }}>
-                Pick agents from the library to add them here — they'll appear on this page and their activity will show up on your dashboard.
+                Pick {nouns} from the library to add them here — they'll appear on this page and their activity will show up on your dashboard.
               </div>
-              <Link to="/library" className="btn btn-primary">Open the Agent Library →</Link>
+              <Link to={libraryHref} className="btn btn-primary">Open the {Noun} Library →</Link>
             </>
           ) : (
             <>
               <div style={{ fontFamily: 'var(--sans)', fontWeight: 800, fontSize: 22, letterSpacing: '-0.02em', marginBottom: 8, color: 'var(--ink)' }}>
-                No agents installed
+                No {nouns} installed
               </div>
               <div style={{ fontSize: 13, marginBottom: 14 }}>
-                Install agents from the catalog to make them available to your members.
+                Install {nouns} from the catalog to make them available to your members.
               </div>
-              <Link to="/library" className="btn btn-primary">Open the Agent Library →</Link>
+              <Link to={libraryHref} className="btn btn-primary">Open the {Noun} Library →</Link>
             </>
           )}
         </div>

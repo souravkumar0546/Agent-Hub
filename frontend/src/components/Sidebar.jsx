@@ -23,6 +23,9 @@ const ICONS = {
   integrations: <Icon d={<><path d="M9 7V4a2 2 0 0 1 4 0v3M6 11h12M7 11v7a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-7" /></>} />,
   guide: <Icon d={<><path d="M4 4h11a3 3 0 0 1 3 3v14H7a3 3 0 0 1-3-3V4z" /><path d="M4 18a3 3 0 0 1 3-3h11" /></>} />,
   library: <Icon d={<><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5v14z" /><path d="M9 7h7M9 11h7" /></>} />,
+  // "Applications" namespace shares the same nine-dot vibe as platform but
+  // drawn as a window/app grid so it reads distinctly from the Agent icons.
+  apps: <Icon d={<><rect x="3" y="3" width="7" height="7" rx="1" /><rect x="14" y="3" width="7" height="7" rx="1" /><rect x="3" y="14" width="7" height="7" rx="1" /><rect x="14" y="14" width="7" height="7" rx="1" /></>} />,
   dashboard: <Icon d={<><rect x="3" y="3" width="7" height="10" /><rect x="14" y="3" width="7" height="7" /><rect x="3" y="16" width="7" height="5" /><rect x="14" y="13" width="7" height="8" /></>} />,
   logout: <Icon d={<><path d="M15 16l4-4-4-4M19 12H9M13 21H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7" /></>} />,
   settings: <Icon d={<><circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3 1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8 1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z" /></>} />,
@@ -130,8 +133,17 @@ export default function Sidebar() {
       {!platformOnly && (
         <>
           <div className="nav-label">{isMember ? 'Workspace' : 'Tools'}</div>
+          {/* Order: My Agents → My Applications → Agent Library → Application
+              Library. Both "My …" entries use `end` so they don't co-highlight
+              with the library routes that share the URL prefix. */}
           {isMember && <Item to="/" end icon={ICONS.hub} label="My Agents" />}
+          {/* Applications namespace runs in parallel with Agents — same
+              install / pick / department semantics under the hood, just
+              surfaced separately so apps with their own multi-page flow
+              (e.g. Prism / CACM) don't get lost in the agent grid. */}
+          {isMember && <Item to="/applications" end icon={ICONS.apps} label="My Applications" />}
           <Item to="/library" icon={ICONS.library} label="Agent Library" />
+          <Item to="/applications/library" icon={ICONS.library} label="Application Library" />
           <Item to="/guide" icon={ICONS.guide} label="User Guide" />
         </>
       )}

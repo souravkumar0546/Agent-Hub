@@ -1,9 +1,9 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Query, status
 from pydantic import BaseModel, EmailStr
 from sqlalchemy import func
 from sqlalchemy.orm import Session
 
-from app.agents import CATALOG, is_implemented
+from app.agents import CATALOG, is_implemented, kind_for
 from app.api.deps import get_db, require_super_admin
 from app.core.security import hash_password
 from app.models import (
@@ -288,6 +288,11 @@ def platform_dashboard(
 def platform_agents_matrix(
     _: User = Depends(require_super_admin),
     db: Session = Depends(get_db),
+    kind: str | None = Query(
+        None,
+        pattern="^(agent|application|all)$",
+        description="Optional namespace filter — 'agent' or 'application'. Omit / 'all' = both.",
+    ),
 ):
     # All orgs (name, slug, logo) for the column headers.
     org_rows = db.query(Organization).order_by(Organization.name).all()
@@ -298,6 +303,12 @@ def platform_agents_matrix(
 
     # Platform catalog rows, sorted implemented-first then by display_name
     # (so the human-facing list order matches what the user sees on the card).
+    # `kind` is included so the UI can badge / segment between the agent
+    # and application namespaces without a second round trip.
+    catalog_specs = [
+        s for s in CATALOG
+        if not kind or kind == "all" or s.kind == kind
+    ]
     catalog = [
         {
             "type": s.type,
@@ -307,9 +318,10 @@ def platform_agents_matrix(
             "category": s.category,
             "icon": s.icon,
             "implemented": s.implemented,
+            "kind": s.kind,
         }
         for s in sorted(
-            CATALOG,
+            catalog_specs,
             key=lambda s: (not s.implemented, (s.display_name or s.name).lower()),
         )
     ]
@@ -318,6 +330,8 @@ def platform_agents_matrix(
     # We return `(org_id, agent_type, agent_id, is_enabled, department_ids)`
     # tuples — the frontend pivots them into the matrix cells.
     all_agents = db.query(Agent).all()
+    if kind and kind != "all":
+        all_agents = [a for a in all_agents if kind_for(a.type) == kind]
     # Bulk-fetch AgentDepartment rows in one query to avoid N+1.
     ad_rows = db.query(AgentDepartment).all()
     depts_by_agent: dict[int, list[int]] = {}
@@ -336,6 +350,7 @@ def platform_agents_matrix(
             "granted_by_platform": a.granted_by_platform,
             "is_enabled": a.is_enabled,
             "department_ids": depts_by_agent.get(a.id, []),
+            "kind": kind_for(a.type),
         }
         for a in all_agents
     ]

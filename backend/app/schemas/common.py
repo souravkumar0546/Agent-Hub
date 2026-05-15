@@ -83,6 +83,11 @@ class AgentOut(BaseModel):
     is_picked: bool = False
     implemented: bool = False
     departments: list[IdName] = []
+    # Surface namespace — "agent" (default) or "application". Derived
+    # from the CATALOG entry matching `type` at serialization time so a
+    # reclassification doesn't need a migration. Unknown types fall
+    # back to "agent" to keep legacy DB rows visible somewhere.
+    kind: str = "agent"
 
     model_config = {"from_attributes": True}
 
@@ -105,3 +110,4 @@ class CatalogAgentOut(BaseModel):
     is_installed: bool = False
     is_picked: bool = False
     agent_id: int | None = None  # DB id when this agent exists in the user's org
+    kind: str = "agent"
